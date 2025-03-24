@@ -1,11 +1,9 @@
-import express from "express"
-import ejs from "ejs"
+import React, { Component } from 'react'
 
-const app = express()
-
-app.set("view engine", "ejs")
-
-app.get('/', (req, res) => res.render("index"))
-
-app.listen(3000)
-console.log("hOLA")
+export default class login extends Component {
+  render() {
+    return (
+      <div>login</div>
+    )
+  }
+}
