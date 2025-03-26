@@ -4,11 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/navbar.css">
     <title>Registrate en AsesoraTEC</title>
 </head>
 
 <body>
-
+    <nav class="navbar">
+        <ul>
+            <li><img src="assets/images/LOGO_sin_fondo.png" class="logo"></li>
+            <!-- Tengo pensado que la campana y los mensajes cambien dependiendo
+             del estado (Si hay notificaciones o mensajes) por eso en las imagenes hay 2 tipos de cada una-->
+            <div class="options">
+                <li id="message"><img src="assets/images/Mensajes.png" class="messages"></li>
+                <!-- Les puse ids y stylos para luego cambiarlos con js dependiendo del estado-->
+                <li id="message_notification"><img src="assets/images/Mensajes.png" class="messages"
+                        style="display: none;"></li>
+                <li id="bell"><img src="assets/images/Campana.png" class="notifications"></li>
+                <li id="bell_notificacion"><img src="assets/images/Campana_Notificacion.png" class="notifications"
+                        style="display: none;"></li>
+                <li><img src="assets/images/Menu.png" class="menu"></li>
+            </div>
+        </ul>
+    </nav>
 </body>
 
 </html>
