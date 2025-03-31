@@ -64,5 +64,5 @@ backend
 ## Logitipo del proyecto
 
 <p align="center">
-  <img src="frontend\images\LOGO_sin_fondo.png"/>
+  <img src="frontend\images\LOGO.png"/>
 </p>
