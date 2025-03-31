@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+//GET para pruebas
+router.get('/login', (req, res) => {
+    res.status(200).json({ message: "Ruta GET funcionando correctamente" });
+});
+
 // Ruta para el login
 router.post('/login', (req, res) => {
     const correo = req.body.correo; 
