@@ -9,21 +9,21 @@ router.get('/login', (req, res) => {
 
 // Ruta para el login
 router.post('/login', (req, res) => {
-    const correo = req.body.correo; 
+    const email = req.body.email; 
+    const password = req.body.password;
 
     // Consulta SQL para buscar el correo en la base de datos
-    const query = 'SELECT * FROM Usuario WHERE correo = ?';
+    const query = 'SELECT * FROM Usuario WHERE correo = ? AND contraseña = ?';
 
-    db.query(query, [correo], (err, results) => {
+    db.query(query, [email,password], (err, results) => {
         if (err) {
             console.error('Error en la consulta:', err);
             return res.status(500).json({ error: 'Error en la consulta' });
         }
 
         if (results.length === 0) {
-            return res.status(404).json({ message: 'Correo no encontrado' });
+            return res.status(404).json({ message: 'Correo no encontrado o contraseña incorrectos' });
         }
-
         res.json({
             message: 'Login exitoso',
             usuario: results[0],

@@ -1,14 +1,17 @@
 const api_url = 'http://localhost:3000/api/login';
 
 const form = document.getElementById('loginForm');
-const correoInput = document.getElementById('correo');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password')
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const correo = correoInput.value;
+    const email = emailInput.value;
 
-    const datosParaEnviar = { correo };
+    const password = passwordInput.value;
+
+    const datosParaEnviar = { email,password };
 
     fetch(api_url, {
         method: 'POST',
