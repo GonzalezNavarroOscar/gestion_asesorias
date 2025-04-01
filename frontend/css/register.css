@@ -8,13 +8,24 @@ body {
     font-family: Arial, sans-serif;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     display: flex;
-    height: 100vh;
+    width: 1000px;
+    height: 650px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .left {
-    background-color: #12B5F0;
+    background-color: #007bff;
     height: 100%;
     display: flex;
     align-items: center;
@@ -23,8 +34,8 @@ body {
 }
 
 .left img {
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    width: 400px;
     max-width: 100%;
 }
 
@@ -37,8 +48,8 @@ body {
 }
 
 .right img {
-    height: 300px;
-    width: 300px;
+    width: 170px;
+
 }
 
 .right a {
@@ -80,7 +91,7 @@ body {
 }
 
 .register_form button {
-    background-color: #12B5F0;
+    background-color: #007bff;
     color: white;
     font-weight: bold;
     border: none;
@@ -91,7 +102,7 @@ body {
 }
 
 .register_form button:hover {
-    background-color: #0E9BD6;
+    background-color: #00b3ff;
 }
 
 .forgot_password {
