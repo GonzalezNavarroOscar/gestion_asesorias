@@ -48,7 +48,7 @@ form {
 
 form input {
     height: 40px;
-    width: 100%;
+    width: 95%;
     background-color: #F8F8F8;
     border: none;
     font-weight: bold;
@@ -89,7 +89,7 @@ button:after {
     right: 0;
     height: 2px;
     width: 0;
-    background: #4000ff;
+    background: #143ab9;
     transition: 400ms ease all;
 }
 
@@ -108,7 +108,7 @@ button:hover:after {
 
 .enlace {
     background: none;
-    color: #007bff;
+    color: #143ab9;
     border: none;
     cursor: pointer;
 }
@@ -144,8 +144,9 @@ button:hover:after {
         height: auto;
         min-height: 100vh;
         padding: 20px;
-        background-size: cover;
-        align-items: flex-start;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .container {

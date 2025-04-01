@@ -76,7 +76,7 @@ body {
 
 .register_form input {
     height: 40px;
-    width: 100%;
+    width: 95%;
     background-color: #F8F8F8;
     border: none;
     font-weight: bold;
@@ -102,7 +102,7 @@ body {
 }
 
 .register_form button:hover {
-    background-color: #00b3ff;
+    background-color: #143ab9;
 }
 
 .forgot_password {
@@ -119,8 +119,9 @@ body {
 @media (max-width: 768px) {
     body {
         overflow: auto;
-        background-size: cover;
-        align-items: flex-start;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding-top: 20px;
     }
 
