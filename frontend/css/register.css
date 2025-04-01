@@ -116,6 +116,21 @@ body {
     text-decoration: none;
 }
 
+.error {
+    display: none;
+}
+
+.error.visible {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    justify-content: center;
+    background-color: red;
+    border-radius: 20px;
+    height: 25px;
+}
+
 @media (max-width: 768px) {
     body {
         overflow: auto;

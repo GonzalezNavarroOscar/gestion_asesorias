@@ -15,13 +15,14 @@
         </div>
         <div class="right">
             <img src="images/LOGO.png">
-            <form class="register_form">
+            <form id="register_form" class="register_form">
                 <div class="register_text"><a>Registrate en AsesoraTEC</a></div>
-                <input type="text" placeholder=" Nombre">
-                <input type="tel" placeholder=" Matricula">
-                <input type="email" placeholder=" Correo electronico">
-                <input type="password" placeholder=" Contraseña">
-                <input type="password" placeholder=" Confirmar tu contraseña">
+                <div id="error" class="error">Las contraseñas no coinciden</div>
+                <input id="name" type="text" placeholder=" Nombre" required>
+                <input id="matricula" type="tel" placeholder=" Matricula" required>
+                <input id="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
+                <input id="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
+                <input id="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>
                 <div class="forgot_password">
                     <a>¿Ya tienes cuenta?</a>
                     <a href="#">Iniciar sesión</a>
@@ -30,6 +31,7 @@
             </form>
         </div>
     </div>
+    <script src="API/registerAPI.js"></script>
 </body>
 
 </html>
