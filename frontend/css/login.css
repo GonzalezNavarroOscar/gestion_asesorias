@@ -140,42 +140,50 @@ button:hover:after {
 
 @media (max-width: 768px) {
     body {
-        overflow: auto;
+        overflow: hidden;
+        height: auto;
+        min-height: 100vh;
+        padding: 20px;
         background-size: cover;
         align-items: flex-start;
-        padding-top: 20px;
     }
 
     .container {
         width: 100%;
+        max-width: 100%;
         height: auto;
-        max-width: 90%;
-        margin: 20px auto;
         flex-direction: column;
+        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
     }
 
-    .left {
-        display: none;
+    .left,
+    .right {
+        width: 87%;
+        padding: 30px 20px;
     }
 
     .right {
-        width: 100%;
-        padding: 20px 0;
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 12px;
+        display: none;
     }
 
-    .register_form {
-        width: 85%;
-        max-width: 100%;
-    }
-
-    .register_form input {
-        height: 50px;
-    }
-
-    .right img {
+    .left img {
         width: 140px;
     }
 
+    .left h1 {
+        font-size: 20px;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    form input {
+        height: 45px;
+    }
+
+    button {
+        height: 45px;
+    }
 }
