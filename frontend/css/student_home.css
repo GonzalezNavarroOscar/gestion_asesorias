@@ -1,6 +1,7 @@
 .container {
     padding-top: 3%;
     width: 100%;
+    columns: 3;
     column-count: 3;
     display: flex;
     justify-content: space-evenly;
