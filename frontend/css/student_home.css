@@ -14,41 +14,53 @@
 }
 
 .card {
-    position: relative;
     width: 300px;
-    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    height: 180px;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
     display: block;
 }
 
 .card-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 20px;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    background-color: #f5f5f5;
+
+    padding-top: 10px;
+    text-align: center;
+    flex-grow: 1;
 }
 
 .card-text {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: #333;
 }
 
-button {
+.card-description {
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 15px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: justify;
+}
+
+.card button {
+    margin-bottom: 15px;
     background-color: #007bff;
     color: white;
     font-weight: bold;
@@ -59,37 +71,6 @@ button {
     transition: background-color 0.3s;
 }
 
-.card-2 {
-    width: 300px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-}
-
-.card-image-2 {
-    height: 180px;
-}
-
-.card-image-2 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.card-content-2 {
-    background-color: #f5f5f5;
-    padding: 20px;
-    text-align: center;
-    flex-grow: 1;
-}
-
-.card-text-2 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
+.card button:hover {
+    opacity: 0.8;
 }
