@@ -11,7 +11,6 @@ form.addEventListener('submit', (e) => {
     e.preventDefault()
     const error = document.getElementById('error')
 
-    //Si las contrase;as conindicen se envian los datos
     if (password.value === confirm_password.value) {
 
         const name = name.value
@@ -36,9 +35,7 @@ form.addEventListener('submit', (e) => {
                 console.error("Error:", error);
             });
     } else {
-        //Si no, se muestra un mensaje de error
         error.classList.add('visible');
-        //El mensaje se quita despues de 5 segundos
         setTimeout(() => {
             error.classList.remove('visible');
         }, 5000);
