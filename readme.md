@@ -2,6 +2,12 @@
 
 # =====================================
 
+## Descripción del proyecto
+
+**El propósito de la realización de este software basado en un sistema es automatizar y optimizar la gestión y seguimiento de solicitudes de asesorías académicas por parte de los alumnos.**
+
+# =====================================
+
 ## Estructura del proyecto
 
     gestion_asesorias
@@ -23,6 +29,22 @@
         ├──package-lock.json
         ├──package.json
         └──server.js
+
+# =====================================
+
+## Dependencias del proyecto
+
+### backend
+
+- Node.js
+- Express
+- CORS
+- body-parser
+- mysql
+
+### frontend
+
+- De momento para el desarrollo no se requieren dependencias en el frontend
 
 # =====================================
 
@@ -52,17 +74,43 @@ npm -v
 
 Las dependencias necesarias están instaladas en las carpetas del proyecto, por lo que no es necesario instalarlas para cada equipo, únicamente las dependencias necesarias para poder correr el proyecto, node.js y npm en este caso.
 
-```js
+```bash
 
-frontend
+##frontend
 
-backend
+##backend
     npm install express mysql cors path
 
 ```
+
+# =====================================
+
+## Clonado del repositorio
+
+```bash
+
+#En la carpeta en la que se desea clonar el repositorio
+
+git init -y
+
+git clone https://github.com/GonzalezNavarroOscar/gestion_asesorias.git
+
+
+```
+
+## Integrantes del proyecto
+
+- **García Romero Angel**
+- **González Navarro Oscar Eduardo**
+- **Martínez Monge Saúl Guillermo**
+- **Pardo Rubalcaba Andrés**
 
 ## Logitipo del proyecto
 
 <p align="center">
   <img src="frontend\images\LOGO.png"/>
 </p>
+
+## Liga de documentación del proyecto
+
+[Click aquí para ir a la documentación](https://drive.google.com/drive/folders/1ip0icRrCbJlVMSa8Us8R77tdqRHDO6SA?hl=es-419)
