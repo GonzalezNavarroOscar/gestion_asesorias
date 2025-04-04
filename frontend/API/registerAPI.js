@@ -11,7 +11,6 @@ form.addEventListener('submit', (e) => {
     e.preventDefault()
     const error = document.getElementById('error')
 
-    //Si las contrase;as conindicen se envian los datos
     if (password.value === confirm_password.value) {
 
         const name = name.value
