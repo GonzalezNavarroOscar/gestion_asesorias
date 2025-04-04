@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/student_home.css">
     <title>Registrate en AsesoraTEC</title>
 </head>
 
@@ -12,20 +13,34 @@
     <nav class="navbar">
         <ul>
             <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
-            <!-- Tengo pensado que la campana y los mensajes cambien dependiendo
-             del estado (Si hay notificaciones o mensajes) por eso en las imagenes hay 2 tipos de cada una-->
             <div class="options">
-                <li id="message"><img src="images/Mensajes.png" class="messages"></li>
-                <!-- Les puse ids y stylos para luego cambiarlos con js dependiendo del estado-->
-                <li id="message_notification"><img src="images/Mensajes.png" class="messages" style="display: none;">
+                <li id="message">
+                    <button class="icon-btn">
+                        <img src="images/Mensajes.png" class="messages default-icon">
+                        <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
+                            style="display: none;">
+                    </button>
                 </li>
-                <li id="bell"><img src="images/Campana.png" class="notifications"></li>
-                <li id="bell_notificacion"><img src="images/Campana_Notificacion.png" class="notifications"
-                        style="display: none;"></li>
-                <li><img src="images/Menu.png" class="menu"></li>
+                <li id="bell">
+                    <button class="icon-btn">
+                        <img src="images/Campana.png" class="notifications default-icon">
+                        <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
+                            style="display: none;">
+                    </button>
+                </li>
+                <li>
+                    <button class="icon-btn">
+                        <img src="images/Menu.png" class="menu">
+                    </button>
+                </li>
             </div>
         </ul>
     </nav>
+
+    <div id="materias" class="container">
+
+    </div>
+    <script src="src/prueba.js"></script>
 </body>
 
 </html>
