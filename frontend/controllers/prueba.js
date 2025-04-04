@@ -4,7 +4,7 @@ datos = {
   image: "images/algebra_lineal.jpg"
 }
 
-for (let i = 0; i < 4;) {
+for (let i = 0; i < 10;) {
   materias.innerHTML += `
     <div class='card'>
       <div class='card-image'>
@@ -19,4 +19,3 @@ for (let i = 0; i < 4;) {
   `;
   i = i + 1
 }
-
