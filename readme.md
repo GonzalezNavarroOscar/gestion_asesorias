@@ -72,7 +72,7 @@ npm -v
 
 ## Instalación de dependencias
 
-Las dependencias necesarias están instaladas en las carpetas del proyecto, por lo que no es necesario instalarlas para cada equipo, únicamente las dependencias necesarias para poder correr el proyecto, node.js y npm en este caso.
+Las dependencias necesarias están instaladas en las carpetas del proyecto, únicamente las dependencias necesarias para poder correr el proyecto, node.js y npm en este caso.
 
 ```bash
 
