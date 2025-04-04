@@ -35,9 +35,7 @@ form.addEventListener('submit', (e) => {
                 console.error("Error:", error);
             });
     } else {
-        //Si no, se muestra un mensaje de error
         error.classList.add('visible');
-        //El mensaje se quita despues de 5 segundos
         setTimeout(() => {
             error.classList.remove('visible');
         }, 5000);
