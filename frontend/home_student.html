@@ -15,29 +15,54 @@
             <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
             <div class="options">
                 <li id="message">
-                    <button class="icon-btn">
+                    <button class="icon-btn" id="messages_btn">
                         <img src="images/Mensajes.png" class="messages default-icon">
                         <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
                             style="display: none;">
                     </button>
+                    <div class="messages_popup" style="display: none;">
+                        <div>
+                            <h1>Mensajes</h1>
+                        </div>
+                        <div class="messages_content">Aun no tienes mensajes.</div>
+                    </div>
                 </li>
                 <li id="bell">
-                    <button class="icon-btn">
+                    <button class="icon-btn" id="bell-btn">
                         <img src="images/Campana.png" class="notifications default-icon">
                         <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
                             style="display: none;">
                     </button>
+                    <div class="notificacion_popup" style="display: none;">
+                        <div>
+                            <h1>Notificaciones</h1>
+                        </div>
+                        <div class="notificacion_content">No tienes notificaciones.</div>
+                    </div>
                 </li>
-                <li>
-                    <button class="icon-btn">
-                        <img src="images/Menu.png" class="menu">
+                <li id="settigs">
+                    <button class="icon-btn" id="settigs_btn">
+                        <img src="images/Menu.png" class="menu default-icon">
+                        <img src="#" class="menu notification-icon" style="display: none;">
+                        <div class="settings_popup" style="display: none;">
+                            <div>
+                                <h1>Configuracion</h1>
+                            </div>
+                            <div class="settings_content"><button style="display: none;">Salir de la cuenta</button>
+                            </div>
+                        </div>
                     </button>
                 </li>
             </div>
         </ul>
     </nav>
     <div id="materias" class="container"></div>
-    <script src="src/prueba.js"></script>
+
+
+
+
+    <script src="controllers/buttons.js"></script>
+    <script src="controllers/prueba.js"></script>
 </body>
 
 </html>
