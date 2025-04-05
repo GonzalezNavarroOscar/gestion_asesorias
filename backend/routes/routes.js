@@ -80,4 +80,24 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Obtener todas las materias
+router.get('/materias', async (req, res) => {
+  try {
+      const materias = await queryAsync(
+          'SELECT id_materia, nombre, descripción, imagen FROM Materia'
+      );
+      
+      res.json({
+          success: true,
+          data: materias
+      });
+  } catch (error) {
+      console.error('Error al obtener materias:', error);
+      res.status(500).json({
+          success: false,
+          message: 'Error al obtener las materias'
+      });
+  }
+});
+
 module.exports = router;
