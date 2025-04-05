@@ -12,23 +12,24 @@
 
     gestion_asesorias
     ├──frontend     #HTML,CSS,JS
-    │   ├──API
-    │   │   └──conectarAPI.js
-    │   ├──CSS
-    │   │   ├──navbar.css
-    │   │   └──register.css
+    │   ├──controllers
+    │   │   └──CONTROLLER ARCHIVES
+    │   ├──css
+    │   │   └──CSS ARCHIVES
+    │   ├──js
+    │   │   └──JS API REQUEST ARCHIVES
     │   ├──images
-    │   ├──index.html
-    │   ├──navbar.html
-    │   └──register.html
-    └──backend      #Express,Node.js,MySQL,CORS, Path
+    │   │   └──IMAGES
+    │   └──pages
+    │       └──HTML PAGES
+    └──backend      #Express,Node.js,MySQL,CORS, Path, JWT
         ├──node_modules
         ├──routes
-        │   └──authRoutes.js
-        ├──db.js
+        │   └──routes.js #API Routes and Methods
+        ├──db.js #Database info
         ├──package-lock.json
         ├──package.json
-        └──server.js
+        └──server.js #Server Configuration
 
 # =====================================
 
@@ -41,6 +42,8 @@
 - CORS
 - body-parser
 - mysql
+- jwt-decode
+- jsonwebtoken
 
 ### frontend
 
@@ -79,7 +82,7 @@ Las dependencias necesarias están instaladas en las carpetas del proyecto, úni
 ##frontend
 
 ##backend
-    npm install express mysql cors path
+    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken
 
 ```
 
