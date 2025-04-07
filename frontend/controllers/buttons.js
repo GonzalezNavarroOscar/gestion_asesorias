@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
             emptyMessage: 'Aún no tienes mensajes.'
         },
         {
-            btnId: 'settigs_btn',
+            btnId: 'settings_btn',
             popupClass: 'settings_popup',
             contentClass: 'settings_content',
             defaultIconClass: 'default-icon',
             notificationIconClass: 'notification-icon',
-            emptyMessage: 'No hay configuracion.'
+            emptyMessage: ''
         }
     ];
 
