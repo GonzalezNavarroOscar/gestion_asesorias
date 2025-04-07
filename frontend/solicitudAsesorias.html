@@ -1,71 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/solicitudAsesorias.css">
+    <script src="controllers/buttons.js"></script>
+    <title>Solicita tu asesoría</title>
 </head>
 
-<nav class="navbar">
-    <ul>
-        <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
-        <div class="options">
-            <li id="message">
-                <button class="icon-btn">
-                    <img src="images/Mensajes.png" class="messages default-icon">
-                    <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
-                        style="display: none;">
-                </button>
-            </li>
-            <li id="bell">
-                <button class="icon-btn">
-                    <img src="images/Campana.png" class="notifications default-icon">
-                    <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
-                        style="display: none;">
-                </button>
-            </li>
-            <li>
-                <button class="icon-btn">
-                    <img src="images/Menu.png" class="menu">
-                </button>
-            </li>
-        </div>
-    </ul>
-</nav>
-
-<div class="container">
-    <div class="header">
-        <img src="images/Imagen_que_va_en_registro.png" class="header-img">
-        <h1>Cálculo Integral</h1>
-    </div>
-    
-    <div class="filters">
-        <button class="btn-filter">Filtrar</button>
-        <button class="btn-custom">Solicitud personalizada</button>
-    </div>
-    
-    <div class="content">
-        <h2>Temas</h2>
+<body>
+    <nav class="navbar">
         <ul>
-            <li>
-                <span>Integrales indefinidas</span>
-                <button class="btn-request">Solicitar</button>
-            </li>
-            <li>
-                <span>Integrales definidas</span>
-                <button class="btn-request">Solicitar</button>
-            </li>
-            <li>
-                <span>Integrales impropias</span>
-                <button class="btn-request">Solicitar</button>
-            </li>
-            <li>
-                <span>Aplicación de la integral</span>
-                <button class="btn-request">Solicitar</button>
-            </li>
-            <li>
-                <span>xd</span>
-                <button class="btn-request">Solicitar</button>
-            </li>
+            <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
+            <div class="options">
+                <li id="message">
+                    <button class="icon-btn" id="messages_btn">
+                        <img src="images/Mensajes.png" class="messages default-icon">
+                        <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
+                            style="display: none;">
+                    </button>
+                    <div class="messages_popup" style="display: none;">
+                        <div>
+                            <h1>Mensajes</h1>
+                        </div>
+                        <div class="messages_content">Aun no tienes mensajes.</div>
+                    </div>
+                </li>
+                <li id="bell">
+                    <button class="icon-btn" id="bell-btn">
+                        <img src="images/Campana.png" class="notifications default-icon">
+                        <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
+                            style="display: none;">
+                    </button>
+                    <div class="notificacion_popup" style="display: none;">
+                        <div>
+                            <h1>Notificaciones</h1>
+                        </div>
+                        <div class="notificacion_content">No tienes notificaciones.</div>
+                    </div>
+                </li>
+                <li id="settings">
+                    <button class="icon-btn" id="settings_btn">
+                        <img src="images/Menu.png" class="menu default-icon">
+                        <img src="#" class="menu notification-icon" style="display: none;">
+                    </button>
+                    <div class="settings_popup" style="display: none;">
+                        <div>
+                            <h1>Configuracion</h1>
+                            <div class="settings_content_btn">
+                                <button id="logout_btn">Salir de la cuenta</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </div>
         </ul>
-    </div>
-</div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <img src="images/Imagen_que_va_en_registro.png" class="header-img">
+            <h1>Cálculo Integral</h1>
+        </div>
+
+        <div class="filters">
+            <button class="btn-filter">Filtrar</button>
+            <button class="btn-custom">Solicitud personalizada</button>
+        </div>
+
+        <div class="content">
+            <h2>Temas</h2>
+            <ul>
+                <li>
+                    <span>Integrales indefinidas</span>
+                    <button class="btn-request">Solicitar</button>
+                </li>
+                <li>
+                    <span>Integrales definidas</span>
+                    <button class="btn-request">Solicitar</button>
+                </li>
+                <li>
+                    <span>Integrales impropias</span>
+                    <button class="btn-request">Solicitar</button>
+                </li>
+                <li>
+                    <span>Aplicación de la integral</span>
+                    <button class="btn-request">Solicitar</button>
+                </li>
+                <li>
+                    <span>xd</span>
+                    <button class="btn-request">Solicitar</button>
+                </li>
+            </ul>
+        </div>
+    </div>s
+</body>
+
+</html>

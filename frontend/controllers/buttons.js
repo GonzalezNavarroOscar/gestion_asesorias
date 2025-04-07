@@ -1,20 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     const popupConfig = [
         {
-            btnId: 'bell-btn',
-            popupClass: 'notificacion_popup',
-            contentClass: 'notificacion_content',
-            defaultIconClass: 'default-icon',
-            notificationIconClass: 'notification-icon',
-            emptyMessage: 'No tienes notificaciones.'
-        },
-        {
             btnId: 'messages_btn',
             popupClass: 'messages_popup',
             contentClass: 'messages_content',
             defaultIconClass: 'default-icon',
             notificationIconClass: 'notification-icon',
-            emptyMessage: 'Aún no tienes mensajes.'
+        },
+        {
+            btnId: 'bell-btn',
+            popupClass: 'notificacion_popup',
+            contentClass: 'notificacion_content',
+            defaultIconClass: 'default-icon',
+            notificationIconClass: 'notification-icon',
         },
         {
             btnId: 'settings_btn',
@@ -22,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
             contentClass: 'settings_content',
             defaultIconClass: 'default-icon',
             notificationIconClass: 'notification-icon',
-            emptyMessage: ''
         }
     ];
 
@@ -33,53 +30,48 @@ document.addEventListener('DOMContentLoaded', function () {
         const popup = btn.parentElement.querySelector(`.${config.popupClass}`);
         const defaultIcon = btn.querySelector(`.${config.defaultIconClass}`);
         const notificationIcon = btn.querySelector(`.${config.notificationIconClass}`);
-        const content = popup.querySelector(`.${config.contentClass}`);
-
-        let hasNotifications = false;
-        let popupVisible = false;
 
         allPopups.push({
             popup,
             btn,
-            togglePopup: () => {
+            isVisible: false,
+            togglePopup: function () {
+                if (this.isVisible) {
+                    this.popup.style.display = 'none';
+                    this.isVisible = false;
+                    return;
+                }
+
                 allPopups.forEach(p => {
                     p.popup.style.display = 'none';
-                    p.popupVisible = false;
+                    p.isVisible = false;
                 });
 
-                popupVisible = true;
-                popup.style.display = 'flex';
+                this.popup.style.display = 'flex';
+                this.isVisible = true;
 
-                if (popupVisible && hasNotifications) {
-                    hasNotifications = false;
+                if (notificationIcon) {
                     notificationIcon.style.display = 'none';
-                    defaultIcon.style.display = 'block';
                 }
             }
         });
 
-        const updateIcons = () => {
-            notificationIcon.style.display = hasNotifications ? 'block' : 'none';
-            defaultIcon.style.display = hasNotifications ? 'none' : 'block';
-        };
-
         btn.addEventListener('click', function (e) {
             e.stopPropagation();
-            allPopups.find(p => p.btn === btn).togglePopup();
+            const popupObj = allPopups.find(p => p.btn === btn);
+            popupObj.togglePopup();
         });
 
         popup.addEventListener('click', function (e) {
             e.stopPropagation();
         });
-
-        updateIcons();
-        content.textContent = config.emptyMessage;
     });
 
     document.addEventListener('click', function () {
         allPopups.forEach(p => {
             p.popup.style.display = 'none';
-            p.popupVisible = false;
+            p.isVisible = false;
         });
     });
+
 });
