@@ -6,59 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/home_adviser.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <script src="controllers/buttons.js"></script>
+    <script src="controllers/navbar.js"></script>
     <title>Bienvenido</title>
 </head>
 
 <body>
-    <nav class="navbar">
-        <ul>
-            <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
-            <div class="options">
-                <li id="message">
-                    <button class="icon-btn" id="messages_btn">
-                        <img src="images/Mensajes.png" class="messages default-icon">
-                        <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
-                            style="display: none;">
-                    </button>
-                    <div class="messages_popup" style="display: none;">
-                        <div>
-                            <h1>Mensajes</h1>
-                        </div>
-                        <div class="messages_content">Aun no tienes mensajes.</div>
-                    </div>
-                </li>
-                <li id="bell">
-                    <button class="icon-btn" id="bell-btn">
-                        <img src="images/Campana.png" class="notifications default-icon">
-                        <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
-                            style="display: none;">
-                    </button>
-                    <div class="notificacion_popup" style="display: none;">
-                        <div>
-                            <h1>Notificaciones</h1>
-                        </div>
-                        <div class="notificacion_content">No tienes notificaciones.</div>
-                    </div>
-                </li>
-                <li id="settings">
-                    <button class="icon-btn" id="settings_btn">
-                        <img src="images/Menu.png" class="menu default-icon">
-                        <img src="#" class="menu notification-icon" style="display: none;">
-                    </button>
-                    <div class="settings_popup" style="display: none;">
-                        <div>
-                            <h1>Configuracion</h1>
-                            <div class="settings_content_btn">
-                                <button id="logout_btn">Salir de la cuenta</button>
-                            </div>
-                        </div>
-                        <div class="settings_content">No hay Configuracion.</div>
-                    </div>
-                </li>
-            </div>
-        </ul>
-    </nav>
+    <main-navbar></main-navbar>
 
 
     <div class="container">
@@ -87,6 +40,8 @@
             </section>
         </main>
     </div>
+
+    <script src="controllers/buttons.js"></script>
 </body>
 
 </html>

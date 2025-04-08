@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/navbar.css">
-    <title>Registrate en AsesoraTEC</title>
-</head>
-
-<body>
+class Navbar extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
     <nav class="navbar">
         <ul>
             <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
@@ -56,7 +48,8 @@
             </div>
         </ul>
     </nav>
-    <script src="controllers/buttons.js"></script>
-</body>
+    `;
+    }
+}
 
-</html>
+customElements.define('main-navbar', Navbar);
