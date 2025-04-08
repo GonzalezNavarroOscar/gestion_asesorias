@@ -62,12 +62,12 @@ h2 {
     margin-bottom: 15px;
 }
 
-ul {
+.content ul {
     list-style: none;
     padding: 0;
 }
 
-li {
+.content li {
     display: flex;
     justify-content: space-between;
     align-items: center;
