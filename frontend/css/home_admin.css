@@ -1,38 +1,8 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-  }
-  
-  .navbar {
-    background-color: #00b0f0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    color: white;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo img {
-    width: 24px;
-    margin-right: 8px;
-  }
-  
-  .menu-icon img {
-    width: 24px;
-    cursor: pointer;
-  }
-  
   .container {
     text-align: center;
     padding: 20px;
   }
-  
+
   .card {
     background-color: white;
     border-radius: 10px;
@@ -40,16 +10,16 @@ body {
     margin-bottom: 30px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
-  
+
   .card-img {
     width: 80px;
   }
-  
+
   .card h2 {
     margin-top: 10px;
     font-size: 22px;
   }
-  
+
   .buttons button {
     background-color: #00b0f0;
     border: none;
@@ -63,8 +33,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  
+
   .buttons button:hover {
     background-color: #0094cc;
   }
-  
