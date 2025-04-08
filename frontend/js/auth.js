@@ -48,7 +48,7 @@ function createErrorElement() {
 function redirectByRole(rol) {
     const roleMappings = {
         'administrador': '/frontend/home_admin.html',
-        'asesor': '/frontend/home_advisor.html',
+        'asesor': '/frontend/home_adviser.html',
         'alumno': '/frontend/home_student.html'
     };
     
