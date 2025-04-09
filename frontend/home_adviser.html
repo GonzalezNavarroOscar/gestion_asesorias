@@ -14,30 +14,49 @@
     <main-navbar></main-navbar>
 
     <div class="container">
-        <main>
-            <h1>Solicitudes</h1>
-            <button class="specialties">Cambiar horario</button> <button class="specialties">Cambiar
-                especialidad</button>
-            <section class="requests">
+        <h1>Solicitudes</h1>
+        <div class="requests">
 
-                <h2>Solicitudes de asesorías pendientes</h2>
-                <div class="request">
-                    <span>Carlitos (Matemáticas)</span>
+            <div class="request">
+                <div class="request_img">
+                    <img src="images/algebra_lineal.jpg">
+                </div>
+                <div class="request_content">
+                    <div class="state_no_acepted">
+                        <h4>Pediente</h4>
+                    </div>
+                    <h3>Carlos Felipe</h3>
+                    <h4>Materia: Algebra lineal</h4>
+                    <h4>Tema: Vectores</h4>
+                    <h4>Fecha: 4/8/2025</h4>
+                </div>
+                <div class="request_btn">
+                    <button class="accept">Aceptar</button>
+                    <button class="message_btn"><img src="images/Mensaje_Card.png"></button>
+
+                </div>
+            </div>
+
+            <div class="request">
+                <div class="request_img">
+                    <img src="images/algebra_lineal.jpg">
+                </div>
+                <div class="request_content">
+                    <div class="state_complete">
+                        <h4>Aceptado</h4>
+                    </div>
+                    <h3>Carlos Felipe</h3>
+                    <h4>Materia: Algebra lineal</h4>
+                    <h4>Tema: Vectores</h4>
+                    <h4>Fecha: 4/8/2025</h4>
+                </div>
+                <div class="request_btn">
                     <button class="complete">Completar</button>
+                    <button class="message_btn"><img src="images/Mensaje_Card.png"></button>
                 </div>
+            </div>
 
-                <div class="request">
-                    <span>Angel Garo (Matemáticas)</span>
-                    <button class="accept">Aceptar</button>
-                </div>
-
-                <div class="request">
-                    <span>Andres Pardo (Matemáticas)</span>
-                    <button class="accept">Aceptar</button>
-                </div>
-
-            </section>
-        </main>
+        </div>
     </div>
 
     <script src="controllers/buttons.js"></script>
