@@ -31,7 +31,7 @@ function mostrarMaterias(materias) {
             <div class="card-content">
                 <div class="card-text">${materia.nombre}</div>
                 <div class="card-description">${materia.descripción}</div>
-                <button>Ver más</button>
+                <button onclick="location.href='advice_request.html?materia=${encodeURIComponent(materia.nombre)}'">Ver más</button>
             </div>
         `;
 

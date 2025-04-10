@@ -1,40 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
-    cargarMaterias();
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombreMateria = urlParams.get('materia');
+
+    if (nombreMateria) {
+        const nombreDecodificado = decodeURIComponent(nombreMateria);
+        document.getElementById('nombreMateria').textContent = nombreDecodificado;
+        
+        cargarTemas(nombreDecodificado);
+    } else {
+        mostrarError("No se especificó una materia.");
+    }
 });
 
-async function cargarMaterias() {
+async function cargarTemas(nombreMateria) {
+    const listaTemas = document.getElementById('listaTemas');
+    listaTemas.innerHTML = '<li>Cargando temas...</li>';
+
     try {
-        const response = await fetch('http://localhost:3000/api/materias');
-        const data = await response.json();
+        const apiUrl = new URL('http://localhost:3000/api/temas');
+        apiUrl.searchParams.append('materia', nombreMateria);
+
+        const response = await fetch(apiUrl);
         
-        if (data.success) {
-            mostrarMaterias(data.data);
-        } else {
-            console.error('Error al cargar materias:', data.message);
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
         }
+
+        const { success, data, message } = await response.json();
+
+        if (!success) {
+            throw new Error(message || 'Respuesta no exitosa del servidor');
+        }
+
+        mostrarTemas(data);
+
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al cargar temas:', error);
+        mostrarError(error.message);
     }
 }
 
-function mostrarMaterias(materias) {
-    const contenedor = document.getElementById('materias');
+function mostrarTemas(temas) {
+    const listaTemas = document.getElementById('listaTemas');
+    listaTemas.innerHTML = '';
 
-    materias.forEach(materia => {
-        const materiaCard = document.createElement('div');
-        materiaCard.className = 'card';
+    if (temas.length === 0) {
+        listaTemas.innerHTML = '<li class="empty">No hay temas disponibles.</li>';
+        return;
+    }
 
-        materiaCard.innerHTML = `
-            <div class="card-image">
-                <img src="${materia.imagen}" alt="${materia.nombre}">
-            </div>
-            <div class="card-content">
-                <div class="card-text">${materia.nombre}</div>
-                <div class="card-description">${materia.descripción}</div>
-                <button>Ver más</button>
-            </div>
+    temas.forEach(tema => {
+        const item = document.createElement('li');
+        item.innerHTML = `
+            <span>${tema.nombre}</span>
+            <button class="btn-request">Solicitar</button>
         `;
-
-        contenedor.appendChild(materiaCard);
+        listaTemas.appendChild(item);
     });
+}
+
+function mostrarError(mensaje) {
+    const listaTemas = document.getElementById('listaTemas');
+    listaTemas.innerHTML = `<li class="error">${mensaje}</li>`;
 }

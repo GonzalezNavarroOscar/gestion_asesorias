@@ -100,23 +100,42 @@ router.get('/materias', async (req, res) => {
   }
 });
 
+//Obtener temas de una materia específica
 router.get('/temas', async (req, res) => {
     try {
-        const materias = await queryAsync(
-            'SELECT T.id_tema, T.id_materia,T.nombre, T.descripción, T.popularidad FROM Tema AS T JOIN Materia AS M ON T.id_materia = M.id_materia WHERE M.nombre = ?'
-        );
+        const nombreMateria = req.query.materia;
         
+        if (!nombreMateria) {
+            return res.status(400).json({
+                success: false,
+                message: 'El parámetro "materia" es requerido'
+            });
+        }
+
+        const nombreDecodificado = decodeURIComponent(nombreMateria);
+
+        const temas = await queryAsync(
+            `SELECT T.id_tema, T.id_materia, T.nombre, T.descripción, T.popularidad
+             FROM Tema AS T
+             JOIN Materia AS M ON T.id_materia = M.id_materia
+             WHERE M.nombre = ?`,
+            [nombreDecodificado]
+        );
+
         res.json({
             success: true,
-            data: materias
+            data: temas,
+            count: temas.length
         });
+
     } catch (error) {
-        console.error('Error al obtener temas:', error);
+        console.error('Error en GET /temas:', error);
         res.status(500).json({
             success: false,
-            message: 'Error al obtener las temas'
+            message: 'Error al consultar temas',
+            error: error.message
         });
     }
-  });
+});
 
 module.exports = router;
