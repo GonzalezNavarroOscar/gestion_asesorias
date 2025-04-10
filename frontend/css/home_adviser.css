@@ -2,7 +2,8 @@ body {
     background-color: #eaeef6;
 }
 
-.container {
+.container_top {
+    display: flex;
     max-width: 1360px;
     width: 90%;
     margin: 40px auto;
@@ -11,9 +12,54 @@ body {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    justify-content: start;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.container_img {
+    align-self: center;
+    height: 100px;
+    width: 100px;
+}
+
+.schedule_specialities {
+
+    margin-left: auto;
+}
+
+.schedule_specialities button {
+    text-align: center;
+    width: 90%;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.container {
+    max-width: 1360px;
+    width: 90%;
+    margin: 40px auto 60px auto;
+    padding-left: 50px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.container_title {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
 }
 
 .requests {
+    padding-top: 50px;
     display: flex;
     gap: 20px;
 }
