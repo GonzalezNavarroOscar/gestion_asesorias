@@ -100,4 +100,23 @@ router.get('/materias', async (req, res) => {
   }
 });
 
+router.get('/temas', async (req, res) => {
+    try {
+        const materias = await queryAsync(
+            'SELECT T.id_tema, T.id_materia,T.nombre, T.descripción, T.popularidad FROM Tema AS T JOIN Materia AS M ON T.id_materia = M.id_materia WHERE M.nombre = ?'
+        );
+        
+        res.json({
+            success: true,
+            data: materias
+        });
+    } catch (error) {
+        console.error('Error al obtener temas:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las temas'
+        });
+    }
+  });
+
 module.exports = router;
