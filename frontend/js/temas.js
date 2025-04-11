@@ -1,11 +1,12 @@
-document.addEventListener('DOMContentLoaded', function() {
+let todosLosTemas = [];
+document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const nombreMateria = urlParams.get('materia');
 
     if (nombreMateria) {
         const nombreDecodificado = decodeURIComponent(nombreMateria);
         document.getElementById('nombreMateria').textContent = nombreDecodificado;
-        
+
         cargarTemas(nombreDecodificado);
     } else {
         mostrarError("No se especificó una materia.");
@@ -21,7 +22,7 @@ async function cargarTemas(nombreMateria) {
         apiUrl.searchParams.append('materia', nombreMateria);
 
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
@@ -32,6 +33,7 @@ async function cargarTemas(nombreMateria) {
             throw new Error(message || 'Respuesta no exitosa del servidor');
         }
 
+        todosLosTemas = data;
         mostrarTemas(data);
 
     } catch (error) {
@@ -43,7 +45,6 @@ async function cargarTemas(nombreMateria) {
 function mostrarTemas(temas) {
     const listaTemas = document.getElementById('listaTemas');
     listaTemas.innerHTML = '';
-
     if (temas.length === 0) {
         listaTemas.innerHTML = '<li class="empty">No hay temas disponibles.</li>';
         return;
@@ -63,3 +64,29 @@ function mostrarError(mensaje) {
     const listaTemas = document.getElementById('listaTemas');
     listaTemas.innerHTML = `<li class="error">${mensaje}</li>`;
 }
+
+const opcion = () => {
+    const select = filter.selectedIndex
+    switch (select) {
+        case 1:
+            todosLosTemas.sort((a, b) => b.popularidad - a.popularidad);
+            break
+        case 2:
+            todosLosTemas.sort((a, b) => a.popularidad - b.popularidad);
+            break
+        case 3:
+            todosLosTemas.sort((a, b) => {
+                return a.nombre.localeCompare(b.nombre);
+            })
+            break
+        case 4:
+            todosLosTemas.sort((a, b) => {
+                return b.nombre.localeCompare(a.nombre);
+            })
+            break
+    }
+    mostrarTemas(todosLosTemas)
+}
+
+const filter = document.getElementById('filter')
+filter.addEventListener('change', opcion)

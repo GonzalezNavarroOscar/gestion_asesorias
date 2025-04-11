@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,26 @@
     <link rel="stylesheet" href="css/advice_request.css">
     <title>Solicita tu asesoría</title>
 </head>
+
 <body>
     <main-navbar></main-navbar>
-
+    <div class="container_top">
+        <img class="container_img" src="images/Imagen_que_va_en_registro.png">
+        <h1 class="container_title" id="nombreMateria">Cargando materia...</h1>
+        <div class="personalized_request">
+            <button>Crear una solicitud personalizada</button>
+        </div>
+    </div>
+    <div class="container_filter">
+        <select id="filter" name="filter" class="filter">
+            <option value="opcion0" selected disabled>Filtrar resultados</option>
+            <option value="opcion1">Mas populares</option>
+            <option value="opcion2">Menos populares</option>
+            <option value="opcion3">A-Z</option>
+            <option value="opcion4">Z-A</option>
+        </select>
+    </div>
     <div class="container">
-        <div class="header">
-            <img src="images/Imagen_que_va_en_registro.png" class="header-img">
-            <h1 id="nombreMateria">Cargando materia...</h1>
-        </div>
-
-        <div class="filters">
-            <button class="btn-filter">Filtrar</button>
-            <button class="btn-custom">Solicitud personalizada</button>
-        </div>
-
         <div class="content">
             <h2>Temas</h2>
             <ul id="listaTemas">
@@ -29,7 +36,8 @@
     </div>
 
     <script src="controllers/navbar.js"></script>
-    <script src="js/temas.js"></script> 
+    <script src="js/temas.js"></script>
     <script src="controllers/buttons.js"></script>
 </body>
+
 </html>

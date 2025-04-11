@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
+let todasLasMaterias = []
+document.addEventListener('DOMContentLoaded', function () {
     cargarMaterias();
 });
 
@@ -6,7 +7,7 @@ async function cargarMaterias() {
     try {
         const response = await fetch('http://localhost:3000/api/materias');
         const data = await response.json();
-        
+        todasLasMaterias = data.data
         if (data.success) {
             mostrarMaterias(data.data);
         } else {
@@ -19,9 +20,11 @@ async function cargarMaterias() {
 
 function mostrarMaterias(materias) {
     const contenedor = document.getElementById('materias');
+    contenedor.innerHTML = ''
 
     materias.forEach(materia => {
         const materiaCard = document.createElement('div');
+
         materiaCard.className = 'card';
 
         materiaCard.innerHTML = `
@@ -38,3 +41,29 @@ function mostrarMaterias(materias) {
         contenedor.appendChild(materiaCard);
     });
 }
+
+const opcion = () => {
+    const select = filter.selectedIndex
+    switch (select) {
+        case 1:
+            todasLasMaterias.sort((a, b) => b.popularidad - a.popularidad);
+            break
+        case 2:
+            todasLasMaterias.sort((a, b) => a.popularidad - b.popularidad);
+            break
+        case 3:
+            todasLasMaterias.sort((a, b) => {
+                return a.nombre.localeCompare(b.nombre);
+            })
+            break
+        case 4:
+            todasLasMaterias.sort((a, b) => {
+                return b.nombre.localeCompare(a.nombre);
+            })
+            break
+    }
+    mostrarMaterias(todasLasMaterias)
+}
+
+const filter = document.getElementById('filter')
+filter.addEventListener('change', opcion)
