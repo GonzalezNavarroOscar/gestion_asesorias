@@ -29,15 +29,14 @@ function mostrarMaterias(materias) {
 
         materiaCard.innerHTML = `
             <div class="card-image">
-                <img src="${materia.imagen}" alt="${materia.nombre}">
+                <img src="../${materia.imagen}" alt="${materia.nombre}">
             </div>
             <div class="card-content">
                 <div class="card-text">${materia.nombre}</div>
                 <div class="card-description">${materia.descripción}</div>
-                <button onclick="location.href='advice_request.html?materia=${encodeURIComponent(materia.nombre)}'">Ver más</button>
+                <button onclick="location.href='advice_list.html?materia=${encodeURIComponent(materia.nombre)}'">Ver más</button>
             </div>
         `;
-
         contenedor.appendChild(materiaCard);
     });
 }

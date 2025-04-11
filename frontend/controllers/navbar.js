@@ -3,12 +3,12 @@ class Navbar extends HTMLElement {
         this.innerHTML = `
     <nav class="navbar">
         <ul>
-            <li><img src="images/LOGO_sin_fondo.png" class="logo"></li>
+            <li><img src="../images/LOGO_sin_fondo.png" class="logo"></li>
             <div class="options">
                 <li id="message">
                     <button class="icon-btn" id="messages_btn">
-                        <img src="images/Mensajes.png" class="messages default-icon">
-                        <img src="images/Mensajes_Notificacion.png" class="messages notification-icon"
+                        <img src="../images/Mensajes.png" class="messages default-icon">
+                        <img src="../images/Mensajes_Notificacion.png" class="messages notification-icon"
                             style="display: none;">
                     </button>
                     <div class="messages_popup" style="display: none;">
@@ -20,8 +20,8 @@ class Navbar extends HTMLElement {
                 </li>
                 <li id="bell">
                     <button class="icon-btn" id="bell-btn">
-                        <img src="images/Campana.png" class="notifications default-icon">
-                        <img src="images/Campana_Notificacion.png" class="notifications notification-icon"
+                        <img src="../images/Campana.png" class="notifications default-icon">
+                        <img src="../images/Campana_Notificacion.png" class="notifications notification-icon"
                             style="display: none;">
                     </button>
                     <div class="notificacion_popup" style="display: none;">
@@ -33,7 +33,7 @@ class Navbar extends HTMLElement {
                 </li>
                 <li id="settings">
                     <button class="icon-btn" id="settings_btn">
-                        <img src="images/Menu.png" class="menu default-icon">
+                        <img src="../images/Menu.png" class="menu default-icon">
                         <img src="#" class="menu notification-icon" style="display: none;">
                     </button>
                     <div class="settings_popup" style="display: none;">

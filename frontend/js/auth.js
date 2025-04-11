@@ -47,9 +47,9 @@ function createErrorElement() {
 // Redirección por rol
 function redirectByRole(rol) {
     const roleMappings = {
-        'administrador': '/frontend/home_admin.html',
-        'asesor': '/frontend/home_adviser.html',
-        'alumno': '/frontend/home_student.html'
+        'administrador': '/frontend/pages/home_admin.html',
+        'asesor': '/frontend/pages/home_adviser.html',
+        'alumno': '/frontend/pages/home_student.html'
     };
     
     const targetPage = roleMappings[rol.toLowerCase()] || '/frontend/index.html';
