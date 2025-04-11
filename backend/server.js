@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const jwt = require('jsonwebtoken');
 
 const corsOptions = {
     origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000'],

@@ -82,7 +82,7 @@ Las dependencias necesarias están instaladas en las carpetas del proyecto, úni
 ##frontend
 
 ##backend
-    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken
+    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser
 
 ```
 
