@@ -1,39 +1,163 @@
-  .container {
-    text-align: center;
-    padding: 20px;
-  }
+.container_top {
+  display: flex;
+  max-width: 1360px;
+  width: 90%;
+  margin: 40px auto;
+  padding-left: 50px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
 
-  .card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+.container_img {
+  align-self: center;
+  height: 100px;
+  width: 100px;
+}
 
-  .card-img {
-    width: 80px;
-  }
+.schedule_specialities {
 
-  .card h2 {
-    margin-top: 10px;
-    font-size: 22px;
-  }
+  margin-left: auto;
+}
 
-  .buttons button {
-    background-color: #00b0f0;
-    border: none;
-    color: white;
-    padding: 15px 20px;
-    margin: 10px 0;
-    width: 80%;
-    max-width: 300px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+.schedule_specialities button {
+  text-align: center;
+  width: 90%;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .buttons button:hover {
-    background-color: #0094cc;
-  }
+.container_graphs {
+  max-width: 1360px;
+  width: 90%;
+  margin: 40px auto 60px auto;
+  padding-left: 50px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.graph img {
+  height: 400px;
+}
+
+.graph_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container_data {
+  max-width: 1360px;
+  width: 90%;
+  margin: 40px auto 60px auto;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.data {
+  margin: 20px;
+  background: rgb(245, 244, 244);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+}
+
+.data_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.data_content h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.data_content h2 {
+  margin: 5px 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+}
+
+.data_content p {
+  margin: 0;
+  color: green;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.icon-box {
+  background-color: #b4b4ba;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box img {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.container {
+  max-width: 1360px;
+  width: 90%;
+  margin: 40px auto 60px auto;
+  padding-left: 50px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.buttons {
+  gap: 20px;
+  margin: 40px;
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  text-align: center;
+  width: 60%;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
