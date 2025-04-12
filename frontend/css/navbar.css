@@ -99,16 +99,63 @@ body {
 }
 
 .notificacion {
-    width: 90%;
-    height: 100%;
-    color: black;
-    padding: 10px;
-    background-color: #dcdbdb;
-    border-radius: 15px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 5px;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 16px;
+    margin-bottom: 12px;
+    gap: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.notificacion:hover {
+    background-color: #007bff;
+}
+
+.noti-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.noti-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.noti-mensaje {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.noti-fecha {
+    font-size: 14px;
+    color: #333;
+}
+
+.delete_noti_btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    transition: transform 0.2s ease;
+}
+
+.delete_noti_btn:hover {
+    transform: scale(1.1);
+}
+
+.delete_noti_btn img {
+    width: 24px;
+    height: 24px;
 }
 
 .notificacion button {

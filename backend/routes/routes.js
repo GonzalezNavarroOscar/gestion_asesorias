@@ -138,4 +138,18 @@ router.get('/temas', async (req, res) => {
     }
 });
 
+// Obtener notificaciones por ID de usuario
+router.get('/notificaciones/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+
+    const query = 'SELECT * FROM Notificacion WHERE id_usuario = ? ORDER BY fecha_envio DESC';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener notificaciones:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;

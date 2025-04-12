@@ -39,19 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (this.isVisible) {
                     this.popup.style.display = 'none';
                     this.isVisible = false;
-                    return;
-                }
-
-                allPopups.forEach(p => {
-                    p.popup.style.display = 'none';
-                    p.isVisible = false;
-                });
-
-                this.popup.style.display = 'flex';
-                this.isVisible = true;
-
-                if (notificationIcon) {
-                    notificationIcon.style.display = 'none';
+                } else {
+                    allPopups.forEach(p => {
+                        p.popup.style.display = 'none';
+                        p.isVisible = false;
+                    });
+                    this.popup.style.display = 'flex';
+                    this.isVisible = true;
                 }
             }
         });
@@ -67,6 +61,44 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Obtener notificaciones del usuario
+    async function hasNotifications() {
+        const id_usuario = localStorage.getItem('id_usuario');
+        if (!id_usuario) {
+            console.warn('ID de usuario no encontrado en localStorage');
+            return false;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/notificaciones/${id_usuario}`);
+            const data = await response.json();
+
+            return data.some(notificacion => notificacion.leida === 0);
+        } catch (error) {
+            console.error('Error al verificar notificaciones:', error);
+            return false;
+        }
+    }
+
+    // Mostrar ícono de notificación si hay no leídas
+    async function updateNotificationIcon() {
+        const bellButton = document.getElementById('bell-btn');
+        const defaultIcon = bellButton.querySelector('.default-icon');
+        const notificationIcon = bellButton.querySelector('.notification-icon');
+
+        const noti = await hasNotifications();
+
+        if (noti) {
+            if (notificationIcon) notificationIcon.style.display = 'block';
+            if (defaultIcon) defaultIcon.style.display = 'none';
+        } else {
+            if (notificationIcon) notificationIcon.style.display = 'none';
+            if (defaultIcon) defaultIcon.style.display = 'block';
+        }
+    }
+
+    updateNotificationIcon();
+
     document.addEventListener('click', function () {
         allPopups.forEach(p => {
             p.popup.style.display = 'none';
@@ -74,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.getElementById('logout_btn').addEventListener('click',function () {
+    document.getElementById('logout_btn').addEventListener('click', function () {
         localStorage.clear();
         window.location.href = '../index.html';
-    }); 
+    });
 });

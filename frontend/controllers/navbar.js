@@ -49,7 +49,16 @@ class Navbar extends HTMLElement {
         </ul>
     </nav>
     `;
+
+        const script = document.createElement('script');
+        script.src = '../js/notification.js';
+        document.body.appendChild(script);
+
+        const checkNotificationScript = document.createElement('script');
+        checkNotificationScript.src = '../js/notification_check.js';
+        document.body.appendChild(checkNotificationScript);
     }
+    
 }
 
 customElements.define('main-navbar', Navbar);
