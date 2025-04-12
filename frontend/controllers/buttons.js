@@ -76,6 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('logout_btn').addEventListener('click',function () {
         localStorage.clear();
-        window.location.href = './index.html';
+        window.location.href = '../index.html';
     }); 
 });
