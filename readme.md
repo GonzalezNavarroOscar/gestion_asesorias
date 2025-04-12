@@ -51,7 +51,7 @@
 
 # =====================================
 
-## Instalación de Node.js
+## Instalación de Node.js y NPM
 
 ### Paso 1: Descargar instalador de Node.js
 
@@ -73,6 +73,21 @@ npm -v
 
 # =====================================
 
+## Clonado del repositorio
+
+```bash
+
+#En la carpeta en la que se desea clonar el repositorio
+
+git init -y
+
+git clone https://github.com/GonzalezNavarroOscar/gestion_asesorias.git
+
+
+```
+
+# =====================================
+
 ## Instalación de dependencias
 
 Las dependencias necesarias están instaladas en las carpetas del proyecto, únicamente las dependencias necesarias para poder correr el proyecto, node.js y npm en este caso.
@@ -88,18 +103,21 @@ Las dependencias necesarias están instaladas en las carpetas del proyecto, úni
 
 # =====================================
 
-## Clonado del repositorio
+## Inicialización del proyecto
+
+El proyecto cuenta con un archivo encargado de lanzar el servidor de forma local, que se conecta a la bd en RDS. Para ello, en consola realizar lo siguiente:
 
 ```bash
 
-#En la carpeta en la que se desea clonar el repositorio
+#En la carpeta del proyecto
 
-git init -y
+cd backend
 
-git clone https://github.com/GonzalezNavarroOscar/gestion_asesorias.git
-
+node server.js
 
 ```
+
+# =====================================
 
 ## Integrantes del proyecto
 
@@ -108,11 +126,15 @@ git clone https://github.com/GonzalezNavarroOscar/gestion_asesorias.git
 - **Martínez Monge Saúl Guillermo**
 - **Pardo Rubalcaba Andrés**
 
+# =====================================
+
 ## Logitipo del proyecto
 
 <p align="center">
   <img src="frontend\images\LOGO.png"/>
 </p>
+
+# =====================================
 
 ## Liga de documentación del proyecto
 
