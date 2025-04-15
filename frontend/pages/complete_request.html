@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
+    <title>Completar asesoria</title>
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/complete_request.css">
+    <script src="../controllers/navbar.js"></script>
+</head>
+
+<body>
+    <main-navbar></main-navbar>
+
+    <div class="container_top">
+        <img class="container_img" src="../images/Imagen_que_va_en_registro.png">
+        <h1 class="container_title">Completar solicitud</h1>
+    </div>
+
+    <div class="container">
+        <div class="container_form">
+            <form action="">
+                <label for="name" id="title">Reporte de la asesoria:</label>
+                <input type="text" placeholder="Nombre" id="name" required>
+                <input type="text" placeholder="Descripcion" id="description" required>
+                <label for="initial_hour">Fecha en la que comenzo la asesoria:</label>
+                <input type="date" placeholder="fecha" id="date" required>
+                <label for="initial_hour">Hora en la que comenzo la asesoria:</label>
+                <input type="time" id="initial_hour" required>
+                <label for="finish_hour">Hora en la que termino la asesoria:</label>
+                <input type="time" id="finish_hour" required>
+                <label for="finish_hour">Dominio del tema que demostro el alumno:</label>
+                <input type="time" id="percentaje" required>
+                <button type="submit">Terminar reporte</button>
+            </form>
+        </div>
+        <div class="container_form_img">
+            <img src="../images/foto_de_asesoria.jpg" alt="">
+        </div>
+    </div>
+
+    <script src="../controllers/buttons.js"></script>
+</body>
+
+</html>

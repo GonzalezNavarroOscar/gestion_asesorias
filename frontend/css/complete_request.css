@@ -1,0 +1,135 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+.container_top {
+    display: flex;
+    max-width: 1360px;
+    width: 90%;
+    margin: 40px auto;
+    padding-left: 50px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    justify-content: start;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.container_img {
+    align-self: center;
+    height: 100px;
+    width: 100px;
+}
+
+.container {
+    max-width: 1360px;
+    width: 90%;
+    margin: 40px auto 60px auto;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_form {
+    margin: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+
+form {
+    display: grid;
+    gap: 15px;
+    width: 100%;
+}
+
+form select {
+    width: 83%;
+}
+
+form input,
+select {
+    height: 40px;
+    width: 80%;
+    background-color: #F8F8F8;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+form input::placeholder {
+    color: #999;
+    font-weight: normal;
+}
+
+form button {
+    background: #007bff;
+    width: 83%;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    position: relative;
+    height: 40px;
+    padding: 0 2em;
+    cursor: pointer;
+    transition: 800ms ease all;
+    outline: none;
+    border-radius: 20px;
+}
+
+#title {
+    font-size: 25px;
+}
+
+form label {
+    font-weight: bold;
+    font-size: 14px;
+    padding-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .container_form_img {
+        display: none;
+    }
+
+    .container_top {
+        display: flex;
+        max-width: auto;
+        width: 95%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        justify-content: start;
+        flex-direction: row;
+    }
+
+    .container {
+        width: 95%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+}
