@@ -108,18 +108,22 @@ h2 {
 
 .content li {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    height: 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin-bottom: 20px;
+    justify-content: space-evenly;
     align-items: center;
-    padding: 10px 15px;
-    border-bottom: 1px solid #ddd;
-    font-size: 18px;
 }
 
 .btn-request {
     background: #0099ff;
     border: none;
     padding: 8px 15px;
-    border-radius: 5px;
+    border-radius: 15px;
     color: white;
     cursor: pointer;
     font-size: 16px;
@@ -127,4 +131,68 @@ h2 {
 
 .btn-request:hover {
     background: #007acc;
+}
+
+@media (max-width: 768px) {
+    .filter {
+        width: 45%;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .container_top {
+        display: flex;
+        max-width: auto;
+        width: 95%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        justify-content: start;
+        flex-direction: row;
+    }
+
+    .container_img {
+        display: none;
+    }
+
+    .container {
+        max-width: auto;
+        width: 95%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+    }
+
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .content {
+        text-align: center;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .content ul {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .content li {
+        width: 100%;
+    }
+
+
 }

@@ -12,8 +12,8 @@ function showLoading(show) {
     const submitButton = document.querySelector('#loginForm button[type="submit"]');
     if (submitButton) {
         submitButton.disabled = show;
-        submitButton.innerHTML = show ? 
-            'Procesando...' : 
+        submitButton.innerHTML = show ?
+            'Procesando...' :
             'Iniciar sesión';
     }
 }
@@ -22,7 +22,7 @@ function showError(message) {
     const errorElement = document.getElementById('loginError') || createErrorElement();
     errorElement.textContent = message;
     errorElement.style.display = 'block';
-    
+
     setTimeout(() => {
         errorElement.style.display = 'none';
     }, 5000);
@@ -51,7 +51,7 @@ function redirectByRole(rol) {
         'asesor': '/frontend/pages/home_adviser.html',
         'alumno': '/frontend/pages/home_student.html'
     };
-    
+
     const targetPage = roleMappings[rol.toLowerCase()] || '/frontend/index.html';
     console.log('Redirigiendo a:', targetPage);
     window.location.href = targetPage;
@@ -60,10 +60,10 @@ function redirectByRole(rol) {
 async function handleLogin(e) {
     showLoading(true);
     showError('');
-    
+
     const correo = document.getElementById('correo').value.trim();
     const contraseña = document.getElementById('contraseña').value.trim();
-    
+
     if (!correo || !contraseña) {
         showError('Por favor complete todos los campos');
         showLoading(false);
@@ -86,14 +86,14 @@ async function handleLogin(e) {
         }
 
         const data = await response.json();
-        
+
         if (!data.success) {
             throw new Error(data.message || 'Error en autenticación');
         }
 
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userData', JSON.stringify(data.user));
-        
+
         redirectByRole(data.user.rol);
 
     } catch (error) {

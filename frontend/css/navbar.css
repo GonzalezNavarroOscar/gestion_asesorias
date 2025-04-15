@@ -6,13 +6,18 @@ body {
     height: 100%;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #eaeef6;
 }
 
 .navbar {
     background-color: #007bff;
-    padding: 1rem 2%;
+    padding: 1rem;
+    position: relative;
 }
 
 .options {
@@ -104,7 +109,7 @@ body {
     justify-content: space-between;
     background-color: #f9f9f9;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     padding: 16px;
     margin-bottom: 12px;
     gap: 16px;
@@ -192,6 +197,10 @@ body {
 }
 
 @media (max-width: 768px) {
+
+    .navbar {
+        width: 100%;
+    }
 
     .messages_popup {
         right: -70px;
