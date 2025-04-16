@@ -152,4 +152,51 @@ router.get('/notificaciones/:id_usuario', (req, res) => {
     });
 });
 
+// Registrar usuarios en la base de datos dependiendo el rol
+router.post('/registro', async (req, res) => {
+    try {
+        const { nombre, correo, contraseña, rol, matricula } = req.body;
+
+        if (!nombre || !correo || !contraseña || !rol) {
+            return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
+        }
+
+        // Insertar en Usuario primero
+        const result = await queryAsync(
+            'INSERT INTO Usuario (correo, contraseña, rol) VALUES (?, ?, ?)',
+            [correo, contraseña, rol]
+        );
+
+        const id_usuario = result.insertId;
+
+        if (rol === 'alumno') {
+            if (!matricula) {
+                return res.status(400).json({ success: false, message: 'Matrícula es requerida para estudiantes' });
+            }
+
+            await queryAsync(
+                'INSERT INTO Alumno (id_usuario, nombre, matricula) VALUES (?, ?, ?)',
+                [id_usuario, nombre, matricula]
+            );
+        } else if (rol === 'asesor') {
+            await queryAsync(
+                'INSERT INTO Asesor (id_usuario, nombre) VALUES (?, ?)',
+                [id_usuario, nombre]
+            );
+        } else {
+            return res.status(400).json({ success: false, message: 'Rol inválido' });
+        }
+
+        res.json({
+            success: true,
+            message: 'Registro exitoso',
+            id_usuario
+        });
+
+    } catch (error) {
+        console.error('Error en registro:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+
 module.exports = router;

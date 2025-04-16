@@ -26,13 +26,13 @@
                 <h5>Asesor</h5>
             </div>
             <form id="register_form_student" class="register_form">
-                <div class="register_text"><a>Registrate en AsesoraTEC</a></div>
-                <div id="error" class="error">Las contraseñas no coinciden</div>
-                <input id="name" type="text" placeholder=" Nombre" required>
-                <input id="matricula" type="tel" placeholder=" Matricula" required>
-                <input id="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
-                <input id="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
-                <input id="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>
+                    <div class="register_text"><a>Registrate en AsesoraTEC</a></div>
+                    <div id="error" class="error">Las contraseñas no coinciden</div>
+                    <input id="name" class="name" type="text" placeholder=" Nombre" required>
+                    <input id="matricula" class="matricula" type="tel" placeholder=" Matricula" required>
+                    <input id="email" class="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
+                    <input id="password" class="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
+                    <input id="confirm-password" class="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>
                 <div class="forgot_password">
                     <a>¿Ya tienes cuenta?</a>
                     <a href="../index.html">Iniciar sesión</a>
@@ -40,12 +40,12 @@
                 <button type="submit">Crear Cuenta</button>
             </form>
             <form id="register_form_asesor" class="register_form">
-                <div class="register_text"><a>Registrate en AsesoraTEC</a></div>
-                <div id="error" class="error">Las contraseñas no coinciden</div>
-                <input id="name" type="text" placeholder=" Nombre" required>
-                <input id="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
-                <input id="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
-                <input id="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>
+                    <div class="register_text"><a>Registrate en AsesoraTEC</a></div>
+                    <div id="error" class="error">Las contraseñas no coinciden</div>
+                    <input id="name_asesor" class="name" type="text" placeholder=" Nombre" required>
+                    <input id="email_asesor" class="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
+                    <input id="password_asesor" class="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
+                    <input id="confirm-password_asesor" class="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>                    
                 <div class="forgot_password">
                     <a>¿Ya tienes cuenta?</a>
                     <a href="../index.html">Iniciar sesión</a>
@@ -55,7 +55,7 @@
         </div>
     </div>
     <script src="../controllers/register.js"></script>
-    <script src="js/registerAPI.js"></script>
+    <script src="../js/register_API.js"></script>
 </body>
 
 </html>
