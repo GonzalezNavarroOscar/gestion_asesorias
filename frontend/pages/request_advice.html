@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
-    <title>Solicitud personalizada</title>
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/custon_request.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/request_advice.css">
     <script src="../controllers/navbar.js"></script>
+    <script src="../controllers/buttons.js"></script>
+    <title>Solicitud</title>
 </head>
 
 <body>
@@ -16,28 +17,28 @@
 
     <div class="container_top">
         <img class="container_img" src="../images/Imagen_que_va_en_registro.png">
-        <h1 class="container_title">Solictud personalizada</h1>
+        <h1 class="container_title">Completa tu solicitud</h1>
         <div class="schedule_specialities">
         </div>
     </div>
 
     <div class="container">
         <div class="container_form">
-            <form action="">
-                <input type="text" placeholder="Materia" id="subject">
-                <input type="text" placeholder="Tema" id="topic">
+            <form action="" id="form_request">
+                <input type="text" placeholder="Materia" id="subject" readonly>
+                <input type="text" placeholder="Tema" id="topic" readonly>
                 <input type="text" placeholder="Observaciones" id="Observations">
                 <input type="text" placeholder="Requisitos" id="Requirements">
                 <label for="date">Fecha en la que solicitas la asesoria:</label>
                 <input type="date" placeholder="fecha" id="date" required>
                 <label for="initial_hour">Hora en la que solicitas la asesoria:</label>
                 <input type="time" id="initial_hour" required>
-                <select name="" id="mode">
+                <select name="" id="mode" required>
                     <option value="" selected disabled>En linea o presencial</option>
                     <option value="">En linea</option>
                     <option value="">Presencial</option>
                 </select>
-                <select name="" id="level_urgency">
+                <select name="" id="level_urgency" required>
                     <option value="" selected disabled>Nivel de urgencia</option>
                     <option value="">Poco urgente</option>
                     <option value="">Urgente</option>
@@ -51,7 +52,8 @@
         </div>
     </div>
 
-    <script src="../controllers/buttons.js"></script>
+
+    <script src="../js/request_advice.js"></script>
 </body>
 
 </html>

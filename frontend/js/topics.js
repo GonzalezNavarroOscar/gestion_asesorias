@@ -33,8 +33,9 @@ async function cargarTemas(nombreMateria) {
             throw new Error(message || 'Respuesta no exitosa del servidor');
         }
 
-        todosLosTemas = data;
-        mostrarTemas(data);
+        todosLosTemas = data
+        console.log(data)
+        mostrarTemas(data, nombreMateria)
 
     } catch (error) {
         console.error('Error al cargar temas:', error);
@@ -42,7 +43,7 @@ async function cargarTemas(nombreMateria) {
     }
 }
 
-function mostrarTemas(temas) {
+function mostrarTemas(temas, materia) {
     const listaTemas = document.getElementById('listaTemas');
     listaTemas.innerHTML = '';
     if (temas.length === 0) {
@@ -53,8 +54,9 @@ function mostrarTemas(temas) {
     temas.forEach(tema => {
         const item = document.createElement('li');
         item.innerHTML = `
-            <span>${tema.nombre}</span>
-            <button class="btn-request">Solicitar</button>
+            <h3>${tema.nombre}</h3>
+            <h5>${tema.descripción}<h5>
+            <button class="btn-request" onclick="location.href='request_advice.html?tema=${encodeURIComponent(tema.nombre)}&materia=${encodeURIComponent(materia)}'">Solicitar</button>
         `;
         listaTemas.appendChild(item);
     });
