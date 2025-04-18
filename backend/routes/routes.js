@@ -152,6 +152,25 @@ router.get('/notificaciones/:id_usuario', (req, res) => {
     });
 });
 
+// Eliminar notificación por ID
+router.delete('/notificaciones/:id_notificacion', (req, res) => {
+    const { id_notificacion } = req.params;
+
+    const query = 'DELETE FROM Notificacion WHERE id_notificacion = ?';
+    db.query(query, [id_notificacion], (err, results) => {
+        if (err) {
+            console.error('Error al eliminar notificación:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Notificación no encontrada' });
+        }
+
+        res.json({ message: 'Notificación eliminada correctamente' });
+    });
+});
+
 // Registrar usuarios en la base de datos dependiendo el rol
 router.post('/registro', async (req, res) => {
     try {

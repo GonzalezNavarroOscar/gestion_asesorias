@@ -12,7 +12,6 @@
         .then(res => res.json())
         .then(data => {
             notiContent.innerHTML = '';
-
             if (data.length === 0) {
                 notiContent.innerHTML = '<p>No tienes notificaciones.</p>';
                 bellIcon.style.display = 'none';
