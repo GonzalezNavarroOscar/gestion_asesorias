@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // Helper para ejecutar queries con promesas
 function queryAsync(sql, params) {
@@ -57,7 +58,7 @@ router.post('/login', async (req, res) => {
         // Crear token
         const token = jwt.sign(
             { id: user.id_usuario, email: user.correo },
-            process.env.JWT_SECRET || 'secret_key_placeholder',
+            'secret_key_placeholder',
             { expiresIn: '1h' }
         );
 
@@ -403,5 +404,81 @@ router.post('/solicitud', (req, res) => {
         );
     });
 });
+
+router.post('/verify-password/:userId', async (req, res) => {
+    try {
+        const { currentPassword } = req.body;
+        const { userId } = req.params; 
+        
+        const token = req.headers.authorization?.split(' ')[1];
+        const decoded = jwt.verify(token, 'secret_key_placeholder');
+        
+        if (decoded.id !== parseInt(userId)) {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'No autorizado' 
+            });
+        }
+
+        const [user] = await queryAsync(
+            'SELECT contraseña FROM Usuario WHERE id_usuario = ? LIMIT 1',
+            [userId]
+        );
+
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Usuario no encontrado' 
+            });
+        }
+
+        if (currentPassword !== user.contraseña) {
+            return res.json({ 
+                success: false, 
+                message: 'Contraseña actual incorrecta' 
+            });
+        }
+
+        res.json({ success: true });
+
+    } catch (error) {
+        console.error('Error al verificar contraseña:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error en el servidor',
+            error: error.message 
+        });
+    }
+});
+
+//Cambiar contraseñas
+router.post('/change-password/:userId', async (req, res) => {
+    try {
+        const { newPassword } = req.body;
+        const { userId } = req.params;
+
+        const token = req.headers.authorization?.split(' ')[1];
+        const decoded = jwt.verify(token, 'secret_key_placeholder');
+
+        if (!newPassword || newPassword.length < 8) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'La contraseña debe tener al menos 8 caracteres' 
+            });
+        }
+
+        await queryAsync(
+            'UPDATE Usuario SET contraseña = ? WHERE id_usuario = ?',
+            [newPassword, userId]
+        );
+
+        res.json({ success: true, message: 'Contraseña actualizada exitosamente' });
+
+    } catch (error) {
+        console.error('Error al cambiar contraseña:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+});
+
 
 module.exports = router;

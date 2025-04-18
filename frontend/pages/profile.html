@@ -42,5 +42,24 @@
     </div>
 
     <script src="../controllers/profile.js"></script>
+
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Verificar Contraseña</h2>
+            <input type="password" id="current-password" placeholder="Contraseña actual">
+            <button id="verify-password-btn" class="btn btn-primary">Verificar</button>
+        </div>
+    </div>
+    
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Cambiar Contraseña</h2>
+            <input type="password" id="new-password" placeholder="Nueva contraseña">
+            <input type="password" id="confirm-password" placeholder="Confirmar nueva contraseña">
+            <button id="submit-new-password" class="btn btn-primary">Cambiar Contraseña</button>
+        </div>
+    </div>
 </body>
 </html>
