@@ -1,12 +1,10 @@
 (() => {
     const userData = JSON.parse(localStorage.getItem('userData'));
-    console.log('userData:', userData);
     const notiContent = document.querySelector('.notificacion_content');
     const bellIcon = document.querySelector('.notification-icon');
 
     if (!userData || !notiContent || !bellIcon) return;
 
-    console.log('userData:', userData);
 
     fetch(`http://localhost:3000/api/notificaciones/${userData.id_usuario}`)
         .then(res => res.json())

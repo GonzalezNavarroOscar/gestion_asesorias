@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/change_spe_she.css">
+    <script src="../controllers/navbar.js"></script>
+    <script src="../controllers/buttons.js"></script>
+    <title>Horario y especialidades</title>
+</head>
+
+<body>
+    <main-navbar></main-navbar>
+
+    <div class="content">
+        <div class="container">
+            <div class="container_form">
+                <form id="schedule_form" action="">
+                    <label for="name" id="title">Tu disponibilidad de horario:</label>
+                    <div class="dates_container">
+
+                        <div class="date">
+                            <label for="hora-inicio">Lunes:</label>
+                            <input type="checkbox" id="lunes_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="lunes_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="lunes_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Martes:</label>
+                            <input type="checkbox" id="martes_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="martes_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="martes_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Miercoles:</label>
+                            <input type="checkbox" id="miercoles_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="miercoles_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="miercoles_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Jueves:</label>
+                            <input type="checkbox" id="jueves_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="jueves_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="jueves_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Viernes:</label>
+                            <input type="checkbox" id="viernes_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="viernes_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="viernes_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Sabado:</label>
+                            <input type="checkbox" id="sabado_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="sabado_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="sabado_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+                        <div class="date">
+                            <label for="hora-inicio">Domingo:</label>
+                            <input type="checkbox" id="domingo_checkbox">
+                            <div class="schedule">
+                                <div class="time">
+                                    <label for="hora-inicio">Hora de inicio:</label>
+                                    <input type="time" id="domingo_inicio_0" name="hora-inicio">
+                                    <label for="hora-fin">Hora de fin:</label>
+                                    <input type="time" id="domingo_fin_0" name="hora-fin">
+                                </div>
+                            </div>
+                            <button type="button" class="add_time"><img src="../images/plus.png"></button>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form_btn">
+                        <button type="submit">Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+            <div class="container_form">
+                <form id="specialities_form" action="">
+                    <div id="specialities" class="specialities">
+
+                    </div>
+                    <div class="form_btn">
+                        <button type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../controllers/add_time.js"></script>
+    <script src="../js/specialities.js"></script>
+</body>
+
+</html>
