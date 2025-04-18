@@ -1,4 +1,5 @@
 let todosLosTemas = [];
+let materiaGlobal = null
 document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const nombreMateria = urlParams.get('materia');
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('nombreMateria').textContent = nombreDecodificado;
 
         cargarTemas(nombreDecodificado);
+        materiaGlobal = nombreDecodificado
     } else {
         mostrarError("No se especificó una materia.");
     }
@@ -34,7 +36,6 @@ async function cargarTemas(nombreMateria) {
         }
 
         todosLosTemas = data
-        console.log(data)
         mostrarTemas(data, nombreMateria)
 
     } catch (error) {
@@ -54,9 +55,11 @@ function mostrarTemas(temas, materia) {
     temas.forEach(tema => {
         const item = document.createElement('li');
         item.innerHTML = `
-            <h3>${tema.nombre}</h3>
-            <h5>${tema.descripción}<h5>
-            <button class="btn-request" onclick="location.href='request_advice.html?tema=${encodeURIComponent(tema.nombre)}&materia=${encodeURIComponent(materia)}'">Solicitar</button>
+            <div class='topic_content'>
+                <h3>${tema.nombre}</h3>
+                <h5>${tema.descripción}</h5>
+            </div>
+            <button  type='button' class="btn-request" onclick="location.href='request_advice.html?tema=${encodeURIComponent(tema.nombre)}&materia=${encodeURIComponent(materia)}'">Solicitar</button>
         `;
         listaTemas.appendChild(item);
     });
@@ -87,7 +90,7 @@ const opcion = () => {
             })
             break
     }
-    mostrarTemas(todosLosTemas)
+    mostrarTemas(todosLosTemas, materiaGlobal)
 }
 
 const filter = document.getElementById('filter')

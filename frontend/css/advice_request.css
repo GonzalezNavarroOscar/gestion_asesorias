@@ -109,7 +109,7 @@ h2 {
 .content li {
     display: flex;
     flex-direction: row;
-    height: 50px;
+    height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
@@ -117,6 +117,20 @@ h2 {
     margin-bottom: 20px;
     justify-content: space-evenly;
     align-items: center;
+}
+
+li:hover {
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3%);
+}
+
+.topic_content {
+    width: 60%;
+}
+
+.topic_content h5 {
+    font-size: 16px;
+    font-weight: normal;
 }
 
 .btn-request {
