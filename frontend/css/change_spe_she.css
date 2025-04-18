@@ -9,16 +9,9 @@ body {
     flex-wrap: wrap;
 }
 
-.date {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    min-width: 280px;
-    width: fit-content;
-    max-width: 100%;
+.container_form {
     margin: 10px;
-    padding: 10px;
+    width: 40%;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -26,18 +19,42 @@ body {
 }
 
 .dates_container {
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-self: start;
+    flex-wrap: wrap;
+}
+
+.date {
+    min-width: 300px;
+    max-width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    gap: 15px;
+}
+
+.date:has(input[type="checkbox"]:checked) {
+    background-color: #4caf50;
+    color: white;
 }
 
 .time {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.time_content {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px;
 }
 
 .schedule {
@@ -59,17 +76,6 @@ body {
     cursor: pointer;
 }
 
-.container_form {
-    margin: 40px;
-    width: 40%;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-form {}
-
 form label {
     font-weight: bold;
     font-size: 14px;
@@ -84,6 +90,10 @@ form input[type="time"] {
     border-radius: 20px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     padding-left: 15px;
+}
+
+#schedule_form input[type="checkbox"] {
+    transform: scale(1.5);
 }
 
 form button[type="submit"] {
@@ -107,6 +117,57 @@ form button[type="submit"] {
     justify-content: center;
 }
 
-#title {
-    font-size: 25px;
+.title {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.specialities {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.speciality {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 5px;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.speciality:hover {
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3%);
+}
+
+.speciality input[type="checkbox"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.speciality:has(input[type="checkbox"]:checked) {
+    background-color: #4caf50;
+    color: white;
+}
+
+.speciality label {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
 }

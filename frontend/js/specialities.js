@@ -27,11 +27,13 @@ function mostrarMaterias(materias) {
         contador = contador + 1
         const materiaCard = document.createElement('div');
 
-        materiaCard.className = 'card';
+        materiaCard.className = 'speciality';
 
         materiaCard.innerHTML = `
-            <label>${materia.nombre}</label>
-            <input type="checkbox" id='especialidad_${contador}'>
+
+            <label for='especialidad_${materia.nombre}'>${materia.nombre}</label>
+            <input type="checkbox" id='especialidad_${materia.nombre}' name='especialidad_${materia.nombre}' value='${materia.nombre}'>
+     
         `;
         contenedor.appendChild(materiaCard);
     });
