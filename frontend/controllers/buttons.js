@@ -61,27 +61,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Obtener notificaciones del usuario
     async function hasNotifications() {
-        const id_usuario = localStorage.getItem('id_usuario');
-        if (!id_usuario) {
-            console.warn('ID de usuario no encontrado en localStorage');
+        const userData = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userData?.id_usuario) {
+            console.warn('ID de usuario no encontrado');
             return false;
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/notificaciones/${id_usuario}`);
+            const response = await fetch(`http://localhost:3000/api/notificaciones/unread-count/${userData.id_usuario}`);
             const data = await response.json();
 
-            return data.some(notificacion => notificacion.leida === 0);
+            return data.count > 0;
         } catch (error) {
             console.error('Error al verificar notificaciones:', error);
             return false;
         }
     }
 
-    // Mostrar ícono de notificación si hay no leídas
-    async function updateNotificationIcon() {
+    const updateNotificationIcon = async () => {
         const bellButton = document.getElementById('bell-btn');
         const defaultIcon = bellButton.querySelector('.default-icon');
         const notificationIcon = bellButton.querySelector('.notification-icon');
@@ -98,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     updateNotificationIcon();
+
+    document.addEventListener('notification-deleted', updateNotificationIcon);
 
     document.addEventListener('click', function () {
         allPopups.forEach(p => {

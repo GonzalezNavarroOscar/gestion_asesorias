@@ -22,7 +22,7 @@
     │   │   └──IMAGES
     │   └──pages
     │       └──HTML PAGES
-    └──backend      #Express,Node.js,MySQL,CORS, Path, JWT
+    └──backend      #Express,Node.js,MySQL,CORS, Path, JWT, Nodemon
         ├──node_modules
         ├──routes
         │   └──routes.js #API Routes and Methods
@@ -44,6 +44,7 @@
 - mysql
 - jwt-decode
 - jsonwebtoken
+- nodemon
 
 ### frontend
 
@@ -97,7 +98,7 @@ Las dependencias necesarias están instaladas en las carpetas del proyecto, úni
 ##frontend
 
 ##backend
-    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser
+    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser --save-dev nodemon
 
 ```
 

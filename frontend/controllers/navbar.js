@@ -8,8 +8,6 @@ class Navbar extends HTMLElement {
                 <li id="message">
                     <button class="icon-btn" id="messages_btn">
                         <img src="../images/Mensajes.png" class="messages default-icon">
-                        <img src="../images/Mensajes_Notificacion.png" class="messages notification-icon"
-                            style="display: none;">
                     </button>
                     <div class="messages_popup" style="display: none;">
                         <div>
@@ -39,6 +37,9 @@ class Navbar extends HTMLElement {
                     <div class="settings_popup" style="display: none;">
                         <div>
                             <h1>Configuracion</h1>
+                            <div class="settings_content_btn">
+                                <button id="account_btn">Mi cuenta</button>
+                            </div>
                             <div class="settings_content_btn">
                                 <button id="logout_btn">Salir de la cuenta</button>
                             </div>

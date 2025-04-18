@@ -166,6 +166,23 @@ router.get('/alumno/:id_usuario', (req, res) => {
     });
 });
 
+// Obtener número de notificaciones
+router.get('/notificaciones/unread-count/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+    
+    db.query(
+        'SELECT COUNT(*) AS count FROM Notificacion WHERE id_usuario = ?',
+        [id_usuario],
+        (err, results) => {
+            if (err) {
+                console.error('Error contando notificaciones:', err);
+                return res.status(500).json({ error: 'Error en el servidor' });
+            }
+            res.json({ count: results[0].count });
+        }
+    );
+});
+
 // Eliminar notificación por ID
 router.delete('/notificaciones/:id_notificacion', (req, res) => {
     const { id_notificacion } = req.params;
@@ -232,7 +249,7 @@ router.post('/registro', async (req, res) => {
     }
 });
 
-// Registrar solicitudes en la base de datos a partir del formulario
+// Registrar solicitudes en la base de datos a partir del formulario y aumentar popularidad
 router.post('/solicitud', (req, res) => {
     const {
         id_usuario,
