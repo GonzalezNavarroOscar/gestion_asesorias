@@ -7,11 +7,12 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .container_form {
     margin: 10px;
-    width: 40%;
+    width: 45%;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -31,7 +32,6 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 10px;
-    padding: 10px;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -48,6 +48,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 
 .time_content {
@@ -74,6 +75,10 @@ body {
     padding: 0;
     margin: 0;
     cursor: pointer;
+}
+
+.delete-btn {
+    margin-left: 10px;
 }
 
 form label {
@@ -126,21 +131,22 @@ form button[type="submit"] {
 .specialities {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 10px;
+    padding: 10px;
 }
 
 .speciality {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    gap: 5px;
-    margin: 10px;
+    position: relative;
+    padding: 15px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    text-align: center;
+    background-color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .speciality:hover {
@@ -156,18 +162,56 @@ form button[type="submit"] {
     margin: 0;
     opacity: 0;
     cursor: pointer;
-    z-index: 2;
 }
 
-.speciality:has(input[type="checkbox"]:checked) {
-    background-color: #4caf50;
-    color: white;
+/* checked effect */
+.speciality input[type="checkbox"]:checked+label {
+    background-color: #b3e5fc;
+    /* light blue */
+    border-radius: 10px;
+    padding: 15px;
 }
 
-.speciality label {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
+@media (max-width: 768px) {
+    .container_form {
+        width: 100%;
+    }
+
+    .time {
+        flex-direction: column;
+    }
+
+    .date {
+        flex-direction: column;
+    }
+
+    .dates_container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .schedule {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .delete-btn {
+        margin-left: 0;
+    }
+
+    form label {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .speciality label {
+        position: relative;
+        text-align: center;
+        pointer-events: none;
+    }
+
 }

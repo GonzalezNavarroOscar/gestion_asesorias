@@ -32,7 +32,7 @@ document.querySelectorAll('.add_time').forEach(button => {
         const deleteBtn = document.createElement('button');
         deleteBtn.type = 'button';
         deleteBtn.classList.add('delete_time');
-        deleteBtn.style.marginLeft = '10px';
+        deleteBtn.classList.add('delete-btn');
         deleteBtn.addEventListener('click', () => {
             clone.remove();
 
