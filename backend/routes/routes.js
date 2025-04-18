@@ -266,15 +266,35 @@ router.post('/solicitud', (req, res) => {
         estado
     ];
 
+    console.log(id_tema);
+
     db.query(query, values, (err, result) => {
         if (err) {
             console.error('Error al insertar la solicitud:', err);
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
-        res.status(201).json({ message: 'Solicitud creada exitosamente', id: result.insertId });
+        console.log('ID del tema recibido:', id_tema);
+
+        db.query(
+            'UPDATE Tema SET popularidad = popularidad + 1 WHERE id_tema = ?',
+            [id_tema],
+            (err2, result2) => {
+                if (err2) {
+                    console.error('Error al actualizar popularidad:', err2);
+                    return res.status(500).json({ 
+                        error: 'Error al aumentar popularidad del tema',
+                        message: 'Solicitud creada pero no se pudo actualizar la popularidad'
+                    });
+                }
+                
+                res.status(201).json({ 
+                    message: 'Solicitud creada exitosamente', 
+                    id: result.insertId 
+                });
+            }
+        );
     });
 });
-
 
 module.exports = router;

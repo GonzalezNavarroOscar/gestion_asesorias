@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         inputTema.value = decodeURIComponent(nombreTema);
     }
 
-    // Obtener ID del alumno con el ID de usuario
     async function obtenerIdAlumno(idUsuario) {
         try {
             const response = await fetch(`http://localhost:3000/api/alumno/${idUsuario}`);
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    // Obtener los temas de una materia específica
     async function obtenerTemasPorMateria(nombreMateria) {
         try {
             const response = await fetch(`http://localhost:3000/api/temas?materia=${encodeURIComponent(nombreMateria)}`);
@@ -52,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 return [];
             }
 
-            console.log("Temas obtenidos:", result.data);  // Depuración: Verifica los temas obtenidos
+            console.log("Temas obtenidos:", result.data);
     
             return result.data;
         } catch (error) {
@@ -62,25 +60,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    // Llenar el input de tema con el tema obtenido
     async function llenarTemas(nombreMateria, nombreTema) {
         const temas = await obtenerTemasPorMateria(nombreMateria);
         
         if (temas.length > 0) {
-            // Si se encuentran temas, buscar el tema correspondiente
-            console.log("Temas disponibles:", temas);  // Depuración: Verifica los temas disponibles
+            console.log("Temas disponibles:", temas);
             const temaSeleccionado = temas.find(tema => tema.nombre === nombreTema);
             
             if (temaSeleccionado) {
-                // Llenamos el input de tema
                 inputTema.value = temaSeleccionado.nombre;
                 
-                // Puedes obtener también el id_tema y id_materia
                 const idMateria = temaSeleccionado.id_materia;
                 const idTema = temaSeleccionado.id_tema;
 
-                console.log('idMateria:', idMateria);  // Depuración: Verifica id_materia
-                console.log('idTema:', idTema);  // Depuración: Verifica id_tema
+                console.log('idMateria:', idMateria);
+                console.log('idTema:', idTema);
 
                 return { idMateria, idTema };
             } else {
@@ -105,7 +99,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // Obtener id_materia e id_tema
         const { idMateria, idTema } = await llenarTemas(nombreMateria, nombreTema);
 
         if (!idMateria || !idTema) {
@@ -126,7 +119,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         };
 
         console.log(solicitudData);
-
         try {
             const response = await fetch('http://localhost:3000/api/solicitud', {
                 method: 'POST',
