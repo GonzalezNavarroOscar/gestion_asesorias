@@ -3,7 +3,7 @@ class Navbar extends HTMLElement {
         this.innerHTML = `
     <nav class="navbar">
         <ul>
-            <li><img src="../images/LOGO_sin_fondo.png" class="logo"></li>
+            <li><img src="../images/LOGO_sin_fondo.png" class="logo" id="logo_btn"></li>
             <div class="options">
                 <li id="message">
                     <button class="icon-btn" id="messages_btn">

@@ -80,6 +80,96 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Obtener la información del usuario según el rol
+router.get('/perfil/:id_usuario', async (req, res) => {
+    try {
+        const { id_usuario } = req.params;
+
+        if (!id_usuario || isNaN(id_usuario)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'ID de usuario inválido' 
+            });
+        }
+
+        const usuario = await queryAsync(
+            `SELECT rol FROM Usuario WHERE id_usuario = ? LIMIT 1`,
+            [id_usuario]
+        );
+
+        if (!usuario || usuario.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Usuario no encontrado' 
+            });
+        }
+
+        const rol = usuario[0]?.rol;
+
+        if (!rol) {
+            return res.status(500).json({ 
+                success: false, 
+                message: 'El usuario no tiene rol asignado' 
+            });
+        }
+
+        let query, data;
+        
+        switch(rol.toLowerCase()) {
+            case 'alumno':
+                query = `SELECT a.matricula, a.nombre, u.correo, u.rol
+                         FROM Alumno a
+                         JOIN Usuario u ON a.id_usuario = u.id_usuario
+                         WHERE a.id_usuario = ?`;
+                break;
+                
+            case 'asesor':
+                query = `SELECT a.nombre, u.correo, u.rol
+                         FROM Asesor a
+                         JOIN Usuario u ON a.id_usuario = u.id_usuario
+                         WHERE a.id_usuario = ?`;
+                break;
+                
+            case 'administrador':
+                query = `SELECT a.nombre, u.correo, u.rol
+                         FROM Administrador a
+                         JOIN Usuario u ON a.id_usuario = u.id_usuario
+                         WHERE a.id_usuario = ?`;
+                break;
+                
+            default:
+                return res.status(400).json({ 
+                    success: false, 
+                    message: 'Rol no válido' 
+                });
+        }
+
+        const [result] = await queryAsync(query, [id_usuario]);
+        
+        if (!result) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Datos adicionales no encontrados' 
+            });
+        }
+
+        data = result;
+
+        res.json({
+            success: true,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Error en /perfil:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error al obtener perfil',
+            error: error.message 
+        });
+    }
+});
+
 // Obtener todas las materias
 router.get('/materias', async (req, res) => {
     try {

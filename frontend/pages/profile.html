@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="../controllers/buttons.js"></script>
+    <script src="../controllers/navbar.js"></script>
+    <title>Mi Perfil</title>
+</head>
+<body>
+    <main-navbar></main-navbar>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Mi Perfil</h1>
+        </div>
+        
+        <div class="profile-card">
+            <div class="profile-banner"></div>
+            
+            <div class="profile-avatar">
+                <img src="../images/profile.jpg" alt="Foto de perfil" id="profile-img">
+            </div>
+            
+            <div class="profile-body">
+                <h2 class="profile-name" id="profile-name">Nombre de Usuario</h2>
+                <div class="profile-role" id="profile-role">Rol del Usuario</div>
+                
+                <div class="profile-info">
+                    <div class="info-card">
+                        <div class="info-title">Correo electrónico</div>
+                        <div class="info-value" id="profile-email">usuario@ejemplo.com</div>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="btn btn-outline">Cambiar Contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../controllers/profile.js"></script>
+</body>
+</html>

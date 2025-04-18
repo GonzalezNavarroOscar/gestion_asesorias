@@ -107,6 +107,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    document.getElementById('logo_btn').addEventListener('click', function () {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+
+        switch(userData.rol){
+            case 'alumno':
+                window.location.href = './home_student.html';
+
+                break;
+            case 'asesor':
+                window.location.href = './home_adviser.html';
+
+                break;
+            case 'administrador':
+                window.location.href = './home_admin.html';
+
+                break;
+            default:
+            
+            break;
+            
+        }
+    });
+
+    document.getElementById('account_btn').addEventListener('click', function () {
+        window.location.href = './profile.html';
+    });
+
     document.getElementById('logout_btn').addEventListener('click', function () {
         localStorage.clear();
         window.location.href = '../index.html';
