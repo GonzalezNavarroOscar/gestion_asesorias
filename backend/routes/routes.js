@@ -152,6 +152,20 @@ router.get('/notificaciones/:id_usuario', (req, res) => {
     });
 });
 
+// Obtener alumno por ID de usuario
+router.get('/alumno/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+
+    const query = 'SELECT * FROM Alumno WHERE id_usuario = ?';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener alumno:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
 // Eliminar notificación por ID
 router.delete('/notificaciones/:id_notificacion', (req, res) => {
     const { id_notificacion } = req.params;
@@ -217,5 +231,50 @@ router.post('/registro', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
 });
+
+// Registrar solicitudes en la base de datos a partir del formulario
+router.post('/solicitud', (req, res) => {
+    const {
+        id_usuario,
+        id_alumno,
+        id_materia,
+        id_tema,
+        fecha_solicitud,
+        hora,
+        modalidad,
+        observaciones,
+        estado
+    } = req.body;
+
+    const query = `
+        INSERT INTO Solicitud (
+            id_usuario, id_alumno, id_materia, id_tema,
+            fecha_solicitud, hora, modalidad, observaciones,
+            estado
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+        id_usuario,
+        id_alumno,
+        id_materia,
+        id_tema,
+        fecha_solicitud,
+        hora,
+        modalidad,
+        observaciones,
+        estado
+    ];
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            console.error('Error al insertar la solicitud:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        res.status(201).json({ message: 'Solicitud creada exitosamente', id: result.insertId });
+    });
+});
+
 
 module.exports = router;
