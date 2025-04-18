@@ -164,12 +164,9 @@ form button[type="submit"] {
     cursor: pointer;
 }
 
-/* checked effect */
-.speciality input[type="checkbox"]:checked+label {
-    background-color: #b3e5fc;
-    /* light blue */
-    border-radius: 10px;
-    padding: 15px;
+.speciality:has(input[type="checkbox"]:checked) {
+    background-color: #4caf50;
+    color: white;
 }
 
 @media (max-width: 768px) {
