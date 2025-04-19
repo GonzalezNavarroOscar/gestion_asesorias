@@ -54,8 +54,8 @@ body {
 }
 
 .logo {
-    height: 85px;
-    width: 85px;
+    height: 65px;
+    width: 65px;
     cursor: pointer;
 }
 
@@ -177,6 +177,14 @@ body {
     width: 20px;
     display: block;
     border: none;
+}
+
+.settings_content {
+    gap: 5px;
+}
+
+#account_btn {
+    background-color: #007bff;
 }
 
 .settings_content_btn button {

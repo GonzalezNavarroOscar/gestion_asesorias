@@ -35,7 +35,7 @@ class Navbar extends HTMLElement {
                         <img src="#" class="menu notification-icon" style="display: none;">
                     </button>
                     <div class="settings_popup" style="display: none;">
-                        <div>
+                        <div class="settings_content">
                             <h1>Configuracion</h1>
                             <div class="settings_content_btn">
                                 <button id="account_btn">Mi cuenta</button>
@@ -59,7 +59,7 @@ class Navbar extends HTMLElement {
         checkNotificationScript.src = '../js/notification_check.js';
         document.body.appendChild(checkNotificationScript);
     }
-    
+
 }
 
 customElements.define('main-navbar', Navbar);
