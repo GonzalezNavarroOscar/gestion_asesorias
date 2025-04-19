@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fin de Asesoría</title>
+  <link rel="stylesheet" href="../css/surveys.css">
+</head>
+<body>
+  <div class="container" id="pantalla-inicial">
+    <h1>Gracias por concluir tus Asesorías!</h1>
+    <img src="../images/LOGO_sin_fondo.png" alt="Logo del proyecto" class="logo" />
+    <p>Al finalizar la asesoría, por favor responde esta encuesta de satisfacción.</p>
+    <button onclick="finalizarAsesoria()">Finalizar asesoría</button>
+  </div>
+
+  <div class="container hidden" id="pantalla-espera">
+    <h1>Redirigiendo...</h1>
+    <img src="../images/LOGO_sin_fondo.png" alt="Logo del proyecto" class="logo" />
+    <p>Serás redirigido en <span id="cuenta">5</span> segundos.</p>
+  </div>
+
+  <script src="../js/surveys.js"></script>
+</body>
+</html>
