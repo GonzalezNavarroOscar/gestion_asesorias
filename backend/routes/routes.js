@@ -87,9 +87,9 @@ router.get('/perfil/:id_usuario', async (req, res) => {
         const { id_usuario } = req.params;
 
         if (!id_usuario || isNaN(id_usuario)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'ID de usuario inválido' 
+            return res.status(400).json({
+                success: false,
+                message: 'ID de usuario inválido'
             });
         }
 
@@ -99,58 +99,58 @@ router.get('/perfil/:id_usuario', async (req, res) => {
         );
 
         if (!usuario || usuario.length === 0) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Usuario no encontrado' 
+            return res.status(404).json({
+                success: false,
+                message: 'Usuario no encontrado'
             });
         }
 
         const rol = usuario[0]?.rol;
 
         if (!rol) {
-            return res.status(500).json({ 
-                success: false, 
-                message: 'El usuario no tiene rol asignado' 
+            return res.status(500).json({
+                success: false,
+                message: 'El usuario no tiene rol asignado'
             });
         }
 
         let query, data;
-        
-        switch(rol.toLowerCase()) {
+
+        switch (rol.toLowerCase()) {
             case 'alumno':
                 query = `SELECT a.matricula, a.nombre, u.correo, u.rol
                          FROM Alumno a
                          JOIN Usuario u ON a.id_usuario = u.id_usuario
                          WHERE a.id_usuario = ?`;
                 break;
-                
+
             case 'asesor':
                 query = `SELECT a.nombre, u.correo, u.rol
                          FROM Asesor a
                          JOIN Usuario u ON a.id_usuario = u.id_usuario
                          WHERE a.id_usuario = ?`;
                 break;
-                
+
             case 'administrador':
                 query = `SELECT a.nombre, u.correo, u.rol
                          FROM Administrador a
                          JOIN Usuario u ON a.id_usuario = u.id_usuario
                          WHERE a.id_usuario = ?`;
                 break;
-                
+
             default:
-                return res.status(400).json({ 
-                    success: false, 
-                    message: 'Rol no válido' 
+                return res.status(400).json({
+                    success: false,
+                    message: 'Rol no válido'
                 });
         }
 
         const [result] = await queryAsync(query, [id_usuario]);
-        
+
         if (!result) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Datos adicionales no encontrados' 
+            return res.status(404).json({
+                success: false,
+                message: 'Datos adicionales no encontrados'
             });
         }
 
@@ -163,10 +163,10 @@ router.get('/perfil/:id_usuario', async (req, res) => {
 
     } catch (error) {
         console.error('Error en /perfil:', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: 'Error al obtener perfil',
-            error: error.message 
+            error: error.message
         });
     }
 });
@@ -260,7 +260,7 @@ router.get('/alumno/:id_usuario', (req, res) => {
 // Obtener número de notificaciones
 router.get('/notificaciones/unread-count/:id_usuario', (req, res) => {
     const { id_usuario } = req.params;
-    
+
     db.query(
         'SELECT COUNT(*) AS count FROM Notificacion WHERE id_usuario = ?',
         [id_usuario],
@@ -390,15 +390,15 @@ router.post('/solicitud', (req, res) => {
             (err2, result2) => {
                 if (err2) {
                     console.error('Error al actualizar popularidad:', err2);
-                    return res.status(500).json({ 
+                    return res.status(500).json({
                         error: 'Error al aumentar popularidad del tema',
                         message: 'Solicitud creada pero no se pudo actualizar la popularidad'
                     });
                 }
-                
-                res.status(201).json({ 
-                    message: 'Solicitud creada exitosamente', 
-                    id: result.insertId 
+
+                res.status(201).json({
+                    message: 'Solicitud creada exitosamente',
+                    id: result.insertId
                 });
             }
         );
@@ -408,15 +408,15 @@ router.post('/solicitud', (req, res) => {
 router.post('/verify-password/:userId', async (req, res) => {
     try {
         const { currentPassword } = req.body;
-        const { userId } = req.params; 
-        
+        const { userId } = req.params;
+
         const token = req.headers.authorization?.split(' ')[1];
         const decoded = jwt.verify(token, 'secret_key_placeholder');
-        
+
         if (decoded.id !== parseInt(userId)) {
-            return res.status(403).json({ 
-                success: false, 
-                message: 'No autorizado' 
+            return res.status(403).json({
+                success: false,
+                message: 'No autorizado'
             });
         }
 
@@ -426,16 +426,16 @@ router.post('/verify-password/:userId', async (req, res) => {
         );
 
         if (!user) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Usuario no encontrado' 
+            return res.status(404).json({
+                success: false,
+                message: 'Usuario no encontrado'
             });
         }
 
         if (currentPassword !== user.contraseña) {
-            return res.json({ 
-                success: false, 
-                message: 'Contraseña actual incorrecta' 
+            return res.json({
+                success: false,
+                message: 'Contraseña actual incorrecta'
             });
         }
 
@@ -443,10 +443,10 @@ router.post('/verify-password/:userId', async (req, res) => {
 
     } catch (error) {
         console.error('Error al verificar contraseña:', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: 'Error en el servidor',
-            error: error.message 
+            error: error.message
         });
     }
 });
@@ -461,9 +461,9 @@ router.post('/change-password/:userId', async (req, res) => {
         const decoded = jwt.verify(token, 'secret_key_placeholder');
 
         if (!newPassword || newPassword.length < 8) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'La contraseña debe tener al menos 8 caracteres' 
+            return res.status(400).json({
+                success: false,
+                message: 'La contraseña debe tener al menos 8 caracteres'
             });
         }
 
@@ -479,6 +479,53 @@ router.post('/change-password/:userId', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error en el servidor' });
     }
 });
+
+//Enviar correo con contrase;a temporal
+router.post('/forgot_password', async (req, res) => {
+    try {
+        const emailInstance = require('../mail');
+        const generatePassword = require('../generate_pass')
+
+        if (!req.is('application/json')) {
+            return res.status(415).json({
+                success: false,
+                message: 'Se requiere Content-Type: application/json'
+            });
+        }
+
+        const { email } = req.body;
+
+        const verify = await queryAsync(
+            'SELECT id_usuario FROM Usuario WHERE correo = ?;',
+            [email]
+        );
+
+        if (!verify || verify.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: 'Tu correo no está registrado.'
+            });
+        }
+
+        const password = generatePassword.generatePassword()
+
+        const results = await queryAsync(
+            'UPDATE Usuario SET contraseña = ? WHERE correo = ?;',
+            [password, email]
+        );
+
+        emailInstance.enviarEmail(email, password);
+
+        res.json({ success: true, message: 'Correo enviado. Seras redirigido a iniciar sesion.' });
+
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error al enviar el correo'
+        });
+    }
+})
 
 
 module.exports = router;
