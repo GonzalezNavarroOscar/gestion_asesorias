@@ -17,7 +17,7 @@ class Email {
             secure: true,
             auth: {
                 user: 'al22760571@ite.edu.mx',
-                pass: 'wfbkgllpelwuvlea'
+                pass: ''
             }
         });
     }
