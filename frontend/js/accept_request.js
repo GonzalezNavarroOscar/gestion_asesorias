@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const asesoriaData = {
             id_solicitud: solicitud.id_solicitud,
-            id_usuario: idUsuario,
+            id_usuario: solicitud.id_alumno,
             id_alumno: solicitud.id_alumno,
             id_asesor: idAsesor,
             id_materia: solicitud.id_materia,
