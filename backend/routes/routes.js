@@ -406,6 +406,37 @@ router.post('/solicitud', (req, res) => {
     });
 });
 
+//Obtener todas las solicitudes con estado 'Pendiente'
+router.get('/solicitudes-pendientes', async (req,res) => {
+
+    try{
+
+        const solicitudesPendientes = await queryAsync(`
+            SELECT al.nombre AS alumno, m.nombre AS materia,m.imagen AS imagen, t.nombre AS tema, 
+                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
+            FROM Solicitud AS s
+            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
+            JOIN Materia AS m ON s.id_materia = m.id_materia
+            JOIN Tema AS t ON s.id_tema = t.id_tema
+            WHERE s.estado = 'Pendiente'
+        `);
+    
+        res.json({
+            success: true,
+            data: solicitudesPendientes
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+//Verificación de contraseñas
 router.post('/verify-password/:userId', async (req, res) => {
     try {
         const { currentPassword } = req.body;
@@ -481,7 +512,7 @@ router.post('/change-password/:userId', async (req, res) => {
     }
 });
 
-//Enviar correo con contrase;a temporal
+//Enviar correo con contraseña temporal
 router.post('/forgot_password', async (req, res) => {
     try {
         const emailInstance = require('../mail');

@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             modalidad: document.getElementById('mode').value
         };
 
-        console.log(solicitudData);
         try {
             const response = await fetch('http://localhost:3000/api/solicitud', {
                 method: 'POST',
