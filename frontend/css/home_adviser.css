@@ -93,6 +93,34 @@ body {
     text-align: center;
 }
 
+.advices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.advice {
+    background-color: #f3c0c0;
+    width: 300px;
+    border-radius: 12px;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.advice_content {
+    padding: 15px;
+    text-align: center;
+}
+
 .state_no_acepted,
 .state_complete {
     display: flex;

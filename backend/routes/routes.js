@@ -527,6 +527,36 @@ router.get('/solicitudes-pendientes', async (req,res) => {
 
 });
 
+//Obtener todas las asesorias con estado 'En proceso'
+router.get('/asesorias-proceso', async (req,res) => {
+
+    try{
+
+        const asesoriasProceso = await queryAsync(`
+            SELECT a.id_asesoria,al.nombre AS alumno, m.nombre AS materia,t.nombre AS tema, 
+                   a.fecha, a.hora, a.estado
+            FROM Asesoria AS a
+            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
+            JOIN Materia AS m ON a.id_materia = m.id_materia
+            JOIN Tema AS t ON a.id_tema = t.id_tema
+            WHERE a.estado = 'En proceso'
+        `);
+    
+        res.json({
+            success: true,
+            data: asesoriasProceso
+        });
+
+    } catch (error) {
+        console.error('Error al obtener Asesorias:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las Asesorias'
+        });
+    }
+
+});
+
 //Obtener detalles de solicitudes específicas
 router.get('/solicitudes/:id_solicitud', async (req,res) => {
 
