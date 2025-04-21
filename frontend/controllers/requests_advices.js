@@ -1,14 +1,56 @@
-var checkbox = document.getElementById('switch_box')
+const checkbox = document.getElementById('switch_box');
+const requests_div = document.getElementById('requests-div');
+const advices_div = document.getElementById('advices-div');
 
+// Flags para saber si ya se cargaron
+let scriptRequestsLoaded = false;
+let scriptAdvicesLoaded = false;
+
+function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = callback;
+    document.body.appendChild(script);
+}
+
+function showRequests() {
+    advices_div.style.display = 'none';
+    requests_div.style.display = 'grid';
+
+    if (!scriptRequestsLoaded) {
+        loadScript('../js/view_requests.js', () => {
+            scriptRequestsLoaded = true;
+            cargarSolicitudes();
+        });
+    } else {
+        cargarSolicitudes();
+    }
+}
+
+function showAdvices() {
+    requests_div.style.display = 'none';
+    advices_div.style.display = 'grid';
+
+    if (!scriptAdvicesLoaded) {
+        loadScript('../js/view_advices.js', () => {
+            scriptAdvicesLoaded = true;
+            cargarAsesorias();
+        });
+    } else {
+        cargarAsesorias();
+    }
+}
+
+if (checkbox.checked) {
+    showAdvices();
+} else {
+    showRequests();
+}
 
 checkbox.addEventListener('change', () => {
-    var requests_div = document.getElementById('requests-div')
-    var advices_div = document.getElementById('advices-div')
     if (checkbox.checked) {
-        advices_div.style.display = 'grid'
-        requests_div.style.display = 'none'
+        showAdvices();
     } else {
-        advices_div.style.display = 'none'
-        requests_div.style.display = 'grid'
+        showRequests();
     }
-})
+});

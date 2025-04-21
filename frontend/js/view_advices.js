@@ -1,20 +1,16 @@
-let AsesoriasEnProceso = []
-document.addEventListener('DOMContentLoaded', function () {
-    cargarAsesorias();
-});
+let AsesoriasEnProceso = [];
 
 async function cargarAsesorias() {
     try {
         const response = await fetch('http://localhost:3000/api/asesorias-proceso');
-
         const data = await response.json();
 
-        AsesoriasEnProceso = data.data
+        AsesoriasEnProceso = data.data;
 
         if (data.success) {
             mostrarAsesorias(data.data);
         } else {
-            console.error('Error al cargar solicitudes:', data.message);
+            console.error('Error al cargar asesorías:', data.message);
         }
     } catch (error) {
         console.error('Error:', error);
@@ -23,8 +19,7 @@ async function cargarAsesorias() {
 
 function mostrarAsesorias(asesorias) {
     const contenedor = document.querySelector('.advices');
-
-    contenedor.innerHTML = ''
+    contenedor.innerHTML = '';
 
     asesorias.forEach(asesoria => {
         const fecha = new Date(asesoria.fecha);
@@ -36,7 +31,7 @@ function mostrarAsesorias(asesorias) {
 
         const asesoriaCard = document.createElement('div');
         asesoriaCard.className = 'advice';
-    
+
         asesoriaCard.innerHTML = `
             <div class="advice_content">
                 <h4>${asesoria.estado}</h4>
@@ -50,8 +45,9 @@ function mostrarAsesorias(asesorias) {
                 <button class="accept" onClick="location.href='generate_report.html?id_asesoria=${encodeURIComponent(asesoria.id_asesoria)}'">Generar Reporte</button>
             </div>
         `;
-    
+
         contenedor.appendChild(asesoriaCard);
     });
-    
 }
+
+window.cargarAsesorias = cargarAsesorias;

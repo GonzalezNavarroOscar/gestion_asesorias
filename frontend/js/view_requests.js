@@ -1,15 +1,11 @@
-let todasLasSolicitudes = []
-document.addEventListener('DOMContentLoaded', function () {
-    cargarSolicitudes();
-});
+let todasLasSolicitudes = [];
 
 async function cargarSolicitudes() {
     try {
         const response = await fetch('http://localhost:3000/api/solicitudes-pendientes');
-
         const data = await response.json();
 
-        todasLasSolicitudes = data.data
+        todasLasSolicitudes = data.data;
 
         if (data.success) {
             mostrarSolicitudes(data.data);
@@ -23,8 +19,7 @@ async function cargarSolicitudes() {
 
 function mostrarSolicitudes(solicitudes) {
     const contenedor = document.querySelector('.requests');
-
-    contenedor.innerHTML = ''
+    contenedor.innerHTML = '';
 
     solicitudes.forEach(solicitud => {
         const fecha = new Date(solicitud.fecha_solicitud);
@@ -36,7 +31,7 @@ function mostrarSolicitudes(solicitudes) {
 
         const solicitudCard = document.createElement('div');
         solicitudCard.className = 'request';
-    
+
         solicitudCard.innerHTML = `
             <div class="request_img">
                 <img src="../${solicitud.imagen}">
@@ -55,8 +50,9 @@ function mostrarSolicitudes(solicitudes) {
                 <button class="accept" onclick="location.href='accept_request.html?id_solicitud=${encodeURIComponent(solicitud.id_solicitud)}'">Aceptar</button>
             </div>
         `;
-    
+
         contenedor.appendChild(solicitudCard);
     });
-    
 }
+
+window.cargarSolicitudes = cargarSolicitudes;
