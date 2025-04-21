@@ -1,5 +1,6 @@
 body {
     background-color: #eaeef6;
+    font-family: Arial, sans-serif;
 }
 
 .container_top {
@@ -25,7 +26,6 @@ body {
 }
 
 .schedule_specialities {
-
     margin-left: auto;
 }
 
@@ -61,11 +61,10 @@ body {
 .requests {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    margin-top: 30px;
     max-width: 1200px;
-    margin: 0 auto;
     box-sizing: border-box;
+    gap: 50px;
 }
 
 .request {
@@ -95,16 +94,16 @@ body {
 
 .advices {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 0fr));
+    gap: 50px;
+    margin-top: 30px;
     max-width: 1200px;
-    margin: 0 auto;
     box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
 .advice {
-    background-color: #f3c0c0;
+    background-color: #f3ecf8;
     width: 300px;
     border-radius: 12px;
     padding: 1.5rem;
@@ -113,12 +112,15 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
 }
 
 .advice_content {
-    padding: 15px;
     text-align: center;
+    font-weight: normal;
+}
+
+.advice_content h4 {
+    font-weight: normal;
 }
 
 .state_no_acepted,
@@ -143,11 +145,10 @@ body {
 }
 
 .state_complete h4 {
-    font-weight: bold;
+    font-weight: normal;
     display: inline-block;
     background-color: #eeffef;
     color: #1FCAC5;
-    font-weight: 600;
     font-size: 0.875rem;
     padding: 0.5em;
     line-height: 1;
@@ -227,18 +228,18 @@ button:hover {
     text-align: center;
 }
 
-.solicitudes-pendientes{
+.solicitudes-pendientes {
     background-color: #7d19cf;
     color: white;
-    padding: 8px 16px; 
+    padding: 8px 16px;
     border-radius: 12px;
     display: inline-block;
 }
 
-.asesorias{
+.asesorias {
     background-color: #ff4d4d;
     color: white;
-    padding: 8px 16px; 
+    padding: 8px 16px;
     border-radius: 12px;
     display: inline-block;
 }

@@ -34,7 +34,9 @@ function mostrarAsesorias(asesorias) {
 
         asesoriaCard.innerHTML = `
             <div class="advice_content">
-                <h4>${asesoria.estado}</h4>
+                <div class="state_complete"}">
+                    <h4>${asesoria.estado}</h4>
+                </div>
                 <h3>${asesoria.alumno}</h3>
                 <h4>Materia: ${asesoria.materia}</h4>
                 <h4>Tema: ${asesoria.tema}</h4>
