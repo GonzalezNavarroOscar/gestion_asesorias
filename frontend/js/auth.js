@@ -46,15 +46,17 @@ function createErrorElement() {
 
 // Redirección por rol
 function redirectByRole(rol) {
-    const roleMappings = {
-        'administrador': '/frontend/pages/home_admin.html',
-        'asesor': '/frontend/pages/home_adviser.html',
-        'alumno': '/frontend/pages/home_student.html'
-    };
 
-    const targetPage = roleMappings[rol.toLowerCase()] || '/frontend/index.html';
-    console.log('Redirigiendo a:', targetPage);
-    window.location.href = targetPage;
+    setTimeout(() => {
+        const roleMappings = {
+            'administrador': '/frontend/pages/home_admin.html',
+            'asesor': '/frontend/pages/home_adviser.html',
+            'alumno': '/frontend/pages/home_student.html'
+        };
+
+        const targetPage = roleMappings[rol.toLowerCase()] || '/frontend/index.html';
+        window.location.href = targetPage;
+    }, 1000);
 }
 // Función principal de login
 async function handleLogin(e) {
@@ -91,8 +93,29 @@ async function handleLogin(e) {
             throw new Error(data.message || 'Error en autenticación');
         }
 
+        if (data.multipleRoles) {
+            const selectedRol = await promptUserRole(data.roles.map(r => r.rol));
+            if (!selectedRol) {
+                showError('Debes seleccionar un rol para continuar');
+                return;
+            }
+        
+            const user = data.roles.find(r => r.rol === selectedRol);
+            if (!user) {
+                showError('Rol seleccionado no válido');
+                return;
+            }
+
+            localStorage.setItem('authToken', data.token);
+        
+            localStorage.setItem('userData', JSON.stringify(user));
+
+            redirectByRole(selectedRol);
+        
+            return;
+        }
+
         localStorage.setItem('authToken', data.token);
-        localStorage.setItem('userData', JSON.stringify(data.user));
 
         redirectByRole(data.user.rol);
 
@@ -102,4 +125,40 @@ async function handleLogin(e) {
     } finally {
         showLoading(false);
     }
+}
+
+function promptUserRole(roles) {
+    return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        `;
+
+        const box = document.createElement('div');
+        box.style.cssText = `
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        `;
+        box.innerHTML = `<h3>Selecciona tu cuenta</h3>`;
+
+        roles.forEach(role => {
+            const btn = document.createElement('button');
+            btn.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            btn.style.cssText = 'margin: 10px; padding: 10px 20px;';
+            btn.onclick = () => {
+                document.body.removeChild(modal);
+                resolve(role);
+            };
+            box.appendChild(btn);
+        });
+
+        modal.appendChild(box);
+        document.body.appendChild(modal);
+    });
 }

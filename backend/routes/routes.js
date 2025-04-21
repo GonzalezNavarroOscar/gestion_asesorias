@@ -26,7 +26,6 @@ router.post('/login', async (req, res) => {
 
         const { correo, contraseña } = req.body;
 
-        // Validación básica
         if (!correo || !contraseña) {
             return res.status(400).json({
                 success: false,
@@ -35,8 +34,8 @@ router.post('/login', async (req, res) => {
         }
 
         const results = await queryAsync(
-            'SELECT id_usuario, correo, rol, contraseña FROM Usuario WHERE correo = ?',
-            [correo]
+            'SELECT id_usuario, correo, rol FROM Usuario WHERE correo = ? AND contraseña = ?',
+            [correo, contraseña]
         );
 
         if (!results || results.length === 0) {
@@ -46,30 +45,32 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        const user = results[0];
-
-        if (contraseña !== user.contraseña) {
-            return res.status(401).json({
-                success: false,
-                message: 'Contraseña incorrecta'
+        if (results.length === 1) {
+            const user = results[0];
+            const token = jwt.sign(
+                { id: user.id_usuario, email: user.correo },
+                'secret_key_placeholder',
+                { expiresIn: '1h' }
+            );
+            return res.json({
+                success: true,
+                message: 'Login exitoso',
+                user,
+                token
             });
         }
 
-        // Crear token
-        const token = jwt.sign(
-            { id: user.id_usuario, email: user.correo },
-            'secret_key_placeholder',
-            { expiresIn: '1h' }
-        );
+        const roles = results.map(user => ({
+            id_usuario: user.id_usuario,
+            correo: user.correo,
+            rol: user.rol
+        }));
 
-        const { contraseña: _, ...userData } = user;
-
-        // Respuesta exitosa
         return res.json({
             success: true,
-            message: 'Login exitoso',
-            user: userData,
-            token
+            message: 'Múltiples roles encontrados',
+            multipleRoles: true,
+            roles
         });
 
     } catch (error) {
