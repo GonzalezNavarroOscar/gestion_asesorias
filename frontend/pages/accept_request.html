@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de Solicitud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/accept_request.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Detalle de la Solicitud</h2>
+        <form action="" id="form_accept">
+            <input type="hidden" name="id_solicitud"> 
+
+            <label for="nombre_alumno">Nombre del alumno</label>
+            <input type="text" id="nombre_alumno" name="nombre_alumno" readonly>
+
+            <label for="materia">Materia</label>
+            <input type="text" id="materia" name="materia" readonly>
+
+            <label for="tema">Tema</label>
+            <input type="text" id="tema" name="tema" readonly>
+
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" value="2025-04-22" readonly>
+
+            <label for="hora">Hora</label>
+            <input type="time" id="hora" name="hora" value="10:30" readonly>
+
+            <label for="mode">Modalidad</label>
+            <input type="text" id="mode" name="mode" value="10:30" readonly>
+
+            <label for="aula">Aula</label>
+            <input type="text" id="aula" name="aula" placeholder="Ej. 408 / 102 / LC4 / EC2 / Meet" required>
+
+            <button type="submit">Aceptar Solicitud</button>
+        </form>
+    </div>
+
+    <script src="../js/accept_request.js"></script>
+
+</body>
+</html>

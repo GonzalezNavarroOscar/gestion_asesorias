@@ -15,21 +15,35 @@
 <body>
     <main-navbar></main-navbar>
     <div class="container_top">
-        <img class="container_img" src="../images/Imagen_que_va_en_registro.png">
-        <h1 class="container_title">Solicitudes de asesorias</h1>
+        <div class="schedule_specialities">
+            <button type="button" onclick="window.location.href='change_spe_she.html'">Reportes de Asesorías</button>
+        </div>
+        <div class="container_switch">
+            <h3 class="solicitudes-pendientes">Solicitudes</h3>
+            <label class="switch">
+                <input type="checkbox" id="switch_box">
+                <span class="slider round"></span>
+            </label>
+            <h3 class="asesorias">Asesorías</h3>
+        </div>
         <div class="schedule_specialities">
             <button type="button" onclick="window.location.href='change_spe_she.html'">Cambiar mi horario y/o
                 especialidades</button>
         </div>
     </div>
 
-    <script src="../js/view_requests.js"></script>
-
     <div class="container">
-        <div class="requests">
+        <div class="requests" id="requests-div">
+
+        </div>
+
+        <div class="advices" id="advices-div">
+
         </div>
     </div>
 
+    <script src="../controllers/requests_advices.js"></script>
+    <script src="../js/view_requests.js"></script>
     <script src="../controllers/buttons.js"></script>
 </body>
 

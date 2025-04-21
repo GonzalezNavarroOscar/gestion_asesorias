@@ -258,6 +258,20 @@ router.get('/alumno/:id_usuario', (req, res) => {
     });
 });
 
+// Obtener asesor por ID de usuario
+router.get('/asesor/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+
+    const query = 'SELECT * FROM Asesor WHERE id_usuario = ?';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener asesor:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
 // Obtener número de notificaciones
 router.get('/notificaciones/unread-count/:id_usuario', (req, res) => {
     const { id_usuario } = req.params;
@@ -406,13 +420,90 @@ router.post('/solicitud', (req, res) => {
     });
 });
 
+// Registrar asesorias en la base de datos a partir del formulario y enviar notificación
+router.post('/asesoria', (req, res) => {
+    const {
+        id_solicitud,
+        id_usuario,
+        id_alumno,
+        id_asesor,
+        id_materia,
+        id_tema,
+        nombre_tema,
+        fecha_solicitud,
+        hora,
+        estado,
+        aula
+    } = req.body;
+
+    const query = `
+        INSERT INTO Asesoria (
+            id_alumno, id_asesor, id_materia, id_tema,
+            fecha, hora, estado, aula
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+        id_alumno,
+        id_asesor,
+        id_materia,
+        id_tema,
+        fecha_solicitud,
+        hora,
+        estado,
+        aula
+    ];
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            console.error('Error al insertar la asesoría:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        //Actualización de el estado de la Solicitud
+        db.query(
+            `UPDATE Solicitud SET estado = 'Aceptada' WHERE id_solicitud = ?`,
+            [id_solicitud],
+            (err2, result2) => {
+                if (err2) {
+                    console.error('Error al actualizar popularidad:', err2);
+                    return res.status(500).json({
+                        error: 'Error al aumentar popularidad del tema',
+                        message: 'Solicitud creada pero no se pudo actualizar la popularidad'
+                    });
+                }
+
+                res.status(201).json({
+                    message: 'Solicitud creada exitosamente',
+                    id: result.insertId
+                });
+            }
+        );
+
+        //Parámetros para la Notificación
+        const tipo = 'Solicitud Aceptada';
+        const mensaje = `Tu solicitud de Asesoría de ${nombre_tema} ha sido aceptada.`;
+        const fecha_envio = new Date();
+        const estado = 'Enviada';
+
+        db.query(
+            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [id_usuario, tipo, mensaje, fecha_envio, estado],
+            (err4) => {
+              if (err4) console.error('Error al insertar notificación:', err4);
+            }
+          );
+
+    });
+});
+
 //Obtener todas las solicitudes con estado 'Pendiente'
 router.get('/solicitudes-pendientes', async (req,res) => {
 
     try{
 
         const solicitudesPendientes = await queryAsync(`
-            SELECT al.nombre AS alumno, m.nombre AS materia,m.imagen AS imagen, t.nombre AS tema, 
+            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
                    s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
             FROM Solicitud AS s
             JOIN Alumno AS al ON s.id_alumno = al.id_alumno
@@ -424,6 +515,38 @@ router.get('/solicitudes-pendientes', async (req,res) => {
         res.json({
             success: true,
             data: solicitudesPendientes
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+//Obtener detalles de solicitudes específicas
+router.get('/solicitudes/:id_solicitud', async (req,res) => {
+
+    const { id_solicitud } = req.params
+
+    try{
+
+        const solicitud = await queryAsync(`
+            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
+                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
+            FROM Solicitud AS s
+            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
+            JOIN Materia AS m ON s.id_materia = m.id_materia
+            JOIN Tema AS t ON s.id_tema = t.id_tema
+            WHERE s.id_solicitud = ?
+        `,[id_solicitud]);
+    
+        res.json({
+            success: true,
+            data: solicitud
         });
 
     } catch (error) {

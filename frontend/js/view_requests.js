@@ -49,12 +49,10 @@ function mostrarSolicitudes(solicitudes) {
                 <h4>Materia: ${solicitud.materia}</h4>
                 <h4>Tema: ${solicitud.tema}</h4>
                 <h4>Fecha: ${fechaFormateada}</h4>
+                <h4>Hora: ${solicitud.hora}</h4>
             </div>
             <div class="request_btn">
-                ${solicitud.estado === 'Aceptado' 
-                    ? `<button class="complete">Completar</button>` 
-                    : `<button class="accept">Aceptar</button>`
-                }
+                <button class="accept" onclick="location.href='accept_request.html?id_solicitud=${encodeURIComponent(solicitud.id_solicitud)}'">Aceptar</button>
             </div>
         `;
     
