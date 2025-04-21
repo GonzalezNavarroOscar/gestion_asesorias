@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
         if (results.length === 1) {
             const user = results[0];
             const token = jwt.sign(
-                { id: user.id_usuario, email: user.correo },
+                { id: user.id_usuario, email: user.correo, rol: user.rol },
                 'secret_key_placeholder',
                 { expiresIn: '1h' }
             );
@@ -66,11 +66,22 @@ router.post('/login', async (req, res) => {
             rol: user.rol
         }));
 
+        const token = jwt.sign(
+            {
+                id: roles[0].id_usuario,
+                email: roles[0].correo,
+                rol: roles[0].rol
+            },
+            'secret_key_placeholder',
+            { expiresIn: '1h' }
+        );
+
         return res.json({
             success: true,
             message: 'Múltiples roles encontrados',
             multipleRoles: true,
-            roles
+            roles,
+            token
         });
 
     } catch (error) {
@@ -81,6 +92,7 @@ router.post('/login', async (req, res) => {
         });
     }
 });
+
 
 // Obtener la información del usuario según el rol
 router.get('/perfil/:id_usuario', async (req, res) => {
@@ -637,10 +649,10 @@ router.post('/verify-password/:userId', async (req, res) => {
 });
 
 //Cambiar contraseñas
-router.post('/change-password/:userId', async (req, res) => {
+router.post('/change-password/:correo', async (req, res) => {
     try {
         const { newPassword } = req.body;
-        const { userId } = req.params;
+        const { correo } = req.params;
 
         const token = req.headers.authorization?.split(' ')[1];
         const decoded = jwt.verify(token, 'secret_key_placeholder');
@@ -653,8 +665,8 @@ router.post('/change-password/:userId', async (req, res) => {
         }
 
         await queryAsync(
-            'UPDATE Usuario SET contraseña = ? WHERE id_usuario = ?',
-            [newPassword, userId]
+            'UPDATE Usuario SET contraseña = ? WHERE correo = ?',
+            [newPassword, correo]
         );
 
         res.json({ success: true, message: 'Contraseña actualizada exitosamente' });

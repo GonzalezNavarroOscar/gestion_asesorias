@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData.id_usuario;
+    const email = userData.correo;
     
     fetch(`http://localhost:3000/api/perfil/${userId}`, {
         method: 'GET',
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch(`http://localhost:3000/api/change-password/${userId}`, {
+            const response = await fetch(`http://localhost:3000/api/change-password/${email}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 alert('Contraseña cambiada exitosamente');
                 changePasswordModal.style.display = 'none';
-                // Limpiar campos
                 document.getElementById('current-password').value = '';
                 document.getElementById('new-password').value = '';
                 document.getElementById('confirm-password').value = '';
