@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 class Email {
     static _instance;
@@ -16,8 +17,8 @@ class Email {
             port: 465,
             secure: true,
             auth: {
-                user: 'al22760571@ite.edu.mx',
-                pass: ''
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             }
         });
     }

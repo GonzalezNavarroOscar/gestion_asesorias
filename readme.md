@@ -27,6 +27,8 @@
         ├──routes
         │   └──routes.js #API Routes and Methods
         ├──db.js #Database info
+        ├──generate_pass.js
+        ├──mail.js
         ├──package-lock.json
         ├──package.json
         └──server.js #Server Configuration
@@ -41,10 +43,13 @@
 - Express
 - CORS
 - body-parser
-- mysql
+- mysql2
 - jwt-decode
 - jsonwebtoken
 - nodemon
+- dotenv
+- crypto
+- cookie parser
 
 ### frontend
 
