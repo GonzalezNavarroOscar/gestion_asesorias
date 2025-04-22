@@ -30,6 +30,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    function agregarAGoogleCalendar(titulo, descripcion, lugar, fechaInicio, horaInicio) {
+        const baseUrl = 'https://www.google.com/calendar/render?action=TEMPLATE';
+    
+        const inicio = new Date(`${fechaInicio}T${horaInicio}`);
+        const formatoGoogle = (fecha) =>
+            fecha.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+        const googleInicio = formatoGoogle(inicio);
+    
+        const url = `${baseUrl}&text=${encodeURIComponent(titulo)}&details=${encodeURIComponent(descripcion)}&location=${encodeURIComponent(lugar)}&dates=${googleInicio}/${googleInicio}`;
+    
+        window.open(url, '_blank');
+    }
+
     try {
         const response = await fetch(`http://localhost:3000/api/solicitudes/${idSolicitud}`);
         if (!response.ok) throw new Error('Error al obtener los datos de la solicitud');
@@ -105,7 +119,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) throw new Error('Error al crear solicitud');
 
             alert('¡Asesoría aceptada con éxito!');
-            window.location.href = 'home_adviser.html';
+            
+            agregarAGoogleCalendar(
+                `Asesoría de ${solicitud.materia}`,
+                `Tema: ${solicitud.tema}`,
+                `Aula: ${document.getElementById('aula').value}`,
+                fechaFormateada,
+                solicitud.hora
+            );
+
+            setTimeout(() => {
+                window.location.href = 'home_adviser.html';
+            }, 500);
+
         } catch (error) {
             console.error(error);
             alert('Error al aceptar asesoría');
