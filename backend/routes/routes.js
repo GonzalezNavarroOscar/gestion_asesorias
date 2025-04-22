@@ -445,14 +445,15 @@ router.post('/asesoria', (req, res) => {
         fecha_solicitud,
         hora,
         estado,
-        aula
+        aula,
+        modalidad
     } = req.body;
 
     const query = `
         INSERT INTO Asesoria (
             id_alumno, id_asesor, id_materia, id_tema,
-            fecha, hora, estado, aula
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            fecha, hora, estado, aula, modalidad
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
@@ -463,7 +464,8 @@ router.post('/asesoria', (req, res) => {
         fecha_solicitud,
         hora,
         estado,
-        aula
+        aula,
+        modalidad
     ];
 
     db.query(query, values, (err, result) => {
@@ -546,7 +548,7 @@ router.get('/asesorias-proceso', async (req, res) => {
 
         const asesoriasProceso = await queryAsync(`
             SELECT a.id_asesoria,al.nombre AS alumno, m.nombre AS materia,t.nombre AS tema, 
-                   a.fecha, a.hora, a.estado
+                   a.fecha, a.hora, a.estado,a.modalidad
             FROM Asesoria AS a
             JOIN Alumno AS al ON al.id_alumno = a.id_alumno
             JOIN Materia AS m ON a.id_materia = m.id_materia

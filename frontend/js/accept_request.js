@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             hora: solicitud.hora,
             estado: 'En proceso',
             aula: document.getElementById('aula').value,
+            modalidad: solicitud.modalidad
         };
 
         console.log(asesoriaData);

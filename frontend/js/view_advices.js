@@ -42,6 +42,7 @@ function mostrarAsesorias(asesorias) {
                 <h4>Tema: ${asesoria.tema}</h4>
                 <h4>Fecha: ${fechaFormateada}</h4>
                 <h4>Hora: ${asesoria.hora}</h4>
+                <h4>Modalidad: ${asesoria.modalidad}</h4>
             </div>
             <div class="request_btn">
                 <button class="accept" onClick="location.href='generate_report.html?id_asesoria=${encodeURIComponent(asesoria.id_asesoria)}'">Generar Reporte</button>
