@@ -30,16 +30,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    function agregarAGoogleCalendar(titulo, descripcion, lugar, fechaInicio, horaInicio) {
+    function agregarAGoogleCalendar(titulo, descripcion, lugar, fechaInicio, horaInicio, correoInvitado = '') {
         const baseUrl = 'https://www.google.com/calendar/render?action=TEMPLATE';
-    
         const inicio = new Date(`${fechaInicio}T${horaInicio}`);
         const formatoGoogle = (fecha) =>
             fecha.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    
         const googleInicio = formatoGoogle(inicio);
     
-        const url = `${baseUrl}&text=${encodeURIComponent(titulo)}&details=${encodeURIComponent(descripcion)}&location=${encodeURIComponent(lugar)}&dates=${googleInicio}/${googleInicio}`;
+        let url = `${baseUrl}&text=${encodeURIComponent(titulo)}&details=${encodeURIComponent(descripcion)}&location=${encodeURIComponent(lugar)}&dates=${googleInicio}/${googleInicio}`;
+        
+        if (correoInvitado) {
+            url += `&add=${encodeURIComponent(correoInvitado)}`;
+        }
     
         window.open(url, '_blank');
     }
@@ -91,6 +93,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const fecha = new Date(solicitud.fecha_solicitud);
         const fechaFormateada = fecha.toISOString().split('T')[0];
 
+        const correoAlumno = `al${solicitud.matricula}@ite.edu.mx`;
+
         const asesoriaData = {
             id_solicitud: solicitud.id_solicitud,
             id_usuario: solicitud.id_alumno,
@@ -119,13 +123,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) throw new Error('Error al crear solicitud');
 
             alert('¡Asesoría aceptada con éxito!');
-            
+
             agregarAGoogleCalendar(
                 `Asesoría de ${solicitud.materia}`,
                 `Tema: ${solicitud.tema}`,
                 `Aula: ${document.getElementById('aula').value}`,
                 fechaFormateada,
-                solicitud.hora
+                solicitud.hora,
+                correoAlumno
             );
 
             setTimeout(() => {

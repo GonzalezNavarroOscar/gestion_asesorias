@@ -577,7 +577,7 @@ router.get('/solicitudes/:id_solicitud', async (req, res) => {
     try {
 
         const solicitud = await queryAsync(`
-            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
+            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,al.matricula,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
                    s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
             FROM Solicitud AS s
             JOIN Alumno AS al ON s.id_alumno = al.id_alumno
