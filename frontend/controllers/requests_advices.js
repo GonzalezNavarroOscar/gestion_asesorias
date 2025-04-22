@@ -47,10 +47,17 @@ if (checkbox.checked) {
     showRequests();
 }
 
+const filter_request = document.getElementById('filter_request_container')
+const filter_advices = document.getElementById('filter_advices_container')
+
 checkbox.addEventListener('change', () => {
     if (checkbox.checked) {
-        showAdvices();
+        showAdvices()
+        filter_request.style.display = 'none'
+        filter_advices.style.display = 'flex'
     } else {
-        showRequests();
+        showRequests()
+        filter_request.style.display = 'flex'
+        filter_advices.style.display = 'none'
     }
 });

@@ -53,3 +53,50 @@ function mostrarAsesorias(asesorias) {
 }
 
 window.cargarAsesorias = cargarAsesorias;
+
+const opcion_filter_advices = () => {
+    const select = filter_advices_adviser.selectedIndex
+    let solicitudes = AsesoriasEnProceso;
+    switch (select) {
+        case 1:
+            solicitudes.sort((a, b) => {
+                return a.materia.localeCompare(b.materia)
+            })
+            break
+        case 2:
+            solicitudes.sort((a, b) => {
+                return b.materia.localeCompare(a.materia)
+            })
+            break
+        case 3:
+            solicitudes.sort((a, b) => {
+                return a.tema.localeCompare(b.tema)
+            })
+            break
+        case 4:
+            solicitudes.sort((a, b) => {
+                return b.tema.localeCompare(a.tema)
+            })
+            break
+        case 5:
+            solicitudes.sort((a, b) => {
+                return a.alumno.localeCompare(b.alumno)
+            })
+            break
+        case 6:
+            solicitudes.sort((a, b) => {
+                return b.alumno.localeCompare(a.alumno)
+            })
+            break
+        case 7:
+            solicitudes = solicitudes.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+            break
+        case 8:
+            solicitudes = solicitudes.sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+            break
+    }
+    mostrarAsesorias(solicitudes)
+}
+
+const filter_advices_adviser = document.getElementById('filter_advices')
+filter_advices_adviser.addEventListener('change', opcion_filter_advices)
