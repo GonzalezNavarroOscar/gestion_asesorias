@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.contenedor-cartas {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px;
+}
+
+.carta {
+    flex: 0 0 auto;
+    width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+}
+
+.carta h3 {
+    margin: 0;
+    color: #2c3e50;
+  }
+
+.carta p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.estado {
+    font-weight: bold;
+    color: green;
+}
+
+.delete_rep_btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    transition: transform 0.2s ease;
+}
+
+.delete_rep_btn:hover {
+    transform: scale(1.1);
+}
+
+.delete_rep_btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.back {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.back button {
+    text-align: center;
+    width: 50%;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

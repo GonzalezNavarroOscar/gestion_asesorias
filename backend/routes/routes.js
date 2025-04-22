@@ -663,6 +663,52 @@ router.get('/reportes/:id_asesoria', async (req,res) => {
 
 });
 
+//Obtener detalles de reportes usando el id del usuario
+router.get('/ver-reportes/:id_usuario', async (req,res) => {
+
+    const { id_usuario } = req.params
+
+    try{
+
+        const id_asesor_result = await queryAsync(`SELECT id_asesor FROM Asesor WHERE id_usuario = ?`, [id_usuario]);
+
+        if (id_asesor_result.length === 0) {
+            return res.json({ success: true, data: [] });
+        }
+        
+        const id_asesor = id_asesor_result[0].id_asesor;
+
+        const reporte = await queryAsync(`
+            SELECT id_reporte,nombre,descripción,fecha,porcentaje,estado_asesoria FROM Reporte WHERE id_asesor = ?
+        `,[id_asesor]);
+    
+        res.json({
+            success: true,
+            data: reporte
+        });
+
+    } catch (error) {
+        console.error('Error al obtener reportes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener los reportes'
+        });
+    }
+
+});
+
+//Borrar reportes usando el ID
+router.delete('/eliminar-reportes/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await queryAsync(`DELETE FROM Reporte WHERE id_reporte = ?`, [id]);
+        res.json({ success: true, message: 'Reporte eliminado' });
+    } catch (error) {
+        console.error('Error al eliminar el reporte:', error);
+        res.status(500).json({ success: false, message: 'Error al eliminar el reporte' });
+    }
+});
+
 // Registrar reportes, cambiar el estado de las asesorías y enviar notificación
 router.post('/generar-reporte', (req, res) => {
     const {
