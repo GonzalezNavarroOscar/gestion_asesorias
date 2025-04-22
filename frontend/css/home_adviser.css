@@ -303,6 +303,27 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
+.container_filter {
+    flex-direction: row;
+    width: 95%;
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.filter {
+    text-align: center;
+    width: 15%;
+    background-color: white;
+    border: 2px solid #007bff;
+    color: black;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 @media (max-width: 768px) {
     .container_top {
         display: flex;

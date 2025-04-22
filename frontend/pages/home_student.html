@@ -17,9 +17,6 @@
     <main-navbar></main-navbar>
 
     <div class="container_top">
-        <div class="schedule_specialities">
-            <button type="button" onclick="window.location.href='view_reports.html'">Boton por si algo</button>
-        </div>
         <div class="container_switch">
             <h3 class="solicitudes-pendientes">Materias</h3>
             <label class="switch">
@@ -28,25 +25,43 @@
             </label>
             <h3 class="asesorias">Mis solicitudes</h3>
         </div>
-        <div class="schedule_specialities">
-            <button type="button" onclick="window.location.href='change_spe_she.html'">Cambiar mi horario y/o
-                especialidades</button>
+    </div>
+
+    <div id="materias_container">
+        <div class="container_filter">
+            <select id="filter" name="filter" class="filter">
+                <option value="opcion0" selected disabled>Filtrar resultados</option>
+                <option value="opcion1">Mas populares</option>
+                <option value="opcion2">Menos populares</option>
+                <option value="opcion3">A-Z</option>
+                <option value="opcion4">Z-A</option>
+            </select>
+        </div>
+        <div id="materias" class="container">
+
         </div>
     </div>
 
-    <div class="container_filter">
-        <select id="filter" name="filter" class="filter">
-            <option value="opcion0" selected disabled>Filtrar resultados</option>
-            <option value="opcion1">Mas populares</option>
-            <option value="opcion2">Menos populares</option>
-            <option value="opcion3">A-Z</option>
-            <option value="opcion4">Z-A</option>
-        </select>
+    <div id="requests_container" style="display: none;">
+        <div class="container_filter">
+            <select id="filter_request" name="filter" class="filter">
+                <option value="opcion0" selected disabled>Filtrar resultados</option>
+                <option value="opcion1">A-Z</option>
+                <option value="opcion2">Z-A</option>
+                <option value="opcion3">Modalidad en linea</option>
+                <option value="opcion4">Modalidad presencial</option>
+                <option value="opcion5">Fecha mas lejana</option>
+                <option value="opcion5">Fecha mas proxima</option>
+                <option value="opcion6">Aceptadas</option>
+                <option value="opcion7">Pendientes</option>
+            </select>
+        </div>
+        <div id="requests" class="container">
+        </div>
     </div>
-    <div id="materias" class="container">
 
-    </div>
-
+    <script src="../controllers/home_student.js"></script>
+    <script src="../js/student_request.js"></script>
     <script src="../js/subjects.js"></script>
 </body>
 

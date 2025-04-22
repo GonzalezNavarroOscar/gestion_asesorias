@@ -502,17 +502,17 @@ router.post('/asesoria', (req, res) => {
             `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
             [id_usuario, tipo, mensaje, fecha_envio, estado],
             (err4) => {
-              if (err4) console.error('Error al insertar notificación:', err4);
+                if (err4) console.error('Error al insertar notificación:', err4);
             }
-          );
+        );
 
     });
 });
 
 //Obtener todas las solicitudes con estado 'Pendiente'
-router.get('/solicitudes-pendientes', async (req,res) => {
+router.get('/solicitudes-pendientes', async (req, res) => {
 
-    try{
+    try {
 
         const solicitudesPendientes = await queryAsync(`
             SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
@@ -523,7 +523,7 @@ router.get('/solicitudes-pendientes', async (req,res) => {
             JOIN Tema AS t ON s.id_tema = t.id_tema
             WHERE s.estado = 'Pendiente'
         `);
-    
+
         res.json({
             success: true,
             data: solicitudesPendientes
@@ -540,9 +540,9 @@ router.get('/solicitudes-pendientes', async (req,res) => {
 });
 
 //Obtener todas las asesorias con estado 'En proceso'
-router.get('/asesorias-proceso', async (req,res) => {
+router.get('/asesorias-proceso', async (req, res) => {
 
-    try{
+    try {
 
         const asesoriasProceso = await queryAsync(`
             SELECT a.id_asesoria,al.nombre AS alumno, m.nombre AS materia,t.nombre AS tema, 
@@ -553,7 +553,7 @@ router.get('/asesorias-proceso', async (req,res) => {
             JOIN Tema AS t ON a.id_tema = t.id_tema
             WHERE a.estado = 'En proceso'
         `);
-    
+
         res.json({
             success: true,
             data: asesoriasProceso
@@ -570,11 +570,11 @@ router.get('/asesorias-proceso', async (req,res) => {
 });
 
 //Obtener detalles de solicitudes específicas
-router.get('/solicitudes/:id_solicitud', async (req,res) => {
+router.get('/solicitudes/:id_solicitud', async (req, res) => {
 
     const { id_solicitud } = req.params
 
-    try{
+    try {
 
         const solicitud = await queryAsync(`
             SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
@@ -584,8 +584,38 @@ router.get('/solicitudes/:id_solicitud', async (req,res) => {
             JOIN Materia AS m ON s.id_materia = m.id_materia
             JOIN Tema AS t ON s.id_tema = t.id_tema
             WHERE s.id_solicitud = ?
-        `,[id_solicitud]);
-    
+        `, [id_solicitud]);
+
+        res.json({
+            success: true,
+            data: solicitud
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+//Solicitar solicitudes para el home de alumno
+router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
+
+    const { id_solicitud } = req.params
+
+    try {
+
+        const solicitud = await queryAsync(`
+            SELECT Solicitud.id_solicitud, Solicitud.fecha_solicitud, Solicitud.estado, Solicitud.hora, Solicitud.modalidad, Solicitud.observaciones, Tema.nombre AS tema, Materia.nombre AS materia
+                FROM Solicitud 
+                JOIN Tema ON Tema.id_tema = Solicitud.id_tema
+                JOIN Materia ON Materia.id_materia = Solicitud.id_materia
+                WHERE Solicitud.id_usuario = ?;
+        `, [id_solicitud]);
+
         res.json({
             success: true,
             data: solicitud
