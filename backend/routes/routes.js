@@ -631,6 +631,130 @@ router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
 
 });
 
+//Obtener detalles de asesorias específicas para reportes
+router.get('/reportes/:id_asesoria', async (req,res) => {
+
+    const { id_asesoria } = req.params
+
+    try{
+
+        const asesoria = await queryAsync(`
+            SELECT a.id_asesoria,al.id_alumno,al.nombre AS alumno,ase.id_asesor,ase.nombre AS asesor,m.id_materia, m.nombre AS materia,t.id_tema,t.nombre AS tema, a.fecha, a.hora
+            FROM Asesoria AS a
+            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
+            JOIN Asesor AS ase ON a.id_asesor = ase.id_asesor
+            JOIN Materia AS m ON a.id_materia = m.id_materia
+            JOIN Tema AS t ON a.id_tema = t.id_tema
+            WHERE a.id_asesoria = ?
+        `,[id_asesoria]);
+    
+        res.json({
+            success: true,
+            data: asesoria
+        });
+
+    } catch (error) {
+        console.error('Error al obtener asesoria:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener la asesoria'
+        });
+    }
+
+});
+
+// Registrar reportes, cambiar el estado de las asesorías y enviar notificación
+router.post('/generar-reporte', (req, res) => {
+    const {
+        id_asesoria,
+        nombre,
+        descripcion,
+        fecha,
+        hora_inicial,
+        hora_final,
+        total_horas,
+        porcentaje,
+        estado_asesoria,
+        id_asesor,
+        id_alumno,
+        id_materia,
+        id_tema,
+        id_usuario,
+        nombre_tema
+    } = req.body;
+
+    const query = `
+        INSERT INTO Reporte (
+            id_asesoria, nombre, descripción, fecha, 
+            hora_inicial, hora_final, total_horas, porcentaje, 
+            estado_asesoria, id_asesor, id_alumno, id_materia, id_tema
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+        id_asesoria,
+        nombre,
+        descripcion,
+        fecha,
+        hora_inicial,
+        hora_final,
+        total_horas,
+        porcentaje,
+        estado_asesoria,
+        id_asesor,
+        id_alumno,
+        id_materia,
+        id_tema
+    ];
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            console.error('Error al insertar la reporte:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        console.log(estado_asesoria,porcentaje);
+
+        if(estado_asesoria === "Completada" && parseInt(porcentaje) === 100){
+
+            db.query(
+                `UPDATE Asesoria SET estado = 'Completada' WHERE id_asesoria = ?`,
+                [id_asesoria],
+                (err2, result2) => {
+                    if (err2) {
+                        console.error('Error al actualizar asesoria:', err2);
+                        return res.status(500).json({
+                            error: 'Error al actualizar el estado de la asesoria',
+                            message: 'Solicitud creada pero no se pudo actualizar la asesoria'
+                        });
+                    }
+    
+                    res.status(201).json({
+                        message: 'Asesoria finalizada exitosamente',
+                        id: result.insertId
+                    });
+                }
+            );
+
+        }
+
+        //Parámetros para la Notificación
+        const tipo = 'Asesoria Finalizada';
+        const mensaje = `Felicidades por finalizar tu asesoría en ${nombre_tema}!!`;
+        const fecha_envio = new Date();
+        const estado = 'Enviada';
+
+        db.query(
+            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [id_usuario, tipo, mensaje, fecha_envio, estado],
+            (err4) => {
+              if (err4) console.error('Error al insertar notificación:', err4);
+            }
+          );
+
+    });
+});
+
 //Verificación de contraseñas
 router.post('/verify-password/:userId', async (req, res) => {
     try {

@@ -1,12 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="../js/auth_check.js"></script>
+  <meta charset="UTF-8">
+  <title>Generar Reporte de Asesoría</title>
+  <link rel="stylesheet" href="../css/generate_report.css">
+  <script src="../js/auth_check.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+
+  <h2>Generar Reporte de Asesoría</h2>
+
+  <form id="form-reporte">
     
+    <label for="id_asesoria" hidden></label>
+    <input type="number" id="id_asesoria" name="id_asesoria" required readonly hidden>
+
+    <label for="nombre_reporte">Nombre del Reporte:</label>
+    <input type="text" id="nombre_reporte" name="nombre_reporte" maxlength="100" required>
+
+    <label for="nombre_alumno">Nombre del Alumno:</label>
+    <input type="text" id="nombre_alumno" name="nombre_alumno" maxlength="100" required readonly>
+
+    <label for="nombre_asesor">Nombre del Asesor:</label>
+    <input type="text" id="nombre_asesor" name="nombre_asesor" maxlength="100" required readonly>
+
+    <label for="materia">Materia:</label>
+    <input type="text" id="materia" name="materia" maxlength="100" required readonly> 
+
+    <label for="tema">Tema:</label>
+    <input type="text" id="tema" name="tema" maxlength="100" required readonly>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" name="fecha" required readonly>
+
+    <label for="hora_inicial">Hora Inicial:</label>
+    <input type="time" id="hora_inicial" name="hora_inicial" required readonly>
+
+    <label for="hora_final">Hora Final:</label>
+    <input type="time" id="hora_final" name="hora_final" required>
+
+    <label for="total_horas">Total de Horas:</label>
+    <input type="number" id="total_horas" name="total_horas" min="0" required readonly>
+
+    <label for="porcentaje">Porcentaje:</label>
+    <input type="number" id="porcentaje" name="porcentaje" min="0" max="100" required >
+    <span id="mensaje_porcentaje" style="color: red; font-size: 12px;"></span>
+
+    <label for="estado_asesoria">Estado de la Asesoría:</label>
+    <select name="estado_asesoria" id="estado_asesoria">
+        <option value="Completada">Completada</option>
+        <option value="En proceso">En proceso</option>
+    </select>
+
+    <button type="submit">Guardar Reporte</button>
+
+  </form>
+
+  <script src="../js/generate_report.js"></script>
+
 </body>
 </html>

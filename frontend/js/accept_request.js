@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             return result[0].id_asesor;
         } catch (error) {
             console.error(error);
-            alert('No se pudo obtener el ID del alumno');
+            alert('No se pudo obtener el ID del asesor');
             return null;
         }
     }
@@ -90,6 +90,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             estado: 'En proceso',
             aula: document.getElementById('aula').value,
         };
+
+        console.log(asesoriaData);
 
         try {
             const response = await fetch('http://localhost:3000/api/asesoria', {
