@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="../css/add_user.css">
     <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
-    <title>Registrate en AsesoraTEC</title>
+    <title>Registro personalizado</title>
+    <script src="../js/auth_check.js"></script>
 </head>
 
 <body>
@@ -16,7 +17,7 @@
         </div>
         <div class="right">
             <img src="../images/LOGO.png">
-            <h4>¿Como quieres registrarte?</h4>
+            <h4>Selecciona el rol del usuario</h4>
             <div class="container_switch">
                 <h5>Estudiante</h5>
                 <label class="switch">
@@ -33,10 +34,6 @@
                     <input id="email" class="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
                     <input id="password" class="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
                     <input id="confirm-password" class="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>
-                <div class="forgot_password">
-                    <a>¿Ya tienes cuenta?</a>
-                    <a href="../index.html">Iniciar sesión</a>
-                </div>
                 <button type="submit">Crear Cuenta</button>
             </form>
             <form id="register_form_asesor" class="register_form">
@@ -46,16 +43,12 @@
                     <input id="email_asesor" class="email" type="email" placeholder=" Correo electronico" autocomplete="username" required>
                     <input id="password_asesor" class="password" type="password" placeholder=" Contraseña" autocomplete="new-password" required>
                     <input id="confirm-password_asesor" class="confirm-password" type="password" placeholder=" Confirmar tu contraseña" required>                    
-                <div class="forgot_password">
-                    <a>¿Ya tienes cuenta?</a>
-                    <a href="../index.html">Iniciar sesión</a>
-                </div>
                 <button type="submit">Crear Cuenta</button>
             </form>
         </div>
     </div>
     <script src="../controllers/register.js"></script>
-    <script src="../js/register_API.js"></script>
+    <script src="../js/add_user.js"></script>
 </body>
 
 </html>

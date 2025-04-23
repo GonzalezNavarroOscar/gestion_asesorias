@@ -83,5 +83,19 @@ export function mostrarUsuarios(usuarios) {
 
         contenedor.appendChild(usuarioCard);
     });
+
+    const addUserCard = document.createElement('div');
+    addUserCard.className = 'user add-user';
+    addUserCard.innerHTML = `
+        <a href="add_user.html? class="add-user-link">
+            <div class="user_content">
+                <h3>Agregar Nuevo Usuario</h3>
+                <button class="add_user_btn">
+                    <img src="../images/add_icon.png" alt="Agregar">
+                </button>
+            </div>
+        </a>
+    `;
+    contenedor.appendChild(addUserCard);
     setupDeleteButtons();
 }

@@ -193,7 +193,7 @@ button {
 .data_content h4 {
   margin: 0;
   font-size: 14px;
-  color: #888;
+  color: green;
 }
 
 .data_content h2 {
@@ -223,6 +223,48 @@ button {
 .icon-box img {
   width: 20px;
   height: 20px;
+}
+
+.user.add-user {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.user.add-user:hover {
+  background-color: #c8e6c9;
+  transform: translateY(-3px);
+}
+
+.add-user-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.add_user_btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  transition: transform 0.2s ease;
+}
+
+.add_user_btn:hover {
+  transform: scale(1.1);
+}
+
+.add_user_btn img {
+  width: 32px;
+  height: 32px;
 }
 
 /* Responsive */
