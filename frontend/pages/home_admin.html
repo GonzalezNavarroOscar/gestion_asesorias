@@ -5,40 +5,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
-  <title>Dashboard</title>
+  <title>Home Admin</title>
   <link rel="stylesheet" href="../css/home_admin.css" />
   <link rel="stylesheet" href="../css/navbar.css" />
   <script src="../controllers/navbar.js"></script>
   <script src="../js/auth_check.js"></script>
+  <script src="../controllers/buttons.js"></script>
+  <script type="module" src="../controllers/admin_options.js"></script>
 </head>
 
 <body>
   <main-navbar></main-navbar>
 
-  <div class="container_top">
-    <img class="container_img" src="../images/Imagen_que_va_en_registro.png">
-    <h1 class="container_title">Dashboard</h1>
-    <div class="schedule_specialities">
+  <div class="container">
+    <div class="buttons">
+      <button id="gestUsu">Gestionar Usuarios</button>
+      <button id="gestAse">Gestionar Asesorias</button>
+      <button id="gestMat">Gestionar Materias</button>
+      <button id="estad">Estadísticas</button>
     </div>
   </div>
 
-  <div class="container_graphs">
-    <div class="graph">
-      <img src="../images/Graficadeejemplo.png">
-    </div>
-    <div class="graph_content">
-      <h4>Asesorias pendientes</h4>
-      <h4>Asesorias en proceso</h4>
-      <h4>Asesorias completadas</h4>
-    </div>
+  <div class="content-section">
+    <!-- Contenido dinámico se cargará aquí -->
   </div>
 
   <div class="container_data">
-
     <div class="data">
       <div class="data_content">
         <h4>Usuarios registrados</h4>
-        <h2>1500</h2>
+        <h2 id="user-count">1500</h2>
         <p>Ver mas</p>
       </div>
       <div class="icon-box">
@@ -78,18 +74,8 @@
         <img src="../images/tema.png">
       </div>
     </div>
-
   </div>
 
-  <div class="container">
-    <div class="buttons">
-      <button>Gestionar Alumnos</button>
-      <button>Gestionar Asesorias</button>
-      <button>Gestionar Materias</button>
-    </div>
-  </div>
-
-  <script src="../controllers/buttons.js"></script>
 </body>
 
 </html>

@@ -204,6 +204,48 @@ router.get('/materias', async (req, res) => {
     }
 });
 
+// Obtener todos los usuarios con nombre
+router.get('/usuarios', async (req, res) => {
+    try {
+        const usuarios = await queryAsync(
+            `SELECT 
+                u.id_usuario,
+                a.nombre AS alumno,
+                ase.nombre AS asesor,
+                u.correo,
+                u.rol
+            FROM Usuario u
+            LEFT JOIN Alumno a ON u.id_usuario = a.id_usuario
+            LEFT JOIN Asesor ase ON u.id_usuario = ase.id_usuario
+            WHERE u.rol IN ('alumno', 'asesor')`
+        );
+
+        res.json({
+            success: true,
+            data: usuarios
+        });
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener los usuarios'
+        });
+    }
+});
+
+// Eliminar usuarios por ID
+router.delete('/borrar-usuario/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        await queryAsync(`DELETE FROM Usuario WHERE id_usuario = ?`, [userId]);
+        res.json({ success: true, message: 'Usuario eliminado' });
+    } catch (error) {
+        console.error('Error al eliminar el Usuario:', error);
+        res.status(500).json({ success: false, message: 'Error al eliminar el Usuario' });
+    }
+});
+
 //Obtener temas de una materia específica
 router.get('/temas', async (req, res) => {
     try {
