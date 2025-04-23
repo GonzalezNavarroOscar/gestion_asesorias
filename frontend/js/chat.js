@@ -3,23 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = document.querySelector(".messages_popup");
   const contentDiv = document.getElementById("chat_preview_list");
 
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_usuario = usuario?.id_usuario;
-  const rol = usuario?.rol;
-
   function cargarMensajes() {
-      if (!id_usuario) {
-          contentDiv.innerHTML = "No has iniciado sesión.";
-          return;
-      }
-
-      fetch(`http://localhost:3000/api/mensajes/${rol}/${id_usuario}`)
+      fetch(`http://localhost:3000/api/mensajes`)
           .then(res => res.json())
           .then(data => {
-              if (data.length === 0) {
+              if (!Array.isArray(data) || data.length === 0) {
                   contentDiv.innerHTML = "Aún no tienes mensajes.";
                   return;
               }
+
               contentDiv.innerHTML = data.map(msg => `
                   <div class="mensaje_preview" data-chat="${msg.id_chat}" data-nombre="${msg.nombre_otro_usuario}">
                       <strong>${msg.nombre_otro_usuario}</strong><br>
@@ -76,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
           fetch(`http://localhost:3000/api/chat/${chatId}`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ id_usuario, contenido })
+              body: JSON.stringify({ contenido }) // El servidor obtiene el id_usuario por sesión
           })
               .then(() => {
                   document.getElementById(`input_${chatId}`).value = "";
@@ -88,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
           chatPopup.remove();
       });
   }
+
   function cargarMensajesChat(chatId) {
       fetch(`http://localhost:3000/api/chat/${chatId}`)
           .then(res => res.json())
@@ -95,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
               const messagesDiv = document.getElementById(`messages_${chatId}`);
               if (messagesDiv) {
                   messagesDiv.innerHTML = data.map(msg => `
-                      <div class="chat_msg ${msg.id_usuario === id_usuario ? 'yo' : 'ellos'}">${msg.contenido}</div>
+                      <div class="chat_msg ${msg.es_mio ? 'yo' : 'ellos'}">${msg.contenido}</div>
                   `).join('');
                   messagesDiv.scrollTop = messagesDiv.scrollHeight;
               }
