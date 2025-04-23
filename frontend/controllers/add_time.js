@@ -2,6 +2,8 @@ let timeBlockCounter = 1;
 
 document.querySelectorAll('.add_time').forEach(button => {
     button.addEventListener('click', function () {
+
+
         const dateDiv = this.closest('.date');
         const scheduleDiv = dateDiv.querySelector('.schedule');
         const existingTimeBlocks = scheduleDiv.querySelectorAll('.time');
@@ -10,6 +12,8 @@ document.querySelectorAll('.add_time').forEach(button => {
 
         const originalTime = existingTimeBlocks[0];
         const clone = originalTime.cloneNode(true);
+        const oldDelete = clone.querySelector('.delete_time');
+        if (oldDelete) oldDelete.remove();
 
         const timeInputs = clone.querySelectorAll('input[type="time"]');
         timeInputs.forEach((input, index) => {

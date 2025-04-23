@@ -633,12 +633,77 @@ router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
 
 });
 
+//Ingresar horario de asesor
+router.post('/horario/:id_usuario', async (req, res) => {
+    const { id_usuario } = req.params;
+    const horarios = req.body.horarios;
+
+    if (!Array.isArray(horarios)) {
+        return res.status(400).json({ success: false, message: 'Formato inválido' });
+    }
+
+    try {
+
+        const [asesorRows] = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?', [id_usuario]
+        );
+
+        if (asesorRows.length === 0) {
+            console.log(`No se encontró un asesor con id_usuario: ${id_usuario}`);
+            return res.status(404).json({ success: false, message: 'No se encontró un asesor con ese id_usuario.' });
+        }
+
+        await queryAsync(
+            `DELETE FROM Horario WHERE id_asesor = ?`,
+            [asesorRows.id_asesor]
+        );
+
+        for (const h of horarios) {
+            await queryAsync(`
+                INSERT INTO Horario (horario_inicio, horario_fin, dia_inicio, dia_fin, id_asesor)
+                VALUES (?, ?, ?, ?, ?)
+            `, [h.inicio, h.fin, h.dia, h.dia, asesorRows.id_asesor]);
+        }
+
+        res.json({ success: true, message: 'Horarios guardados correctamente' });
+    } catch (error) {
+        console.error('Error al guardar horarios:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+});
+
+//consultar horarios
+router.get('/consultar_horario/:id_usuario', async (req, res) => {
+    const { id_usuario } = req.params;
+
+    try {
+
+        const [asesorRows] = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?', [id_usuario]
+        );
+
+        const horario = await queryAsync(`
+            SELECT * FROM Horario WHERE id_asesor = ?;
+        `, [asesorRows.id_asesor]);
+
+        res.json({
+            success: true,
+            data: horario
+        });
+
+    } catch (error) {
+        console.error('Error al consultar horarios:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+});
+
+
 //Obtener detalles de asesorias específicas para reportes
-router.get('/reportes/:id_asesoria', async (req,res) => {
+router.get('/reportes/:id_asesoria', async (req, res) => {
 
     const { id_asesoria } = req.params
 
-    try{
+    try {
 
         const asesoria = await queryAsync(`
             SELECT a.id_asesoria,al.id_alumno,al.nombre AS alumno,ase.id_asesor,ase.nombre AS asesor,m.id_materia, m.nombre AS materia,t.id_tema,t.nombre AS tema, a.fecha, a.hora
@@ -648,8 +713,8 @@ router.get('/reportes/:id_asesoria', async (req,res) => {
             JOIN Materia AS m ON a.id_materia = m.id_materia
             JOIN Tema AS t ON a.id_tema = t.id_tema
             WHERE a.id_asesoria = ?
-        `,[id_asesoria]);
-    
+        `, [id_asesoria]);
+
         res.json({
             success: true,
             data: asesoria
@@ -666,24 +731,24 @@ router.get('/reportes/:id_asesoria', async (req,res) => {
 });
 
 //Obtener detalles de reportes usando el id del usuario
-router.get('/ver-reportes/:id_usuario', async (req,res) => {
+router.get('/ver-reportes/:id_usuario', async (req, res) => {
 
     const { id_usuario } = req.params
 
-    try{
+    try {
 
         const id_asesor_result = await queryAsync(`SELECT id_asesor FROM Asesor WHERE id_usuario = ?`, [id_usuario]);
 
         if (id_asesor_result.length === 0) {
             return res.json({ success: true, data: [] });
         }
-        
+
         const id_asesor = id_asesor_result[0].id_asesor;
 
         const reporte = await queryAsync(`
             SELECT id_reporte,nombre,descripción,fecha,porcentaje,estado_asesoria FROM Reporte WHERE id_asesor = ?
-        `,[id_asesor]);
-    
+        `, [id_asesor]);
+
         res.json({
             success: true,
             data: reporte
@@ -761,9 +826,9 @@ router.post('/generar-reporte', (req, res) => {
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
-        console.log(estado_asesoria,porcentaje);
+        console.log(estado_asesoria, porcentaje);
 
-        if(estado_asesoria === "Completada" && parseInt(porcentaje) === 100){
+        if (estado_asesoria === "Completada" && parseInt(porcentaje) === 100) {
 
             db.query(
                 `UPDATE Asesoria SET estado = 'Completada' WHERE id_asesoria = ?`,
@@ -776,7 +841,7 @@ router.post('/generar-reporte', (req, res) => {
                             message: 'Solicitud creada pero no se pudo actualizar la asesoria'
                         });
                     }
-    
+
                     res.status(201).json({
                         message: 'Asesoria finalizada exitosamente',
                         id: result.insertId
@@ -796,9 +861,9 @@ router.post('/generar-reporte', (req, res) => {
             `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
             [id_usuario, tipo, mensaje, fecha_envio, estado],
             (err4) => {
-              if (err4) console.error('Error al insertar notificación:', err4);
+                if (err4) console.error('Error al insertar notificación:', err4);
             }
-          );
+        );
 
     });
 });

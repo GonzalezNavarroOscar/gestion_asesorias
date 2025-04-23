@@ -27,6 +27,7 @@ body {
 .date {
     min-width: 300px;
     max-width: 800px;
+    min-height: 135px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,11 +38,46 @@ body {
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     gap: 15px;
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .date:has(input[type="checkbox"]:checked) {
     background-color: #4caf50;
     color: white;
+}
+
+.clear_times img {
+    height: 20px;
+    width: 20px;
+}
+
+.day_toggle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.day_toggle label {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.day_toggle input[type="checkbox"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Ocultar elementos si no está activo */
+.hidden {
+    display: none;
 }
 
 .time {
@@ -79,6 +115,10 @@ body {
 
 .delete-btn {
     margin-left: 10px;
+}
+
+.hidden {
+    display: none !important;
 }
 
 form label {
