@@ -4,6 +4,13 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+
+/*
+*
+* [###### Rutas de apoyo ######]
+*
+*/
+
 // Helper para ejecutar queries con promesas
 function queryAsync(sql, params) {
     return new Promise((resolve, reject) => {
@@ -13,6 +20,13 @@ function queryAsync(sql, params) {
         });
     });
 }
+
+
+/*
+*
+* [###### Rutas de autenticación y registro ######]
+*
+*/
 
 // Login
 router.post('/login', async (req, res) => {
@@ -93,6 +107,59 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Registrar usuarios en la base de datos dependiendo el rol
+router.post('/registro', async (req, res) => {
+    try {
+        const { nombre, correo, contraseña, rol, matricula } = req.body;
+
+        if (!nombre || !correo || !contraseña || !rol) {
+            return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
+        }
+
+        // Insertar en Usuario primero
+        const result = await queryAsync(
+            'INSERT INTO Usuario (correo, contraseña, rol) VALUES (?, ?, ?)',
+            [correo, contraseña, rol]
+        );
+
+        const id_usuario = result.insertId;
+
+        if (rol === 'alumno') {
+            if (!matricula) {
+                return res.status(400).json({ success: false, message: 'Matrícula es requerida para estudiantes' });
+            }
+
+            await queryAsync(
+                'INSERT INTO Alumno (id_usuario, nombre, matricula) VALUES (?, ?, ?)',
+                [id_usuario, nombre, matricula]
+            );
+        } else if (rol === 'asesor') {
+            await queryAsync(
+                'INSERT INTO Asesor (id_usuario, nombre) VALUES (?, ?)',
+                [id_usuario, nombre]
+            );
+        } else {
+            return res.status(400).json({ success: false, message: 'Rol inválido' });
+        }
+
+        res.json({
+            success: true,
+            message: 'Registro exitoso',
+            id_usuario
+        });
+
+    } catch (error) {
+        console.error('Error en registro:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+
+
+/*
+*
+* [###### Rutas de perfil del usuario ######]
+*
+*/
 
 // Obtener la información del usuario según el rol
 router.get('/perfil/:id_usuario', async (req, res) => {
@@ -184,25 +251,12 @@ router.get('/perfil/:id_usuario', async (req, res) => {
     }
 });
 
-// Obtener todas las materias
-router.get('/materias', async (req, res) => {
-    try {
-        const materias = await queryAsync(
-            'SELECT id_materia, nombre, descripción,imagen,popularidad FROM Materia'
-        );
 
-        res.json({
-            success: true,
-            data: materias
-        });
-    } catch (error) {
-        console.error('Error al obtener materias:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener las materias'
-        });
-    }
-});
+/*
+*
+* [###### Rutas para obtención de información generalizada ######]
+*
+*/
 
 // Obtener todos los usuarios con nombre
 router.get('/usuarios', async (req, res) => {
@@ -233,16 +287,23 @@ router.get('/usuarios', async (req, res) => {
     }
 });
 
-// Eliminar usuarios por ID
-router.delete('/borrar-usuario/:userId', async (req, res) => {
-    const { userId } = req.params;
-
+// Obtener todas las materias
+router.get('/materias', async (req, res) => {
     try {
-        await queryAsync(`DELETE FROM Usuario WHERE id_usuario = ?`, [userId]);
-        res.json({ success: true, message: 'Usuario eliminado' });
+        const materias = await queryAsync(
+            'SELECT id_materia, nombre, descripción,imagen,popularidad FROM Materia'
+        );
+
+        res.json({
+            success: true,
+            data: materias
+        });
     } catch (error) {
-        console.error('Error al eliminar el Usuario:', error);
-        res.status(500).json({ success: false, message: 'Error al eliminar el Usuario' });
+        console.error('Error al obtener materias:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las materias'
+        });
     }
 });
 
@@ -284,130 +345,12 @@ router.get('/temas', async (req, res) => {
     }
 });
 
-// Obtener notificaciones por ID de usuario
-router.get('/notificaciones/:id_usuario', (req, res) => {
-    const { id_usuario } = req.params;
 
-    const query = 'SELECT * FROM Notificacion WHERE id_usuario = ? ORDER BY fecha_envio DESC';
-    db.query(query, [id_usuario], (err, results) => {
-        if (err) {
-            console.error('Error al obtener notificaciones:', err);
-            return res.status(500).json({ error: 'Error en el servidor' });
-        }
-        res.json(results);
-    });
-});
-
-// Obtener alumno por ID de usuario
-router.get('/alumno/:id_usuario', (req, res) => {
-    const { id_usuario } = req.params;
-
-    const query = 'SELECT * FROM Alumno WHERE id_usuario = ?';
-    db.query(query, [id_usuario], (err, results) => {
-        if (err) {
-            console.error('Error al obtener alumno:', err);
-            return res.status(500).json({ error: 'Error en el servidor' });
-        }
-        res.json(results);
-    });
-});
-
-// Obtener asesor por ID de usuario
-router.get('/asesor/:id_usuario', (req, res) => {
-    const { id_usuario } = req.params;
-
-    const query = 'SELECT * FROM Asesor WHERE id_usuario = ?';
-    db.query(query, [id_usuario], (err, results) => {
-        if (err) {
-            console.error('Error al obtener asesor:', err);
-            return res.status(500).json({ error: 'Error en el servidor' });
-        }
-        res.json(results);
-    });
-});
-
-// Obtener número de notificaciones
-router.get('/notificaciones/unread-count/:id_usuario', (req, res) => {
-    const { id_usuario } = req.params;
-
-    db.query(
-        'SELECT COUNT(*) AS count FROM Notificacion WHERE id_usuario = ?',
-        [id_usuario],
-        (err, results) => {
-            if (err) {
-                console.error('Error contando notificaciones:', err);
-                return res.status(500).json({ error: 'Error en el servidor' });
-            }
-            res.json({ count: results[0].count });
-        }
-    );
-});
-
-// Eliminar notificación por ID
-router.delete('/notificaciones/:id_notificacion', (req, res) => {
-    const { id_notificacion } = req.params;
-
-    const query = 'DELETE FROM Notificacion WHERE id_notificacion = ?';
-    db.query(query, [id_notificacion], (err, results) => {
-        if (err) {
-            console.error('Error al eliminar notificación:', err);
-            return res.status(500).json({ error: 'Error en el servidor' });
-        }
-
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ message: 'Notificación no encontrada' });
-        }
-
-        res.json({ message: 'Notificación eliminada correctamente' });
-    });
-});
-
-// Registrar usuarios en la base de datos dependiendo el rol
-router.post('/registro', async (req, res) => {
-    try {
-        const { nombre, correo, contraseña, rol, matricula } = req.body;
-
-        if (!nombre || !correo || !contraseña || !rol) {
-            return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
-        }
-
-        // Insertar en Usuario primero
-        const result = await queryAsync(
-            'INSERT INTO Usuario (correo, contraseña, rol) VALUES (?, ?, ?)',
-            [correo, contraseña, rol]
-        );
-
-        const id_usuario = result.insertId;
-
-        if (rol === 'alumno') {
-            if (!matricula) {
-                return res.status(400).json({ success: false, message: 'Matrícula es requerida para estudiantes' });
-            }
-
-            await queryAsync(
-                'INSERT INTO Alumno (id_usuario, nombre, matricula) VALUES (?, ?, ?)',
-                [id_usuario, nombre, matricula]
-            );
-        } else if (rol === 'asesor') {
-            await queryAsync(
-                'INSERT INTO Asesor (id_usuario, nombre) VALUES (?, ?)',
-                [id_usuario, nombre]
-            );
-        } else {
-            return res.status(400).json({ success: false, message: 'Rol inválido' });
-        }
-
-        res.json({
-            success: true,
-            message: 'Registro exitoso',
-            id_usuario
-        });
-
-    } catch (error) {
-        console.error('Error en registro:', error);
-        res.status(500).json({ success: false, message: 'Error interno del servidor' });
-    }
-});
+/*
+*
+* [###### Rutas para manejo de solicitudes ######]
+*
+*/
 
 // Registrar solicitudes en la base de datos a partir del formulario y aumentar popularidad
 router.post('/solicitud', (req, res) => {
@@ -473,6 +416,105 @@ router.post('/solicitud', (req, res) => {
         );
     });
 });
+
+//Obtener todas las solicitudes con estado 'Pendiente'
+router.get('/solicitudes-pendientes', async (req, res) => {
+
+    try {
+
+        const solicitudesPendientes = await queryAsync(`
+            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
+                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
+            FROM Solicitud AS s
+            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
+            JOIN Materia AS m ON s.id_materia = m.id_materia
+            JOIN Tema AS t ON s.id_tema = t.id_tema
+            WHERE s.estado = 'Pendiente'
+        `);
+
+        res.json({
+            success: true,
+            data: solicitudesPendientes
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+//Obtener detalles de solicitudes específicas
+router.get('/solicitudes/:id_solicitud', async (req, res) => {
+
+    const { id_solicitud } = req.params
+
+    try {
+
+        const solicitud = await queryAsync(`
+            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,al.matricula,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
+                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
+            FROM Solicitud AS s
+            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
+            JOIN Materia AS m ON s.id_materia = m.id_materia
+            JOIN Tema AS t ON s.id_tema = t.id_tema
+            WHERE s.id_solicitud = ?
+        `, [id_solicitud]);
+
+        res.json({
+            success: true,
+            data: solicitud
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+//Solicitar solicitudes para el home de alumno
+router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
+
+    const { id_solicitud } = req.params
+
+    try {
+
+        const solicitud = await queryAsync(`
+            SELECT Solicitud.id_solicitud, Solicitud.fecha_solicitud, Solicitud.estado, Solicitud.hora, Solicitud.modalidad, Solicitud.observaciones, Tema.nombre AS tema, Materia.nombre AS materia
+                FROM Solicitud 
+                JOIN Tema ON Tema.id_tema = Solicitud.id_tema
+                JOIN Materia ON Materia.id_materia = Solicitud.id_materia
+                WHERE Solicitud.id_usuario = ?;
+        `, [id_solicitud]);
+
+        res.json({
+            success: true,
+            data: solicitud
+        });
+
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las solicitudes'
+        });
+    }
+
+});
+
+
+/*
+*
+* [###### Rutas para manejo de asesorías ######]
+*
+*/
 
 // Registrar asesorias en la base de datos a partir del formulario y enviar notificación
 router.post('/asesoria', (req, res) => {
@@ -553,36 +595,6 @@ router.post('/asesoria', (req, res) => {
     });
 });
 
-//Obtener todas las solicitudes con estado 'Pendiente'
-router.get('/solicitudes-pendientes', async (req, res) => {
-
-    try {
-
-        const solicitudesPendientes = await queryAsync(`
-            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
-                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
-            FROM Solicitud AS s
-            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
-            JOIN Materia AS m ON s.id_materia = m.id_materia
-            JOIN Tema AS t ON s.id_tema = t.id_tema
-            WHERE s.estado = 'Pendiente'
-        `);
-
-        res.json({
-            success: true,
-            data: solicitudesPendientes
-        });
-
-    } catch (error) {
-        console.error('Error al obtener solicitudes:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener las solicitudes'
-        });
-    }
-
-});
-
 //Obtener todas las asesorias con estado 'En proceso'
 router.get('/asesorias-proceso', async (req, res) => {
 
@@ -613,67 +625,69 @@ router.get('/asesorias-proceso', async (req, res) => {
 
 });
 
-//Obtener detalles de solicitudes específicas
-router.get('/solicitudes/:id_solicitud', async (req, res) => {
 
-    const { id_solicitud } = req.params
+/*
+*
+* [###### Rutas para manejo de notificaciones ######]
+*
+*/
 
-    try {
+// Obtener notificaciones por ID de usuario
+router.get('/notificaciones/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
 
-        const solicitud = await queryAsync(`
-            SELECT s.id_solicitud,al.id_alumno,al.nombre AS alumno,al.matricula,m.id_materia, m.nombre AS materia,m.imagen AS imagen,t.id_tema, t.nombre AS tema, 
-                   s.fecha_solicitud, s.hora, s.modalidad, s.observaciones,s.estado
-            FROM Solicitud AS s
-            JOIN Alumno AS al ON s.id_alumno = al.id_alumno
-            JOIN Materia AS m ON s.id_materia = m.id_materia
-            JOIN Tema AS t ON s.id_tema = t.id_tema
-            WHERE s.id_solicitud = ?
-        `, [id_solicitud]);
-
-        res.json({
-            success: true,
-            data: solicitud
-        });
-
-    } catch (error) {
-        console.error('Error al obtener solicitudes:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener las solicitudes'
-        });
-    }
-
+    const query = 'SELECT * FROM Notificacion WHERE id_usuario = ? ORDER BY fecha_envio DESC';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener notificaciones:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
 });
 
-//Solicitar solicitudes para el home de alumno
-router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
+// Obtener número de notificaciones
+router.get('/notificaciones/unread-count/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
 
-    const { id_solicitud } = req.params
-
-    try {
-
-        const solicitud = await queryAsync(`
-            SELECT Solicitud.id_solicitud, Solicitud.fecha_solicitud, Solicitud.estado, Solicitud.hora, Solicitud.modalidad, Solicitud.observaciones, Tema.nombre AS tema, Materia.nombre AS materia
-                FROM Solicitud 
-                JOIN Tema ON Tema.id_tema = Solicitud.id_tema
-                JOIN Materia ON Materia.id_materia = Solicitud.id_materia
-                WHERE Solicitud.id_usuario = ?;
-        `, [id_solicitud]);
-
-        res.json({
-            success: true,
-            data: solicitud
-        });
-
-    } catch (error) {
-        console.error('Error al obtener solicitudes:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener las solicitudes'
-        });
-    }
-
+    db.query(
+        'SELECT COUNT(*) AS count FROM Notificacion WHERE id_usuario = ?',
+        [id_usuario],
+        (err, results) => {
+            if (err) {
+                console.error('Error contando notificaciones:', err);
+                return res.status(500).json({ error: 'Error en el servidor' });
+            }
+            res.json({ count: results[0].count });
+        }
+    );
 });
+
+// Eliminar notificación por ID
+router.delete('/notificaciones/:id_notificacion', (req, res) => {
+    const { id_notificacion } = req.params;
+
+    const query = 'DELETE FROM Notificacion WHERE id_notificacion = ?';
+    db.query(query, [id_notificacion], (err, results) => {
+        if (err) {
+            console.error('Error al eliminar notificación:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Notificación no encontrada' });
+        }
+
+        res.json({ message: 'Notificación eliminada correctamente' });
+    });
+});
+
+
+/*
+*
+* [###### Rutas para manejo de horarios ######]
+*
+*/
 
 //Ingresar horario de asesor
 router.post('/horario/:id_usuario', async (req, res) => {
@@ -740,83 +754,11 @@ router.get('/consultar_horario/:id_usuario', async (req, res) => {
 });
 
 
-//Obtener detalles de asesorias específicas para reportes
-router.get('/reportes/:id_asesoria', async (req, res) => {
-
-    const { id_asesoria } = req.params
-
-    try {
-
-        const asesoria = await queryAsync(`
-            SELECT a.id_asesoria,al.id_alumno,al.nombre AS alumno,ase.id_asesor,ase.nombre AS asesor,m.id_materia, m.nombre AS materia,t.id_tema,t.nombre AS tema, a.fecha, a.hora
-            FROM Asesoria AS a
-            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
-            JOIN Asesor AS ase ON a.id_asesor = ase.id_asesor
-            JOIN Materia AS m ON a.id_materia = m.id_materia
-            JOIN Tema AS t ON a.id_tema = t.id_tema
-            WHERE a.id_asesoria = ?
-        `, [id_asesoria]);
-
-        res.json({
-            success: true,
-            data: asesoria
-        });
-
-    } catch (error) {
-        console.error('Error al obtener asesoria:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener la asesoria'
-        });
-    }
-
-});
-
-//Obtener detalles de reportes usando el id del usuario
-router.get('/ver-reportes/:id_usuario', async (req, res) => {
-
-    const { id_usuario } = req.params
-
-    try {
-
-        const id_asesor_result = await queryAsync(`SELECT id_asesor FROM Asesor WHERE id_usuario = ?`, [id_usuario]);
-
-        if (id_asesor_result.length === 0) {
-            return res.json({ success: true, data: [] });
-        }
-
-        const id_asesor = id_asesor_result[0].id_asesor;
-
-        const reporte = await queryAsync(`
-            SELECT id_reporte,nombre,descripción,fecha,porcentaje,estado_asesoria FROM Reporte WHERE id_asesor = ?
-        `, [id_asesor]);
-
-        res.json({
-            success: true,
-            data: reporte
-        });
-
-    } catch (error) {
-        console.error('Error al obtener reportes:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener los reportes'
-        });
-    }
-
-});
-
-//Borrar reportes usando el ID
-router.delete('/eliminar-reportes/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await queryAsync(`DELETE FROM Reporte WHERE id_reporte = ?`, [id]);
-        res.json({ success: true, message: 'Reporte eliminado' });
-    } catch (error) {
-        console.error('Error al eliminar el reporte:', error);
-        res.status(500).json({ success: false, message: 'Error al eliminar el reporte' });
-    }
-});
+/*
+*
+* [###### Rutas para manejo de reportes ######]
+*
+*/
 
 // Registrar reportes, cambiar el estado de las asesorías y enviar notificación
 router.post('/generar-reporte', (req, res) => {
@@ -909,6 +851,138 @@ router.post('/generar-reporte', (req, res) => {
 
     });
 });
+
+//Obtener detalles de asesorias específicas para reportes
+router.get('/reportes/:id_asesoria', async (req, res) => {
+
+    const { id_asesoria } = req.params
+
+    try {
+
+        const asesoria = await queryAsync(`
+            SELECT a.id_asesoria,al.id_alumno,al.nombre AS alumno,ase.id_asesor,ase.nombre AS asesor,m.id_materia, m.nombre AS materia,t.id_tema,t.nombre AS tema, a.fecha, a.hora
+            FROM Asesoria AS a
+            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
+            JOIN Asesor AS ase ON a.id_asesor = ase.id_asesor
+            JOIN Materia AS m ON a.id_materia = m.id_materia
+            JOIN Tema AS t ON a.id_tema = t.id_tema
+            WHERE a.id_asesoria = ?
+        `, [id_asesoria]);
+
+        res.json({
+            success: true,
+            data: asesoria
+        });
+
+    } catch (error) {
+        console.error('Error al obtener asesoria:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener la asesoria'
+        });
+    }
+
+});
+
+//Obtener detalles de reportes usando el id del usuario
+router.get('/ver-reportes/:id_usuario', async (req, res) => {
+
+    const { id_usuario } = req.params
+
+    try {
+
+        const id_asesor_result = await queryAsync(`SELECT id_asesor FROM Asesor WHERE id_usuario = ?`, [id_usuario]);
+
+        if (id_asesor_result.length === 0) {
+            return res.json({ success: true, data: [] });
+        }
+
+        const id_asesor = id_asesor_result[0].id_asesor;
+
+        const reporte = await queryAsync(`
+            SELECT id_reporte,nombre,descripción,fecha,porcentaje,estado_asesoria FROM Reporte WHERE id_asesor = ?
+        `, [id_asesor]);
+
+        res.json({
+            success: true,
+            data: reporte
+        });
+
+    } catch (error) {
+        console.error('Error al obtener reportes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener los reportes'
+        });
+    }
+
+});
+
+//Borrar reportes usando el ID
+router.delete('/eliminar-reportes/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await queryAsync(`DELETE FROM Reporte WHERE id_reporte = ?`, [id]);
+        res.json({ success: true, message: 'Reporte eliminado' });
+    } catch (error) {
+        console.error('Error al eliminar el reporte:', error);
+        res.status(500).json({ success: false, message: 'Error al eliminar el reporte' });
+    }
+});
+
+/*
+*
+* [###### Rutas para manejo de información de usuarios ######]
+*
+*/
+
+// Eliminar usuarios por ID
+router.delete('/borrar-usuario/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        await queryAsync(`DELETE FROM Usuario WHERE id_usuario = ?`, [userId]);
+        res.json({ success: true, message: 'Usuario eliminado' });
+    } catch (error) {
+        console.error('Error al eliminar el Usuario:', error);
+        res.status(500).json({ success: false, message: 'Error al eliminar el Usuario' });
+    }
+});
+
+// Obtener alumno por ID de usuario
+router.get('/alumno/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+
+    const query = 'SELECT * FROM Alumno WHERE id_usuario = ?';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener alumno:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
+// Obtener asesor por ID de usuario
+router.get('/asesor/:id_usuario', (req, res) => {
+    const { id_usuario } = req.params;
+
+    const query = 'SELECT * FROM Asesor WHERE id_usuario = ?';
+    db.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            console.error('Error al obtener asesor:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+        res.json(results);
+    });
+});
+
+
+/*
+*
+* [###### Rutas para manejo de contraseñas ######]
+*
+*/
 
 //Verificación de contraseñas
 router.post('/verify-password/:userId', async (req, res) => {
@@ -1033,5 +1107,9 @@ router.post('/forgot_password', async (req, res) => {
     }
 })
 
-
+/*
+*
+* [###### Exportación del módulo ######]
+*
+*/
 module.exports = router;
