@@ -583,7 +583,7 @@ router.post('/asesoria', (req, res) => {
         // Crear el chat asociado a la asesoría
         db.query(
             `INSERT INTO Chat (id_asesoria,id_alumno,id_asesor) VALUES (?, ?, ?)`,
-            [id_asesoria,id_alumno,id_asesor],
+            [id_asesoria, id_alumno, id_asesor],
             (err3) => {
                 if (err3) console.error('Error al crear chat:', err3);
             }
@@ -610,7 +610,7 @@ router.post('/asesoria', (req, res) => {
 router.put('/modificar-asesoria/:id_asesoria', (req, res) => {
 
     const { id_asesoria } = req.params
- 
+
     const {
         id_usuario_alumno,
         id_usuario_asesor,
@@ -650,7 +650,7 @@ router.put('/modificar-asesoria/:id_asesoria', (req, res) => {
         modalidad
     ];
 
-    db.query(query, [id_asesoria,values], (err, result) => {
+    db.query(query, [id_asesoria, values], (err, result) => {
         if (err) {
             console.error('Error al actualizar la asesoría:', err);
             return res.status(500).json({ error: 'Error en el servidor' });
@@ -934,6 +934,49 @@ router.get('/consultar_horario/:id_usuario', async (req, res) => {
         res.json({
             success: true,
             data: horario
+        });
+
+    } catch (error) {
+        console.error('Error al consultar horarios:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+});
+
+//insertar especialidades de asesor
+router.post('/insertar_especialidades/:id_usuario', async (req, res) => {
+    const { id_usuario } = req.params;
+    const especialidades = req.body.especialidades;
+
+    try {
+
+        await queryAsync(`
+            UPDATE Asesor SET especialidad = ? WHERE id_usuario = ?;
+        `, [especialidades, id_usuario]);
+
+        res.json({
+            success: true,
+            message: 'Completado'
+        });
+
+    } catch (error) {
+        console.error('Error al consultar horarios:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+});
+
+//consultar especialidades del asesor
+router.get('/consultar_especialidades/:id_usuario', async (req, res) => {
+    const { id_usuario } = req.params;
+
+    try {
+
+        const especialidades = await queryAsync(`
+            SELECT especialidad FROM Asesor WHERE id_usuario = ?;
+        `, [id_usuario]);
+
+        res.json({
+            success: true,
+            data: especialidades
         });
 
     } catch (error) {

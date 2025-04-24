@@ -1,5 +1,6 @@
 form = document.getElementById('schedule_form')
 const userData = JSON.parse(localStorage.getItem('userData'));
+const idAsesor = userData.id_usuario
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -24,7 +25,6 @@ form.addEventListener("submit", async (e) => {
         }
     });
 
-    // Enviar a la API
     try {
         const response = await fetch(`http://localhost:3000/api/horario/${idAsesor}`, {
             method: 'POST',
@@ -151,3 +151,40 @@ async function cargarHorariosGuardados(idAsesor) {
         });
     }
 }
+
+specialities_form = document.getElementById('specialities_form')
+
+specialities_form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const checkboxes = document.querySelectorAll('input[name=especialidad]:checked')
+    const selecionados = Array.from(checkboxes).map(checkbox => checkbox.value)
+
+    let especialidades = ''
+
+    selecionados.forEach((value) => {
+        especialidades = especialidades + value + ','
+    })
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/insertar_especialidades/${idAsesor}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ especialidades })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Guardado correctamente");
+        } else {
+            alert("No se pudo guardar");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error de red al guardar horarios");
+    }
+
+
+
+});

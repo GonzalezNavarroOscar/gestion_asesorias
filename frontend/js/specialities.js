@@ -17,14 +17,12 @@ async function cargarMaterias() {
     }
 }
 
-function mostrarMaterias(materias) {
+async function mostrarMaterias(materias) {
+    const especialidades = await consultar_especialidades()
     const contenedor = document.getElementById('specialities');
     contenedor.innerHTML = ''
 
-    contador = 0
-
     materias.forEach(materia => {
-        contador = contador + 1
         const materiaCard = document.createElement('div');
 
         materiaCard.className = 'speciality';
@@ -32,10 +30,34 @@ function mostrarMaterias(materias) {
         materiaCard.innerHTML = `
 
             <label for='especialidad_${materia.nombre}'>${materia.nombre}</label>
-            <input type="checkbox" id='especialidad_${materia.nombre}' name='especialidad_${materia.nombre}' value='${materia.nombre}'>
+            <input type="checkbox" id='especialidad_${materia.nombre}' name='especialidad' value='${materia.nombre}' ${especialidades.includes(materia.nombre) ? 'checked' : ''}>
      
         `;
         contenedor.appendChild(materiaCard);
     });
 }
 
+async function consultar_especialidades() {
+    try {
+        const idAsesor = userData.id_usuario
+        const response = await fetch(`http://localhost:3000/api/consultar_especialidades/${idAsesor}`)
+
+        const result = await response.json();
+        if (result.success) {
+            let especialidades = result.data[0].especialidad
+            especialidades = especialidades.split(',')
+            let valores = []
+            especialidades.forEach(value => {
+                if (value.trim() !== '') {
+                    valores.push(value)
+                }
+            })
+            return valores
+        } else {
+            console.log('hola')
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error de red al guardar horarios");
+    }
+}
