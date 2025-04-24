@@ -558,6 +558,8 @@ router.post('/asesoria', (req, res) => {
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
+        const id_asesoria = result.insertId;
+
         //Actualización de el estado de la Solicitud
         db.query(
             `UPDATE Solicitud SET estado = 'Aceptada' WHERE id_solicitud = ?`,
@@ -575,6 +577,15 @@ router.post('/asesoria', (req, res) => {
                     message: 'Solicitud creada exitosamente',
                     id: result.insertId
                 });
+            }
+        );
+
+        // Crear el chat asociado a la asesoría
+        db.query(
+            `INSERT INTO Chat (id_asesoria,id_alumno,id_asesor) VALUES (?, ?, ?)`,
+            [id_asesoria,id_alumno,id_asesor],
+            (err3) => {
+                if (err3) console.error('Error al crear chat:', err3);
             }
         );
 
@@ -679,6 +690,77 @@ router.delete('/notificaciones/:id_notificacion', (req, res) => {
         }
 
         res.json({ message: 'Notificación eliminada correctamente' });
+    });
+});
+
+
+/*
+*
+* [###### Rutas para manejo de chats y mensajes ######]
+*
+*/
+
+// Obtener chats por ID de usuario
+router.get('/chats/:id_usuario', (req, res) => {
+
+    const { id_usuario } = req.params;
+
+    if (!id_usuario) {
+        return res.status(400).json({ success: false, message: 'ID de usuario requerido' });
+    }
+
+    const getUserRoleQuery = `SELECT rol FROM Usuario WHERE id_usuario = ?`;
+
+    db.query(getUserRoleQuery, [id_usuario], (err, roleResult) => {
+        if (err || roleResult.length === 0) {
+            return res.status(500).json({ success: false, message: 'No se pudo obtener el rol del usuario' });
+        }
+
+        const rol = roleResult[0].rol;
+
+        let getIdQuery, chatQuery;
+
+        if (rol === 'alumno') {
+            getIdQuery = `SELECT id_alumno AS id FROM Alumno WHERE id_usuario = ?`;
+            chatQuery = `SELECT 
+                            Chat.*, 
+                            Tema.nombre AS tema,
+                            Asesoria.aula AS aula, 
+                            Asesoria.modalidad 
+                          FROM Chat
+                          JOIN Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
+                          JOIN Tema ON Asesoria.id_tema = Tema.id_tema
+                          WHERE Chat.id_alumno = ?`;
+        } else if (rol === 'asesor') {
+            getIdQuery = `SELECT id_asesor AS id FROM Asesor WHERE id_usuario = ?`;
+            chatQuery = `SELECT 
+                            Chat.*, 
+                            Tema.nombre AS tema,
+                            Asesoria.aula AS aula, 
+                            Asesoria.modalidad 
+                          FROM Chat
+                          JOIN Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
+                          JOIN Tema ON Asesoria.id_tema = Tema.id_tema
+                          WHERE Chat.id_asesor = ?`;
+        } else {
+            return res.status(400).json({ error: 'Rol de usuario no válido para chats' });
+        }
+
+        db.query(getIdQuery, [id_usuario], (err2, idResult) => {
+            if (err2 || idResult.length === 0) {
+                return res.status(500).json({ error: 'No se pudo obtener ID del usuario' });
+            }
+
+            const id = idResult[0].id;
+
+            db.query(chatQuery, [id], (err3, chats) => {
+                if (err3) {
+                    return res.status(500).json({ success: false, message: 'Error al obtener los chats' });
+                }
+
+                res.json({ success: true, data: chats });
+            });
+        });
     });
 });
 

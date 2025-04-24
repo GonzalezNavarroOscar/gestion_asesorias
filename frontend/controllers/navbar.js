@@ -11,7 +11,7 @@ class Navbar extends HTMLElement {
                         </button>
                         <div class="messages_popup" style="display: none;">
                             <div>
-                                <h1>Mensajes</h1>
+                                <h1>Chats</h1>
                             </div>
                             <div class="messages_content" id="chat_preview_list">Cargando...</div>
                         </div>
