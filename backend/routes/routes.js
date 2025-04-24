@@ -7,7 +7,7 @@ require('dotenv').config();
 
 /*
 *
-* [###### Rutas de apoyo ######]
+* [###### Funciones de apoyo ######]
 *
 */
 

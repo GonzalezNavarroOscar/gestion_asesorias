@@ -108,7 +108,7 @@ async function handleLogin(e) {
 
             localStorage.setItem('authToken', data.token);
         
-            localStorage.setItem('userData', JSON.stringify(data.user));
+            localStorage.setItem('userData', JSON.stringify(user));
 
             redirectByRole(selectedRol);
         
