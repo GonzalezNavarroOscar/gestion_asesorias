@@ -1,4 +1,5 @@
 import { cargarUsuarios } from '../js/view_users.js';
+import { cargarAsesorias } from '../js/manage_advices.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = {
@@ -10,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const contentSection = document.querySelector('.content-section');
     
-    // Plantillas para cada sección
     const sectionTemplates = {
         users: `
             <div class="section" id="users-section">
@@ -48,28 +48,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function loadSection(section) {
-        // Ocultar todas las secciones primero
         document.querySelectorAll('.section').forEach(sec => {
             sec.classList.remove('active');
         });
         
-        // Cargar la plantilla de la sección si no existe
         if (!document.getElementById(`${section}-section`)) {
             contentSection.innerHTML = sectionTemplates[section];
         }
         
-        // Mostrar la sección seleccionada
         const currentSection = document.getElementById(`${section}-section`);
         if (currentSection) {
             currentSection.classList.add('active');
             
-            // Cargar contenido específico
             switch(section) {
                 case 'users':
                     cargarUsuarios();
                     break;
                 case 'advices':
-                    // cargarAsesorias();
+                    cargarAsesorias();
                     break;
                 case 'subjects':
                     // cargarMaterias();
@@ -81,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Event listeners para los botones
     buttons.users.addEventListener('click', () => loadSection('users'));
     buttons.advices.addEventListener('click', () => loadSection('advices'));
     buttons.subjects.addEventListener('click', () => loadSection('subjects'));

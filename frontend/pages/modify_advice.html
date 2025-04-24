@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de Asesoría</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/accept_request.css">
+    <script src="../js/auth_check.js"></script>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Modificar la Asesoría</h2>
+        <form action="" id="form_accept">
+            <input type="hidden" name="id_asesoria"> 
+
+            <label for="nombre_alumno">Nombre del alumno</label>
+            <input type="text" id="nombre_alumno" name="nombre_alumno" readonly>
+
+            <label for="nombre_asesor">Nombre del asesor</label>
+            <input type="text" id="nombre_asesor" name="nombre_asesor" readonly>
+
+            <label for="materia">Materia</label>
+            <input type="text" id="materia" name="materia">
+
+            <label for="tema">Tema</label>
+            <input type="text" id="tema" name="tema">
+
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" value="2025-04-22">
+
+            <label for="hora">Hora</label>
+            <input type="time" id="hora" name="hora" value="10:30">
+
+            <label for="mode">Modalidad</label>
+            <input type="text" id="mode" name="mode" value="10:30">
+
+            <label for="aula">Aula</label>
+            <input type="text" id="aula" name="aula" placeholder="Ej. 408 / 102 / LC4 / EC2 / Meet" required>
+
+            <button type="submit">Modificar Asesoría</button>
+        </form>
+    </div>
+
+    <script src="../js/modify_advices.js"></script>
+
+</body>
+</html>

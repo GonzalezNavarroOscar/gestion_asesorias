@@ -17,6 +17,14 @@
   flex-direction: row;
 }
 
+.gestUsu_btn{
+  background-color: #219ebc;
+}
+
+.gestAse_btn{
+  background-color: #f4acb7;
+}
+
 button {
   text-align: center;
   width: 60%;
@@ -61,7 +69,7 @@ button {
 }
 
 .user {
-  background-color: #f9f9f9;
+  background-color: #8ecae6;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -226,7 +234,7 @@ button {
 }
 
 .user.add-user {
-  background-color: #f9f9f9;
+  background-color: #8ecae6;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -238,7 +246,7 @@ button {
 }
 
 .user.add-user:hover {
-  background-color: #c8e6c9;
+  background-color: #219ebc;
   transform: translateY(-3px);
 }
 
@@ -265,6 +273,45 @@ button {
 .add_user_btn img {
   width: 32px;
   height: 32px;
+}
+
+.advices-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 50px;
+  margin-top: 30px;
+  max-width: 1200px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.advice {
+  background-color: #ffc8dd;
+  width: 300px;
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.advice_content {
+  text-align: center;
+  font-weight: normal;
+}
+
+.advice_content h4 {
+  font-weight: normal;
+}
+
+.state_complete{
+  background-color: #457b9d;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
 }
 
 /* Responsive */

@@ -606,6 +606,81 @@ router.post('/asesoria', (req, res) => {
     });
 });
 
+// Modificar asesoría a partir del formulario y enviar notificación
+router.put('/modificar-asesoria/:id_asesoria', (req, res) => {
+
+    const { id_asesoria } = req.params
+ 
+    const {
+        id_usuario_alumno,
+        id_usuario_asesor,
+        id_alumno,
+        id_asesor,
+        id_materia,
+        id_tema,
+        nombre_tema,
+        fecha,
+        hora,
+        aula,
+        modalidad
+    } = req.body;
+
+    const query = `
+    UPDATE Asesoria SET
+        id_alumno = ?,
+        id_asesor = ?,
+        id_materia = ?,
+        id_tema = ?,
+        fecha = ?,
+        hora = ?,
+        aula = ?,
+        modalidad = ?
+    WHERE id_asesoria = ?
+    `;
+
+    const values = [
+        id_alumno,
+        id_asesor,
+        id_materia,
+        id_tema,
+        fecha,
+        hora,
+        estado,
+        aula,
+        modalidad
+    ];
+
+    db.query(query, [id_asesoria,values], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar la asesoría:', err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        //Parámetros para la Notificación
+        const tipo = 'Asesoría Modificada';
+        const mensaje = `Tu Asesoría de ${nombre_tema} fue modificada por el administrador. Revísala`;
+        const fecha_envio = new Date();
+        const estado = 'Enviada';
+
+        db.query(
+            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [id_usuario_alumno, tipo, mensaje, fecha_envio, estado],
+            (err4) => {
+                if (err4) console.error('Error al insertar notificación:', err4);
+            }
+        );
+
+        db.query(
+            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [id_usuario_asesor, tipo, mensaje, fecha_envio, estado],
+            (err4) => {
+                if (err4) console.error('Error al insertar notificación:', err4);
+            }
+        );
+
+    });
+});
+
 //Obtener todas las asesorias con estado 'En proceso'
 router.get('/asesorias-proceso', async (req, res) => {
 
@@ -631,6 +706,38 @@ router.get('/asesorias-proceso', async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error al obtener las Asesorias'
+        });
+    }
+
+});
+
+//Obtener detalles de asesorías específicas
+router.get('/detalles-asesoria/:id_asesoria', async (req, res) => {
+
+    const { id_asesoria } = req.params
+
+    try {
+
+        const asesoria = await queryAsync(`
+            SELECT a.id_asesoria,al.nombre AS alumno,ase.nombre as asesor, m.nombre AS materia,t.nombre AS tema, 
+                   a.fecha, a.hora, a.estado,a.modalidad,a.aula
+            FROM Asesoria AS a
+            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
+            JOIN Asesor AS ase ON ase.id_asesor = a.id_asesor
+            JOIN Materia AS m ON a.id_materia = m.id_materia
+            JOIN Tema AS t ON a.id_tema = t.id_tema
+            WHERE a.id_asesoria = ?`, [id_asesoria]);
+
+        res.json({
+            success: true,
+            data: asesoria
+        });
+
+    } catch (error) {
+        console.error('Error al obtener asesoria:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener la asesoria'
         });
     }
 
