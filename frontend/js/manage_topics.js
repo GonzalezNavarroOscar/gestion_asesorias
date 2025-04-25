@@ -36,6 +36,14 @@ function agregarBarraBusqueda() {
 
 async function obtenerTemasPorMateria(nombreMateria) {
     try {
+        // Primero, verificamos si la materia existe
+        const materiaExiste = await verificarExistenciaMateria(nombreMateria);
+        if (!materiaExiste) {
+            renderMateriaInexistente();
+            return; // Si no existe, no continuamos con la carga de los temas
+        }
+
+        // Si la materia existe, obtenemos los temas
         const response = await fetch(`http://localhost:3000/api/temas?materia=${encodeURIComponent(nombreMateria)}`);
         const data = await response.json();
 
@@ -48,6 +56,26 @@ async function obtenerTemasPorMateria(nombreMateria) {
         }
     } catch (error) {
         console.error('Error al obtener temas por materia:', error);
+    }
+}
+
+async function verificarExistenciaMateria(nombreMateria) {
+    try {
+        // Obtenemos todas las materias
+        const response = await fetch('http://localhost:3000/api/materias');
+        const data = await response.json();
+
+        if (data.success) {
+            // Verificamos si la materia buscada está en la lista de materias
+            const materiaEncontrada = data.data.some(materia => materia.nombre.toLowerCase() === nombreMateria.toLowerCase());
+            return materiaEncontrada;
+        } else {
+            console.warn('Error al obtener las materias');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error al verificar existencia de la materia:', error);
+        return false;
     }
 }
 
@@ -68,10 +96,8 @@ function renderTemas(temas) {
             </div>
         `;
         
-        // Agregar evento al botón para redirigir a la página de agregar tema
         const agregarBtn = document.getElementById('agregar-tema-btn');
         agregarBtn.addEventListener('click', () => {
-            // Podrías usar una URL diferente según la estructura de tu app
             window.location.href = 'add_topic.html?materia=' + encodeURIComponent(materiaActual);
         });
 
@@ -104,4 +130,13 @@ function renderTemas(temas) {
     `;
 
     contenedor.appendChild(agregarCard);
+}
+
+function renderMateriaInexistente() {
+    const contenedor = document.querySelector('.topics-container');
+    if (!contenedor) return;
+
+    contenedor.innerHTML = `
+        <p>La materia "${materiaActual}" no existe en el sistema.</p>
+    `;
 }
