@@ -1,5 +1,6 @@
 import { cargarUsuarios } from '../js/view_users.js';
 import { cargarAsesorias } from '../js/manage_advices.js';
+import { cargarMaterias } from '../js/manage_subjects.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = {
@@ -68,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     cargarAsesorias();
                     break;
                 case 'subjects':
-                    // cargarMaterias();
+                    cargarMaterias();
                     break;
                 case 'stats':
                     // Contenido ya está en la plantilla
@@ -82,6 +83,5 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.subjects.addEventListener('click', () => loadSection('subjects'));
     buttons.stats.addEventListener('click', () => loadSection('stats'));
 
-    // Cargar sección de usuarios por defecto
     loadSection('users');
 });

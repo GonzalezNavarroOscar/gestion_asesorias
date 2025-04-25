@@ -12,6 +12,7 @@
 
 .buttons {
   gap: 20px;
+  width: 80%;
   margin: 40px;
   display: flex;
   flex-direction: row;
@@ -23,6 +24,10 @@
 
 .gestAse_btn{
   background-color: #f4acb7;
+}
+
+.gestMat_btn{
+  background-color: #83c5be;
 }
 
 button {
@@ -235,6 +240,7 @@ button {
 
 .user.add-user {
   background-color: #8ecae6;
+  border: 2px dashed #219ebc;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -325,6 +331,132 @@ button {
 
 .modify_buttons{
   gap: 20px;
+}
+
+.subjects-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.container {
+  padding-top: 1%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Estilo para todas las cartas */
+.card {
+  width: 280px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3%);
+}
+
+.card-image {
+  height: 180px;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  background-color: #83c5be;
+  padding-top: 10px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.card-description {
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-bottom: 15px;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: justify;
+}
+
+.card button {
+  margin-bottom: 15px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card button:hover {
+  opacity: 0.8;
+}
+
+/* Estilo para la carta "Agregar nueva materia" */
+.agregar-materia {
+  border: 2px dashed #006d77;
+  justify-content: space-between;
+}
+
+.agregar-materia:hover {
+  transform: scale(1.05); /* Efecto de hover diferente */
+}
+
+.agregar-materia .card-image {
+  height: 180px;
+}
+
+.agregar-materia .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.agregar-materia .card-content {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.agregar-materia button {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.agregar-materia button:hover {
+  background-color: #218838;
 }
 
 /* Responsive */

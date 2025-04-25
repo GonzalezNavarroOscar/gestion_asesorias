@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
 require('dotenv').config();
 
 
@@ -21,6 +23,19 @@ function queryAsync(sql, params) {
     });
 }
 
+// Configuración de Multer para manejar la carga de imágenes
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '../../frontend/images'));
+    },
+    filename: (req, file, cb) => {
+        const fileExtension = path.extname(file.originalname);
+        const filename = Date.now() + fileExtension;
+        cb(null, filename);
+    }
+});
+
+const upload = multer({ storage });
 
 /*
 *
@@ -254,38 +269,9 @@ router.get('/perfil/:id_usuario', async (req, res) => {
 
 /*
 *
-* [###### Rutas para obtención de información generalizada ######]
+* [###### Rutas para manejo de materias ######]
 *
 */
-
-// Obtener todos los usuarios con nombre
-router.get('/usuarios', async (req, res) => {
-    try {
-        const usuarios = await queryAsync(
-            `SELECT 
-                u.id_usuario,
-                a.nombre AS alumno,
-                ase.nombre AS asesor,
-                u.correo,
-                u.rol
-            FROM Usuario u
-            LEFT JOIN Alumno a ON u.id_usuario = a.id_usuario
-            LEFT JOIN Asesor ase ON u.id_usuario = ase.id_usuario
-            WHERE u.rol IN ('alumno', 'asesor')`
-        );
-
-        res.json({
-            success: true,
-            data: usuarios
-        });
-    } catch (error) {
-        console.error('Error al obtener usuarios:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al obtener los usuarios'
-        });
-    }
-});
 
 // Obtener todas las materias
 router.get('/materias', async (req, res) => {
@@ -304,6 +290,24 @@ router.get('/materias', async (req, res) => {
             success: false,
             message: 'Error al obtener las materias'
         });
+    }
+});
+
+// Ruta para agregar una nueva materia
+router.post('/agregar-materias', upload.single('imagen'), async (req, res) => {
+    const { nombre, descripcion } = req.body;
+    const imagen = `images/${req.file.filename}`;
+    const popularidad = 0;
+
+    try {
+        await queryAsync(
+            'INSERT INTO Materia (nombre, descripción, imagen, popularidad) VALUES (?, ?, ?, ?)',
+            [nombre, descripcion, imagen, popularidad]
+        );
+        res.json({ success: true, message: 'Materia agregada exitosamente' });
+    } catch (error) {
+        console.error('Error al agregar materia:', error);
+        res.status(500).json({ success: false, message: 'Error al agregar materia' });
     }
 });
 
@@ -1243,6 +1247,35 @@ router.delete('/eliminar-reportes/:id', async (req, res) => {
 * [###### Rutas para manejo de información de usuarios ######]
 *
 */
+
+// Obtener todos los usuarios con nombre
+router.get('/usuarios', async (req, res) => {
+    try {
+        const usuarios = await queryAsync(
+            `SELECT 
+                u.id_usuario,
+                a.nombre AS alumno,
+                ase.nombre AS asesor,
+                u.correo,
+                u.rol
+            FROM Usuario u
+            LEFT JOIN Alumno a ON u.id_usuario = a.id_usuario
+            LEFT JOIN Asesor ase ON u.id_usuario = ase.id_usuario
+            WHERE u.rol IN ('alumno', 'asesor')`
+        );
+
+        res.json({
+            success: true,
+            data: usuarios
+        });
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener los usuarios'
+        });
+    }
+});
 
 // Eliminar usuarios por ID
 router.delete('/borrar-usuario/:userId', async (req, res) => {

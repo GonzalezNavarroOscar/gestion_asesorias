@@ -50,6 +50,7 @@
 - dotenv
 - crypto
 - cookie parser
+- multer
 
 ### frontend
 
@@ -103,7 +104,7 @@ Las dependencias necesarias están instaladas en las carpetas del proyecto, úni
 ##frontend
 
 ##backend
-    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser --save-dev nodemon crypto
+    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser --save-dev nodemon crypto multer
 
 ```
 
