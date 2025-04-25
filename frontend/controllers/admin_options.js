@@ -2,6 +2,7 @@ import { cargarUsuarios } from '../js/view_users.js';
 import { cargarAsesorias } from '../js/manage_advices.js';
 import { cargarMaterias } from '../js/manage_subjects.js';
 import { cargarTemas } from '../js/manage_topics.js';
+import { generarGraficoEstadistica } from '../js/stats.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = {
@@ -40,20 +41,23 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `,
         stats: `
-            <div class="section" id="stats-section">
-                <h2>Estadísticas</h2>
+        <div class="section" id="stats-section">
+            <h2>Estadísticas</h2>
+            <div class="stats-container">
+                <label for="tipo-estadistica">Seleccionar Tipo de Estadística:</label>
+                <select id="tipo-estadistica">
+                    <option value="todos">Todos</option>
+                    <option value="usuarios">Usuarios</option>
+                    <option value="asesorias">Asesorías</option>
+                    <option value="materias">Materias</option>
+                    <option value="temas">Temas</option>
+                </select>
                 <div class="graphs-container">
-                    <div class="graph">
-                        <img src="../images/Graficadeejemplo.png">
-                    </div>
-                    <div class="graph_content">
-                        <h4>Asesorias pendientes</h4>
-                        <h4>Asesorias en proceso</h4>
-                        <h4>Asesorias completadas</h4>
-                    </div>
+                    <canvas id="estadisticasGrafico" width="400" height="200"></canvas>
                 </div>
             </div>
-        `
+        </div>
+    `
     };
 
     function loadSection(section) {
@@ -83,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     cargarTemas();
                     break;
                 case 'stats':
-                    // Contenido ya está en la plantilla
+                    generarGraficoEstadistica('todos');
                     break;
             }
         }
