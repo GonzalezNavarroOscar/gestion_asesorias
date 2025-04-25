@@ -10,7 +10,6 @@ body {
     margin: 40px auto;
     padding-left: 50px;
     padding-right: 50px;
-    ;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -277,6 +276,15 @@ input:checked+.slider:before {
 
     .container {
         width: 100%;
+    }
+
+    .schedule_specialities {
+        margin: 0px;
+    }
+
+    .container_top {
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
 }

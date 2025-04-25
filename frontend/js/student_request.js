@@ -2,7 +2,6 @@ let todasLasSolicitudes = [];
 
 async function cargarSolicitudes() {
     const userData = JSON.parse(localStorage.getItem('userData'));
-    console.log(userData)
     try {
         const response = await fetch(`http://localhost:3000/api/solicitudes_alumno/${userData.id_usuario}`);
         const data = await response.json();

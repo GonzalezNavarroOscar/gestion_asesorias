@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Detalles de Solicitud</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/accept_request.css">
+    <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/navbar.css">
     <script src="../js/auth_check.js"></script>
+    <script src="../controllers/buttons.js"></script>
+    <script src="../controllers/navbar.js"></script>
 </head>
-<body>
 
+<body>
+    <main-navbar></main-navbar>
     <div class="form-container">
         <h2>Detalle de la Solicitud</h2>
         <form action="" id="form_accept">
-            <input type="hidden" name="id_solicitud"> 
+            <input type="hidden" name="id_solicitud">
 
             <label for="nombre_alumno">Nombre del alumno</label>
             <input type="text" id="nombre_alumno" name="nombre_alumno" readonly>
@@ -42,4 +48,5 @@
     <script src="../js/accept_request.js"></script>
 
 </body>
+
 </html>

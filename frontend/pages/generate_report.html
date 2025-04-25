@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Generar Reporte de Asesoría</title>
   <link rel="stylesheet" href="../css/generate_report.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" href="../images/LOGO_icon.png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/navbar.css">
   <script src="../js/auth_check.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../controllers/buttons.js"></script>
+  <script src="../controllers/navbar.js"></script>
 </head>
-<body>
 
-  <h2>Generar Reporte de Asesoría</h2>
+<body>
+  <main-navbar></main-navbar>
 
   <form id="form-reporte">
-    
+    <h2>Generar Reporte de Asesoría</h2>
     <label for="id_asesoria" hidden></label>
     <input type="number" id="id_asesoria" name="id_asesoria" required readonly hidden>
 
@@ -26,7 +33,7 @@
     <input type="text" id="nombre_asesor" name="nombre_asesor" maxlength="100" required readonly>
 
     <label for="materia">Materia:</label>
-    <input type="text" id="materia" name="materia" maxlength="100" required readonly> 
+    <input type="text" id="materia" name="materia" maxlength="100" required readonly>
 
     <label for="tema">Tema:</label>
     <input type="text" id="tema" name="tema" maxlength="100" required readonly>
@@ -47,13 +54,13 @@
     <input type="number" id="total_horas" name="total_horas" min="0" required readonly>
 
     <label for="porcentaje">Porcentaje:</label>
-    <input type="number" id="porcentaje" name="porcentaje" min="0" max="100" required >
+    <input type="number" id="porcentaje" name="porcentaje" min="0" max="100" required>
     <span id="mensaje_porcentaje" style="color: red; font-size: 12px;"></span>
 
     <label for="estado_asesoria">Estado de la Asesoría:</label>
     <select name="estado_asesoria" id="estado_asesoria">
-        <option value="Completada">Completada</option>
-        <option value="En proceso">En proceso</option>
+      <option value="Completada">Completada</option>
+      <option value="En proceso">En proceso</option>
     </select>
 
     <button type="submit">Guardar Reporte</button>
@@ -63,4 +70,5 @@
   <script src="../js/generate_report.js"></script>
 
 </body>
+
 </html>

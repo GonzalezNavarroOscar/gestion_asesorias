@@ -333,12 +333,21 @@ input:checked+.slider:before {
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        justify-content: start;
-        flex-direction: row;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
     }
 
     .container_img {
         display: none;
+    }
+
+    .schedule_specialities {
+        margin: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .container {
@@ -350,15 +359,32 @@ input:checked+.slider:before {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         display: flex;
         justify-content: center;
+        flex-direction: column;
     }
 
     .requests {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        margin-top: 30px;
+        max-width: 1200px;
+        box-sizing: border-box;
+        gap: 50px;
     }
 
     .request {
         width: 90%;
+    }
+
+    .filter {
+        text-align: center;
+        width: 55%;
+        background-color: white;
+        border: 2px solid #007bff;
+        color: black;
+        font-weight: bold;
+        border-radius: 20px;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 }

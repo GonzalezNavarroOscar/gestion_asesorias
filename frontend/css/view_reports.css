@@ -1,7 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    padding: 20px;
 }
 
 h1 {
@@ -20,14 +19,14 @@ h1 {
     width: 300px;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
 }
 
 .carta h3 {
     margin: 0;
     color: #2c3e50;
-  }
+}
 
 .carta p {
     margin: 5px 0;
