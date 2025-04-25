@@ -1345,6 +1345,36 @@ router.get('/asesor/:id_usuario', (req, res) => {
 
 /*
 *
+* [###### Rutas para manejo de estadísticas ######]
+*
+*/
+
+router.get('/estadisticas-contadores', async (req, res) => {
+    try {
+        const usuariosResult = await queryAsync('SELECT COUNT(*) AS total_usuarios FROM Usuario');
+        const asesoriasResult = await queryAsync('SELECT COUNT(*) AS total_asesorias FROM Asesoria');
+        const materiasResult = await queryAsync('SELECT COUNT(*) AS total_materias FROM Materia');
+        const temasResult = await queryAsync('SELECT COUNT(*) AS total_temas FROM Tema');
+        
+        res.json({
+            success: true,
+            data: {
+                usuarios: usuariosResult[0].total_usuarios,
+                asesorias: asesoriasResult[0].total_asesorias,
+                materias: materiasResult[0].total_materias,
+                temas: temasResult[0].total_temas
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener estadísticas' });
+    }
+});
+
+
+
+/*
+*
 * [###### Rutas para manejo de contraseñas ######]
 *
 */
