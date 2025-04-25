@@ -609,11 +609,9 @@ router.post('/asesoria', (req, res) => {
 // Modificar asesoría a partir del formulario y enviar notificación
 router.put('/modificar-asesoria/:id_asesoria', (req, res) => {
 
-    const { id_asesoria } = req.params
+    const { id_asesoria } = req.params;
 
     const {
-        id_usuario_alumno,
-        id_usuario_asesor,
         id_alumno,
         id_asesor,
         id_materia,
@@ -645,41 +643,70 @@ router.put('/modificar-asesoria/:id_asesoria', (req, res) => {
         id_tema,
         fecha,
         hora,
-        estado,
         aula,
         modalidad
     ];
 
-    db.query(query, [id_asesoria, values], (err, result) => {
+    db.query(query, [...values, id_asesoria], (err, result) => {
         if (err) {
             console.error('Error al actualizar la asesoría:', err);
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
-        //Parámetros para la Notificación
-        const tipo = 'Asesoría Modificada';
-        const mensaje = `Tu Asesoría de ${nombre_tema} fue modificada por el administrador. Revísala`;
-        const fecha_envio = new Date();
-        const estado = 'Enviada';
-
-        db.query(
-            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario_alumno, tipo, mensaje, fecha_envio, estado],
-            (err4) => {
-                if (err4) console.error('Error al insertar notificación:', err4);
+        db.query('SELECT id_usuario FROM Alumno WHERE id_alumno = ?', [id_alumno], (err, alumnoResult) => {
+            if (err) {
+                console.error('Error al obtener id_usuario del alumno:', err);
+                return res.status(500).json({ error: 'Error al obtener id_usuario del alumno' });
             }
-        );
 
-        db.query(
-            `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
-            [id_usuario_asesor, tipo, mensaje, fecha_envio, estado],
-            (err4) => {
-                if (err4) console.error('Error al insertar notificación:', err4);
+            const id_usuario_alumno = alumnoResult[0]?.id_usuario;
+
+            if (!id_usuario_alumno) {
+                console.error('No se encontró el id_usuario para el alumno');
+                return res.status(500).json({ error: 'No se encontró el id_usuario para el alumno' });
             }
-        );
 
+            db.query('SELECT id_usuario FROM Asesor WHERE id_asesor = ?', [id_asesor], (err, asesorResult) => {
+                if (err) {
+                    console.error('Error al obtener id_usuario del asesor:', err);
+                    return res.status(500).json({ error: 'Error al obtener id_usuario del asesor' });
+                }
+
+                const id_usuario_asesor = asesorResult[0]?.id_usuario;
+
+                if (!id_usuario_asesor) {
+                    console.error('No se encontró el id_usuario para el asesor');
+                    return res.status(500).json({ error: 'No se encontró el id_usuario para el asesor' });
+                }
+
+                // Parámetros para la Notificación
+                const tipo = 'Asesoría Modificada';
+                const mensaje = `Tu Asesoría de ${nombre_tema} fue modificada por el administrador. Revísala`;
+                const fecha_envio = new Date();
+                const estado = 'Enviada';
+
+                db.query(
+                    `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+                    [id_usuario_alumno, tipo, mensaje, fecha_envio, estado],
+                    (err4) => {
+                        if (err4) console.error('Error al insertar notificación para el alumno:', err4);
+                    }
+                );
+
+                db.query(
+                    `INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+                    [id_usuario_asesor, tipo, mensaje, fecha_envio, estado],
+                    (err4) => {
+                        if (err4) console.error('Error al insertar notificación para el asesor:', err4);
+                    }
+                );
+
+                res.json({ success: true, message: 'Asesoría modificada y notificaciones enviadas' });
+            });
+        });
     });
 });
+
 
 //Obtener todas las asesorias con estado 'En proceso'
 router.get('/asesorias-proceso', async (req, res) => {
@@ -719,8 +746,7 @@ router.get('/detalles-asesoria/:id_asesoria', async (req, res) => {
     try {
 
         const asesoria = await queryAsync(`
-            SELECT a.id_asesoria,al.nombre AS alumno,ase.nombre as asesor, m.nombre AS materia,t.nombre AS tema, 
-                   a.fecha, a.hora, a.estado,a.modalidad,a.aula
+            SELECT a.id_asesoria,al.id_alumno,al.nombre AS alumno,ase.id_asesor,ase.nombre as asesor,a.id_materia, m.nombre AS materia,a.id_tema, t.nombre AS tema, a.fecha, a.hora, a.estado,a.modalidad,a.aula
             FROM Asesoria AS a
             JOIN Alumno AS al ON al.id_alumno = a.id_alumno
             JOIN Asesor AS ase ON ase.id_asesor = a.id_asesor

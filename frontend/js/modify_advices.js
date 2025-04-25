@@ -2,40 +2,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const idAsesoria = urlParams.get('id_asesoria');
 
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const idUsuario = userData?.id_usuario;
-
-    if (!idAsesoria) {
-        alert('ID de Asesoría no proporcionado en la URL');
-        return;
-    }
-
-    async function obtenerIdAsesor(idUsuario) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/asesor/${idUsuario}`);
-            if (!response.ok) throw new Error('Error al obtener el asesor');
-            
-            const result = await response.json();
-    
-            if (result.length === 0) {
-                alert('No se encontró el asesor con ese ID de usuario');
-                return null;
-            }
-    
-            return result[0].id_asesor;
-        } catch (error) {
-            console.error(error);
-            alert('No se pudo obtener el ID del asesor');
-            return null;
-        }
-    }
-
+    let asesoria = null;
     try {
         const response = await fetch(`http://localhost:3000/api/detalles-asesoria/${idAsesoria}`);
         if (!response.ok) throw new Error('Error al obtener los datos de la solicitud');
 
         const result = await response.json();
-        const asesoria = result.data[0];
+        asesoria = result.data[0];
 
         if (!asesoria) {
             alert('No se encontró la asesoría con ese ID');
@@ -65,59 +38,51 @@ document.addEventListener('DOMContentLoaded', async function () {
         alert('No se pudo cargar la información de la solicitud');
     }
 
-    //Manejo del formulario
+    // Manejo del formulario
     document.getElementById('form_accept').addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:3000/api/modificar-asesoria/${idAsesoria}`);
-        if (!response.ok) throw new Error('Error al obtener los datos de la asesoria');
+        if (!asesoria) {
+            alert('Los datos de la asesoría no están disponibles');
+            return;
+        }
 
-        const result = await response.json();
-        const asesoria = result.data[0];
-
-        const idAsesor = await obtenerIdAsesor(idUsuario);
-
-        const fecha = new Date(solicitud.fecha_solicitud);
+        const fecha = new Date(document.getElementById('fecha').value);
         const fechaFormateada = fecha.toISOString().split('T')[0];
 
-        const correoAlumno = `al${asesoria.matricula}@ite.edu.mx`;
-
         const asesoriaData = {
-            id_usuario_alumno: asesoria.id_alumno,
-            id_usuario_asesor: idAsesor,
+            id_asesoria: idAsesoria,
             id_alumno: asesoria.id_alumno,
-            id_asesor: idAsesor,
+            id_asesor: asesoria.id_asesor,
             id_materia: asesoria.id_materia,
             id_tema: asesoria.id_tema,
             nombre_tema: asesoria.tema,
             fecha: fechaFormateada,
-            hora: asesoria.hora,
-            aula: asesoria.getElementById('aula').value,
-            modalidad: solicitud.modalidad
+            hora: document.getElementById('hora').value,
+            aula: document.getElementById('aula').value,
+            modalidad: document.getElementById('mode').value
         };
 
-        console.log(asesoriaData);
-
         try {
-            const response = await fetch('http://localhost:3000/api/asesoria', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:3000/api/modificar-asesoria/${idAsesoria}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(asesoriaData)
             });
 
-            if (!response.ok) throw new Error('Error al crear solicitud');
+            if (!response.ok) throw new Error('Error al modificar la asesoría');
 
-            alert('¡Asesoría aceptada con éxito!');
+            alert('¡Asesoría modificada con éxito!');
 
             setTimeout(() => {
-                window.location.href = 'home_adviser.html';
+                window.location.href = 'home_admin.html';
             }, 500);
 
         } catch (error) {
             console.error(error);
-            alert('Error al aceptar asesoría');
+            alert('Error al modificar asesoría');
         }
     });
 });
