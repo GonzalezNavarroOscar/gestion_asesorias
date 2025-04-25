@@ -29,6 +29,21 @@ export function mostrarMaterias(materias) {
     }
     contenedor.innerHTML = '';
 
+    const agregarMateriaCard = document.createElement('div');
+    agregarMateriaCard.className = 'card agregar-materia';
+
+    agregarMateriaCard.innerHTML = `
+        <div class="card-image">
+            <img src="../images/plus.png" alt="Agregar Materia">
+        </div>
+        <div class="card-content">
+            <div class="card-text">Agregar nueva materia</div>
+            <button onclick="location.href='add_subject.html'">Agregar</button>
+        </div>
+    `;
+
+    contenedor.appendChild(agregarMateriaCard);
+
     materias.forEach(materia => {
         const materiaCard = document.createElement('div');
         materiaCard.className = 'card';
@@ -45,18 +60,31 @@ export function mostrarMaterias(materias) {
         contenedor.appendChild(materiaCard);
     });
 
-    const agregarMateriaCard = document.createElement('div');
-    agregarMateriaCard.className = 'card agregar-materia';
 
-    agregarMateriaCard.innerHTML = `
-        <div class="card-image">
-            <img src="../images/plus.png" alt="Agregar Materia">
-        </div>
-        <div class="card-content">
-            <div class="card-text">Agregar nueva materia</div>
-            <button onclick="location.href='add_subject.html'">Agregar</button>
-        </div>
-    `;
-
-    contenedor.appendChild(agregarMateriaCard);
 }
+
+const opcion = () => {
+    const select = filter.selectedIndex
+    switch (select) {
+        case 1:
+            todasLasMaterias.sort((a, b) => b.popularidad - a.popularidad);
+            break
+        case 2:
+            todasLasMaterias.sort((a, b) => a.popularidad - b.popularidad);
+            break
+        case 3:
+            todasLasMaterias.sort((a, b) => {
+                return a.nombre.localeCompare(b.nombre);
+            })
+            break
+        case 4:
+            todasLasMaterias.sort((a, b) => {
+                return b.nombre.localeCompare(a.nombre);
+            })
+            break
+    }
+    mostrarMaterias(todasLasMaterias)
+}
+
+const filter = document.getElementById('filter_materias')
+filter.addEventListener('change', opcion)

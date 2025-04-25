@@ -91,7 +91,7 @@ function renderTemas(temas, id_materia) {
                 </div>
             </div>
         `;
-        
+
         const agregarBtn = document.getElementById('agregar-tema-btn');
         agregarBtn.addEventListener('click', () => {
             window.location.href = `add_topic.html?id_materia=${id_materia}`;
@@ -99,6 +99,18 @@ function renderTemas(temas, id_materia) {
 
         return;
     }
+
+    const agregarCard = document.createElement('div');
+    agregarCard.className = 'card agregar-tema';
+
+    agregarCard.innerHTML = `
+        <div class="topics-card-content">
+            <div class="card-text">Agregar nuevo tema</div>
+            <button onclick="location.href='add_topic.html?id_materia=${id_materia}'">Agregar</button>
+        </div>
+    `;
+
+    contenedor.appendChild(agregarCard);
 
     temas.forEach(tema => {
         const temaCard = document.createElement('div');
@@ -115,17 +127,6 @@ function renderTemas(temas, id_materia) {
         contenedor.appendChild(temaCard);
     });
 
-    const agregarCard = document.createElement('div');
-    agregarCard.className = 'card agregar-tema';
-
-    agregarCard.innerHTML = `
-        <div class="topics-card-content">
-            <div class="card-text">Agregar nuevo tema</div>
-            <button onclick="location.href='add_topic.html?id_materia=${id_materia}'">Agregar</button>
-        </div>
-    `;
-
-    contenedor.appendChild(agregarCard);
 }
 
 function renderMateriaInexistente() {

@@ -364,7 +364,7 @@ router.post('/agregar-temas', async (req, res) => {
     try {
         await queryAsync(
             'INSERT INTO Tema (nombre, descripción, popularidad,id_materia) VALUES (?, ?, ?, ?)',
-            [nombre, descripcion, popularidad,id_materia]
+            [nombre, descripcion, popularidad, id_materia]
         );
         res.json({ success: true, message: 'Tema agregado exitosamente' });
     } catch (error) {
@@ -1356,7 +1356,7 @@ router.get('/estadisticas-contadores', async (req, res) => {
         const asesoriasResult = await queryAsync('SELECT COUNT(*) AS total_asesorias FROM Asesoria');
         const materiasResult = await queryAsync('SELECT COUNT(*) AS total_materias FROM Materia');
         const temasResult = await queryAsync('SELECT COUNT(*) AS total_temas FROM Tema');
-        
+
         res.json({
             success: true,
             data: {
@@ -1381,7 +1381,7 @@ router.get('/estadisticas-usuarios-activos', async (req, res) => {
         const asesoresResult = await queryAsync('SELECT COUNT(*) AS total_asesores FROM Usuario WHERE rol = "asesor"');
         // Número de administradores
         const administradoresResult = await queryAsync('SELECT COUNT(*) AS total_administradores FROM Usuario WHERE rol = "administrador"');
-        
+
         res.json({
             success: true,
             data: {
@@ -1401,7 +1401,7 @@ router.get('/estadisticas-asesorias-ultimo-mes', async (req, res) => {
     try {
         // Asesorías realizadas en el último mes
         const asesoriasUltimoMesResult = await queryAsync('SELECT COUNT(*) AS total_asesorias_ultimo_mes FROM Asesoria WHERE fecha >= CURDATE() - INTERVAL 1 MONTH');
-        
+
         res.json({
             success: true,
             data: {
@@ -1419,7 +1419,7 @@ router.get('/estadisticas-asesorias-por-materia', async (req, res) => {
     try {
         // Asesorías por cada materia
         const asesoriasPorMateriaResult = await queryAsync('SELECT M.nombre AS materia, COUNT(A.id_asesoria) AS total_asesorias FROM Asesoria A JOIN Materia M ON A.id_materia = M.id_materia GROUP BY M.id_materia');
-        
+
         res.json({
             success: true,
             data: asesoriasPorMateriaResult

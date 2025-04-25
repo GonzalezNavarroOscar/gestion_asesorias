@@ -18,23 +18,23 @@
   flex-direction: row;
 }
 
-.gestUsu_btn{
+.gestUsu_btn {
   background-color: #219ebc;
 }
 
-.gestAse_btn{
+.gestAse_btn {
   background-color: #f4acb7;
 }
 
-.gestMat_btn{
+.gestMat_btn {
   background-color: #83c5be;
 }
 
-.gestTem_btn{
+.gestTem_btn {
   background-color: #7f7f7f;
 }
 
-.estad_btn{
+.estad_btn {
   background-color: #709775;
 }
 
@@ -69,8 +69,37 @@ button {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.container_filter {
+  flex-direction: row;
+  width: 95%;
+  display: flex;
+  justify-content: end;
+}
+
+.filter {
+  text-align: center;
+  width: 15%;
+  background-color: white;
+  border: 2px solid #007bff;
+  color: black;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.hidden {
+  display: none;
 }
 
 /* Estilos para usuarios */
@@ -139,8 +168,14 @@ button {
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; transform: translateX(100px); }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(100px);
+  }
 }
 
 .no-users {
@@ -180,7 +215,8 @@ button {
   display: block;
 }
 
-.error-message, .success-message {
+.error-message,
+.success-message {
   text-align: center;
   padding: 10px;
   border-radius: 4px;
@@ -354,23 +390,23 @@ button {
   font-weight: normal;
 }
 
-.state_complete{
+.state_complete {
   background-color: #457b9d;
   border-radius: 12px;
   color: white;
   font-weight: bold;
 }
 
-.accept{
+.accept {
   background-color: #457b9d;
   margin: 10px;
 }
 
-.decline{
+.decline {
   background-color: red;
 }
 
-.modify_buttons{
+.modify_buttons {
   gap: 20px;
 }
 
@@ -466,7 +502,8 @@ button {
 }
 
 .agregar-materia:hover {
-  transform: scale(1.05); /* Efecto de hover diferente */
+  transform: scale(1.05);
+  /* Efecto de hover diferente */
 }
 
 .agregar-materia .card-image {
@@ -534,7 +571,7 @@ button {
   .container_data {
     flex-wrap: wrap;
   }
-  
+
   .data {
     width: 45%;
     min-width: 200px;
@@ -546,20 +583,20 @@ button {
     flex-direction: column;
     align-items: center;
   }
-  
+
   button {
     width: 80%;
   }
-  
+
   .users-container {
     grid-template-columns: 1fr;
   }
-  
+
   .graphs-container {
     flex-direction: column;
     padding: 20px;
   }
-  
+
   .data {
     width: 100%;
   }

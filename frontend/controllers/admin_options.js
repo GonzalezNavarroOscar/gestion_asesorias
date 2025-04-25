@@ -5,6 +5,14 @@ import { cargarTemas } from '../js/manage_topics.js';
 import { generarGraficoEstadistica } from '../js/stats.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    const filter_usuarios = document.getElementById('filter_usuarios')
+    const filter_asesorias = document.getElementById('filter_asesorias')
+    const filter_materias = document.getElementById('filter_materias')
+    const filter_temas = document.getElementById('filter_temas')
+    const filter_estadisticas = document.getElementById('filter_estadisticas')
+
+
     const buttons = {
         users: document.getElementById('gestUsu'),
         advices: document.getElementById('gestAse'),
@@ -14,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const contentSection = document.querySelector('.content-section');
-    
+
     const sectionTemplates = {
         users: `
             <div class="section" id="users-section">
@@ -64,30 +72,55 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.section').forEach(sec => {
             sec.classList.remove('active');
         });
-        
+
         if (!document.getElementById(`${section}-section`)) {
             contentSection.innerHTML = sectionTemplates[section];
         }
-        
+
         const currentSection = document.getElementById(`${section}-section`);
         if (currentSection) {
             currentSection.classList.add('active');
-            
-            switch(section) {
+
+            switch (section) {
                 case 'users':
                     cargarUsuarios();
+                    filter_usuarios.classList.remove('hidden')
+                    filter_asesorias.classList.add('hidden')
+                    filter_materias.classList.add('hidden')
+                    filter_temas.classList.add('hidden')
+                    filter_estadisticas.classList.add('hidden')
                     break;
                 case 'advices':
                     cargarAsesorias();
+                    filter_usuarios.classList.add('hidden')
+                    filter_asesorias.classList.remove('hidden')
+                    filter_materias.classList.add('hidden')
+                    filter_temas.classList.add('hidden')
+                    filter_estadisticas.classList.add('hidden')
                     break;
                 case 'subjects':
                     cargarMaterias();
+                    filter_usuarios.classList.add('hidden')
+                    filter_asesorias.classList.add('hidden')
+                    filter_materias.classList.remove('hidden')
+                    filter_temas.classList.add('hidden')
+                    filter_estadisticas.classList.add('hidden')
                     break;
                 case 'topics':
                     cargarTemas();
+                    filter_usuarios.classList.add('hidden')
+                    filter_asesorias.classList.add('hidden')
+                    filter_materias.classList.add('hidden')
+                    filter_temas.classList.remove('hidden')
+                    filter_estadisticas.classList.add('hidden')
                     break;
                 case 'stats':
                     generarGraficoEstadistica('todos');
+                    filter_usuarios.classList.add('hidden')
+                    filter_asesorias.classList.add('hidden')
+                    filter_materias.classList.add('hidden')
+                    filter_temas.classList.add('hidden')
+                    filter_estadisticas.classList.remove('hidden')
                     break;
             }
         }

@@ -1,11 +1,11 @@
-let usuarios = [];
+let Todosusuarios = [];
 
 export async function cargarUsuarios() {
     try {
         const response = await fetch('http://localhost:3000/api/usuarios');
         const data = await response.json();
 
-        usuarios = data.data;
+        Todosusuarios = data.data;
 
         if (data.success) {
             mostrarUsuarios(data.data);
@@ -37,7 +37,7 @@ const setupDeleteButtons = () => {
                 if (!response.ok) throw new Error('Error en la respuesta');
 
                 userDiv.classList.add('fade-out');
-                
+
                 setTimeout(() => {
                     userDiv.remove();
                     document.dispatchEvent(new CustomEvent('user-eliminado'));
@@ -54,6 +54,20 @@ const setupDeleteButtons = () => {
 export function mostrarUsuarios(usuarios) {
     const contenedor = document.querySelector('.users-container');
     contenedor.innerHTML = '';
+
+    const addUserCard = document.createElement('div');
+    addUserCard.className = 'user add-user';
+    addUserCard.innerHTML = `
+        <a href="add_user.html? class="add-user-link">
+            <div class="user_content">
+                <h3>Agregar Nuevo Usuario</h3>
+                <button class="add_user_btn">
+                    <img src="../images/add_icon.png" alt="Agregar">
+                </button>
+            </div>
+        </a>
+    `;
+    contenedor.appendChild(addUserCard);
 
     usuarios.forEach(usuario => {
         const usuarioCard = document.createElement('div');
@@ -84,18 +98,37 @@ export function mostrarUsuarios(usuarios) {
         contenedor.appendChild(usuarioCard);
     });
 
-    const addUserCard = document.createElement('div');
-    addUserCard.className = 'user add-user';
-    addUserCard.innerHTML = `
-        <a href="add_user.html? class="add-user-link">
-            <div class="user_content">
-                <h3>Agregar Nuevo Usuario</h3>
-                <button class="add_user_btn">
-                    <img src="../images/add_icon.png" alt="Agregar">
-                </button>
-            </div>
-        </a>
-    `;
-    contenedor.appendChild(addUserCard);
+
     setupDeleteButtons();
 }
+
+const opcion = () => {
+    const select = filter.selectedIndex
+    let usuarios = Todosusuarios
+    switch (select) {
+        case 1:
+            usuarios.sort((a, b) => {
+                const nombreA = a.alumno || a.asesor
+                const nombreB = b.alumno || b.asesor
+                return nombreA.localeCompare(nombreB)
+            })
+            break
+        case 2:
+            usuarios.sort((a, b) => {
+                const nombreA = a.alumno || a.asesor
+                const nombreB = b.alumno || b.asesor
+                return nombreB.localeCompare(nombreA)
+            })
+            break
+        case 3:
+            usuarios = usuarios.filter(value => value.rol === 'alumno')
+            break
+        case 4:
+            usuarios = usuarios.filter(value => value.rol === 'asesor')
+            break
+    }
+    mostrarUsuarios(usuarios)
+}
+
+const filter = document.getElementById('filter_usuarios')
+filter.addEventListener('change', opcion)

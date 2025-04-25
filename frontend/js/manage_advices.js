@@ -98,3 +98,56 @@ export function mostrarAsesorias(asesorias) {
 
     setupDeleteButtons();
 }
+
+const opcion_filter_request = () => {
+    const select = filter_request_adviser.selectedIndex
+    let solicitudes = AsesoriasEnProceso
+    switch (select) {
+        case 1:
+            solicitudes.sort((a, b) => {
+                return a.materia.localeCompare(b.materia)
+            })
+            break
+        case 2:
+            solicitudes.sort((a, b) => {
+                return b.materia.localeCompare(a.materia)
+            })
+            break
+        case 3:
+            solicitudes.sort((a, b) => {
+                return a.tema.localeCompare(b.tema)
+            })
+            break
+        case 4:
+            solicitudes.sort((a, b) => {
+                return b.tema.localeCompare(a.tema)
+            })
+            break
+        case 5:
+            solicitudes.sort((a, b) => {
+                return a.alumno.localeCompare(b.alumno)
+            })
+            break
+        case 6:
+            solicitudes.sort((a, b) => {
+                return b.alumno.localeCompare(a.alumno)
+            })
+            break
+        case 7:
+            solicitudes = solicitudes.sort((a, b) => new Date(b.fecha_solicitud) - new Date(a.fecha_solicitud))
+            break
+        case 8:
+            solicitudes = solicitudes.sort((a, b) => new Date(a.fecha_solicitud) - new Date(b.fecha_solicitud))
+            break
+        case 9:
+            solicitudes = solicitudes.filter(value => value.modalidad === 'En Linea')
+            break
+        case 10:
+            solicitudes = solicitudes.filter(value => value.modalidad === 'Presencial')
+            break
+    }
+    mostrarAsesorias(solicitudes)
+}
+
+const filter_request_adviser = document.getElementById('filter_asesorias')
+filter_request_adviser.addEventListener('change', opcion_filter_request)
