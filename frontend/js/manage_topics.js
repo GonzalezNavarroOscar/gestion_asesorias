@@ -1,71 +1,107 @@
-let todosLosTemas = [];
-let materiaGlobal = null
-document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const nombreMateria = urlParams.get('materia');
+let temasMateria = [];
+let materiaActual = '';
 
-    if (nombreMateria) {
-        const nombreDecodificado = decodeURIComponent(nombreMateria);
-        document.getElementById('nombreMateria').textContent = nombreDecodificado;
+export function cargarTemas() {
+    agregarBarraBusqueda();
+}
 
-        cargarTemas(nombreDecodificado);
-        materiaGlobal = nombreDecodificado
-    } else {
-        mostrarError("No se especificó una materia.");
-    }
-});
+function agregarBarraBusqueda() {
+    const topicsSection = document.getElementById('topics-section');
+    if (!topicsSection) return;
 
-async function cargarTemas(nombreMateria) {
-    const listaTemas = document.getElementById('listaTemas');
-    listaTemas.innerHTML = '<li>Cargando temas...</li>';
+    const searchWrapper = document.createElement('div');
+    searchWrapper.classList.add('search-wrapper');
 
+    searchWrapper.innerHTML = `
+        <input type="text" id="busqueda-materia" placeholder="Buscar materia por nombre..." />
+    `;
+
+    topicsSection.prepend(searchWrapper);
+
+    const inputBusqueda = document.getElementById('busqueda-materia');
+    let timeout;
+
+    inputBusqueda.addEventListener('input', (e) => {
+        clearTimeout(timeout);
+        const filtro = e.target.value.trim();
+
+        timeout = setTimeout(() => {
+            if (filtro.length > 2) {
+                materiaActual = filtro;
+                obtenerTemasPorMateria(filtro);
+            }
+        }, 300); // Espera antes de hacer la petición
+    });
+}
+
+async function obtenerTemasPorMateria(nombreMateria) {
     try {
-        const apiUrl = new URL('http://localhost:3000/api/temas');
-        apiUrl.searchParams.append('materia', nombreMateria);
+        const response = await fetch(`http://localhost:3000/api/temas?materia=${encodeURIComponent(nombreMateria)}`);
+        const data = await response.json();
 
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
+        if (data.success) {
+            temasMateria = data.data;
+            renderTemas(temasMateria);
+        } else {
+            console.warn('No se encontraron temas:', data.message);
+            renderTemas([]);
         }
-
-        const { success, data, message } = await response.json();
-
-        if (!success) {
-            throw new Error(message || 'Respuesta no exitosa del servidor');
-        }
-
-        todosLosTemas = data
-        mostrarTemas(data, nombreMateria)
-
     } catch (error) {
-        console.error('Error al cargar temas:', error);
-        mostrarError(error.message);
+        console.error('Error al obtener temas por materia:', error);
     }
 }
 
-function mostrarTemas(temas, materia) {
-    const listaTemas = document.getElementById('listaTemas');
-    listaTemas.innerHTML = '';
+function renderTemas(temas) {
+    const contenedor = document.querySelector('.topics-container');
+    if (!contenedor) return;
+
+    contenedor.innerHTML = '';
+
     if (temas.length === 0) {
-        listaTemas.innerHTML = '<li class="empty">No hay temas disponibles.</li>';
+        contenedor.innerHTML = `
+            <p>No se encontraron temas para la materia "${materiaActual}".</p>
+            <div class="card agregar-tema">
+                <div class="card-content">
+                    <div class="card-text">¿Quieres agregar un nuevo tema?</div>
+                    <button id="agregar-tema-btn">Agregar tema</button>
+                </div>
+            </div>
+        `;
+        
+        // Agregar evento al botón para redirigir a la página de agregar tema
+        const agregarBtn = document.getElementById('agregar-tema-btn');
+        agregarBtn.addEventListener('click', () => {
+            // Podrías usar una URL diferente según la estructura de tu app
+            window.location.href = 'add_topic.html?materia=' + encodeURIComponent(materiaActual);
+        });
+
         return;
     }
 
     temas.forEach(tema => {
-        const item = document.createElement('li');
-        item.innerHTML = `
-            <div class='topic_content'>
-                <h3>${tema.nombre}</h3>
-                <h5>${tema.descripción}</h5>
-            </div>
-            <button  type='button' class="btn-request" onclick="location.href='request_advice.html?tema=${encodeURIComponent(tema.nombre)}&materia=${encodeURIComponent(materia)}'">Solicitar</button>
-        `;
-        listaTemas.appendChild(item);
-    });
-}
+        const temaCard = document.createElement('div');
+        temaCard.className = 'card';
 
-function mostrarError(mensaje) {
-    const listaTemas = document.getElementById('listaTemas');
-    listaTemas.innerHTML = `<li class="error">${mensaje}</li>`;
+        temaCard.innerHTML = `
+            <div class="topics-card-content">
+                <div class="card-text"><strong>${tema.nombre}</strong></div>
+                <div class="card-description">${tema.descripción}</div>
+                <button onclick="location.href='edit_topic.html?id=${tema.id_tema}'">Editar</button>
+            </div>
+        `;
+
+        contenedor.appendChild(temaCard);
+    });
+
+    const agregarCard = document.createElement('div');
+    agregarCard.className = 'card agregar-tema';
+
+    agregarCard.innerHTML = `
+        <div class="topics-card-content">
+            <div class="card-text">Agregar nuevo tema</div>
+            <button onclick="location.href='add_topic.html?materia=${encodeURIComponent(materiaActual)}'">Agregar</button>
+        </div>
+    `;
+
+    contenedor.appendChild(agregarCard);
 }

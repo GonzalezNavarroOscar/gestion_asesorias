@@ -1,12 +1,14 @@
 import { cargarUsuarios } from '../js/view_users.js';
 import { cargarAsesorias } from '../js/manage_advices.js';
 import { cargarMaterias } from '../js/manage_subjects.js';
+import { cargarTemas } from '../js/manage_topics.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = {
         users: document.getElementById('gestUsu'),
         advices: document.getElementById('gestAse'),
         subjects: document.getElementById('gestMat'),
+        topics: document.getElementById('gestTem'),
         stats: document.getElementById('estad')
     };
 
@@ -29,6 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="section" id="subjects-section">
                 <h2>Gestión de Materias</h2>
                 <div class="subjects-container"></div>
+            </div>
+        `,
+        topics: `
+            <div class="section" id="topics-section">
+                <h2>Gestión de Temas</h2>
+                <div class="topics-container"></div>
             </div>
         `,
         stats: `
@@ -71,6 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'subjects':
                     cargarMaterias();
                     break;
+                case 'topics':
+                    cargarTemas();
+                    break;
                 case 'stats':
                     // Contenido ya está en la plantilla
                     break;
@@ -81,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.users.addEventListener('click', () => loadSection('users'));
     buttons.advices.addEventListener('click', () => loadSection('advices'));
     buttons.subjects.addEventListener('click', () => loadSection('subjects'));
+    buttons.topics.addEventListener('click', () => loadSection('topics'));
     buttons.stats.addEventListener('click', () => loadSection('stats'));
 
     loadSection('users');

@@ -30,6 +30,10 @@
   background-color: #83c5be;
 }
 
+.gestTem_btn{
+  background-color: #7f7f7f;
+}
+
 button {
   text-align: center;
   width: 60%;
@@ -457,6 +461,35 @@ button {
 
 .agregar-materia button:hover {
   background-color: #218838;
+}
+
+.topics-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.topics-card-content {
+  background-color: #a5a5a5;
+  padding-top: 10px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#busqueda-materia {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */
