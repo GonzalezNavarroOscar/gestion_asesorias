@@ -311,6 +311,13 @@ router.post('/agregar-materias', upload.single('imagen'), async (req, res) => {
     }
 });
 
+
+/*
+*
+* [###### Rutas para manejo de temas ######]
+*
+*/
+
 //Obtener temas de una materia específica
 router.get('/temas', async (req, res) => {
     try {
@@ -346,6 +353,23 @@ router.get('/temas', async (req, res) => {
             message: 'Error al consultar temas',
             error: error.message
         });
+    }
+});
+
+// Ruta para agregar un nuevo tema
+router.post('/agregar-temas', async (req, res) => {
+    const { id_materia, nombre, descripcion } = req.body;
+    const popularidad = 0;
+
+    try {
+        await queryAsync(
+            'INSERT INTO Tema (nombre, descripción, popularidad,id_materia) VALUES (?, ?, ?, ?)',
+            [nombre, descripcion, popularidad,id_materia]
+        );
+        res.json({ success: true, message: 'Tema agregado exitosamente' });
+    } catch (error) {
+        console.error('Error al agregar tema:', error);
+        res.status(500).json({ success: false, message: 'Error al agregar tema' });
     }
 });
 

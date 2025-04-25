@@ -1,6 +1,5 @@
 document.getElementById('materiaForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    console.log("Formulario enviado y preventDefault ejecutado");
 
     const formData = new FormData();
     formData.append('nombre', document.getElementById('materiaNombre').value);

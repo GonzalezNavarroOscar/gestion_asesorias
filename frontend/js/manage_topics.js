@@ -30,56 +30,52 @@ function agregarBarraBusqueda() {
                 materiaActual = filtro;
                 obtenerTemasPorMateria(filtro);
             }
-        }, 300); // Espera antes de hacer la petición
+        }, 300);
     });
 }
 
 async function obtenerTemasPorMateria(nombreMateria) {
     try {
-        // Primero, verificamos si la materia existe
-        const materiaExiste = await verificarExistenciaMateria(nombreMateria);
-        if (!materiaExiste) {
+        const materia = await obtenerMateriaPorNombre(nombreMateria);
+        if (!materia) {
             renderMateriaInexistente();
-            return; // Si no existe, no continuamos con la carga de los temas
+            return;
         }
 
-        // Si la materia existe, obtenemos los temas
         const response = await fetch(`http://localhost:3000/api/temas?materia=${encodeURIComponent(nombreMateria)}`);
         const data = await response.json();
 
         if (data.success) {
             temasMateria = data.data;
-            renderTemas(temasMateria);
+            renderTemas(temasMateria, materia.id_materia);
         } else {
             console.warn('No se encontraron temas:', data.message);
-            renderTemas([]);
+            renderTemas([], materia.id_materia);
         }
     } catch (error) {
         console.error('Error al obtener temas por materia:', error);
     }
 }
 
-async function verificarExistenciaMateria(nombreMateria) {
+async function obtenerMateriaPorNombre(nombreMateria) {
     try {
-        // Obtenemos todas las materias
         const response = await fetch('http://localhost:3000/api/materias');
         const data = await response.json();
 
         if (data.success) {
-            // Verificamos si la materia buscada está en la lista de materias
-            const materiaEncontrada = data.data.some(materia => materia.nombre.toLowerCase() === nombreMateria.toLowerCase());
-            return materiaEncontrada;
+            const materia = data.data.find(m => m.nombre.toLowerCase() === nombreMateria.toLowerCase());
+            return materia;
         } else {
             console.warn('Error al obtener las materias');
-            return false;
+            return null;
         }
     } catch (error) {
-        console.error('Error al verificar existencia de la materia:', error);
-        return false;
+        console.error('Error al obtener materia por nombre:', error);
+        return null;
     }
 }
 
-function renderTemas(temas) {
+function renderTemas(temas, id_materia) {
     const contenedor = document.querySelector('.topics-container');
     if (!contenedor) return;
 
@@ -89,7 +85,7 @@ function renderTemas(temas) {
         contenedor.innerHTML = `
             <p>No se encontraron temas para la materia "${materiaActual}".</p>
             <div class="card agregar-tema">
-                <div class="card-content">
+                <div class="topics-card-content">
                     <div class="card-text">¿Quieres agregar un nuevo tema?</div>
                     <button id="agregar-tema-btn">Agregar tema</button>
                 </div>
@@ -98,7 +94,7 @@ function renderTemas(temas) {
         
         const agregarBtn = document.getElementById('agregar-tema-btn');
         agregarBtn.addEventListener('click', () => {
-            window.location.href = 'add_topic.html?materia=' + encodeURIComponent(materiaActual);
+            window.location.href = `add_topic.html?id_materia=${id_materia}`;
         });
 
         return;
@@ -125,7 +121,7 @@ function renderTemas(temas) {
     agregarCard.innerHTML = `
         <div class="topics-card-content">
             <div class="card-text">Agregar nuevo tema</div>
-            <button onclick="location.href='add_topic.html?materia=${encodeURIComponent(materiaActual)}'">Agregar</button>
+            <button onclick="location.href='add_topic.html?id_materia=${id_materia}'">Agregar</button>
         </div>
     `;
 
