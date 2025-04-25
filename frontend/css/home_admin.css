@@ -314,6 +314,19 @@ button {
   font-weight: bold;
 }
 
+.accept{
+  background-color: #457b9d;
+  margin: 10px;
+}
+
+.decline{
+  background-color: red;
+}
+
+.modify_buttons{
+  gap: 20px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .container_data {

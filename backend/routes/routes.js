@@ -743,6 +743,56 @@ router.get('/detalles-asesoria/:id_asesoria', async (req, res) => {
 
 });
 
+//Eliminar asesorías por ID y enviar notificaciones.
+router.delete('/eliminar-asesorias/:id_asesoria', async (req, res) => {
+    const { id_asesoria } = req.params;
+
+    try {
+        const asesoria = await queryAsync(`
+            SELECT a.id_asesoria, a.id_alumno, al.id_usuario AS id_usuario_alumno, al.nombre AS alumno,
+                   a.id_asesor, ase.id_usuario AS id_usuario_asesor, ase.nombre AS asesor,
+                   m.nombre AS materia, t.nombre AS tema,
+                   a.fecha, a.hora, a.estado, a.modalidad, a.aula
+            FROM Asesoria AS a
+            JOIN Alumno AS al ON al.id_alumno = a.id_alumno
+            JOIN Asesor AS ase ON ase.id_asesor = a.id_asesor
+            JOIN Materia AS m ON a.id_materia = m.id_materia
+            JOIN Tema AS t ON a.id_tema = t.id_tema
+            WHERE a.id_asesoria = ?`, [id_asesoria]);
+
+        if (!asesoria || asesoria.length === 0) {
+            return res.status(404).json({ message: 'Asesoría no encontrada' });
+        }
+
+        const datos = asesoria[0];
+
+        await queryAsync('DELETE FROM Chat WHERE id_asesoria = ?', [id_asesoria]);
+
+        await queryAsync('DELETE FROM Asesoria WHERE id_asesoria = ?', [id_asesoria]);
+
+        const tipo = 'Asesoría Cancelada';
+        const mensaje = `Tu asesoría de ${datos.tema} fue cancelada por el administrador. Lo sentimos mucho.`;
+        const fecha_envio = new Date();
+        const estado = 'Enviada';
+
+        await queryAsync(`INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [datos.id_usuario_alumno, tipo, mensaje, fecha_envio, estado]);
+
+        await queryAsync(`INSERT INTO Notificacion (id_usuario, tipo, mensaje, fecha_envio, estado) VALUES (?, ?, ?, ?, ?)`,
+            [datos.id_usuario_asesor, tipo, mensaje, fecha_envio, estado]);
+
+        res.json({
+            success: true,
+            message: 'Asesoría eliminada correctamente',
+            data: datos
+        });
+
+    } catch (err) {
+        console.error('Error al eliminar asesoría:', err);
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
+});
+
 
 /*
 *
