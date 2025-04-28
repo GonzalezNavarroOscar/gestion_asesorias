@@ -934,26 +934,31 @@ router.get('/chats/:id_usuario', (req, res) => {
         if (rol === 'alumno') {
             getIdQuery = `SELECT id_alumno AS id FROM Alumno WHERE id_usuario = ?`;
             chatQuery = `SELECT 
-                            Chat.*, 
-                            Tema.nombre AS tema,
-                            Asesoria.aula AS aula, 
-                            Asesoria.modalidad 
-                          FROM Chat
-                          JOIN Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
-                          JOIN Tema ON Asesoria.id_tema = Tema.id_tema
-                          WHERE Chat.id_alumno = ?`;
+                    Chat.*, 
+                    Tema.nombre AS tema,
+                    Asesoria.aula AS aula, 
+                    Asesoria.modalidad,
+                    Asesor.nombre
+                  FROM Chat
+                  JOIN Asesoria AS Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
+                  JOIN Asesor ON Asesoria.id_asesor = Asesor.id_asesor
+                  JOIN Tema ON Asesoria.id_tema = Tema.id_tema
+                  WHERE Chat.id_alumno = ?`;
         } else if (rol === 'asesor') {
             getIdQuery = `SELECT id_asesor AS id FROM Asesor WHERE id_usuario = ?`;
             chatQuery = `SELECT 
-                            Chat.*, 
-                            Tema.nombre AS tema,
-                            Asesoria.aula AS aula, 
-                            Asesoria.modalidad 
-                          FROM Chat
-                          JOIN Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
-                          JOIN Tema ON Asesoria.id_tema = Tema.id_tema
-                          WHERE Chat.id_asesor = ?`;
-        } else {
+                    Chat.*, 
+                    Tema.nombre AS tema,
+                    asesoria1.aula AS aula, 
+                    asesoria1.modalidad,
+                    Alumno.nombre 
+                  FROM Chat
+                  JOIN Asesoria AS asesoria1 ON Chat.id_asesoria = asesoria1.id_asesoria
+                  JOIN Alumno ON asesoria1.id_alumno = Alumno.id_alumno
+                  JOIN Tema ON asesoria1.id_tema = Tema.id_tema
+                  WHERE Chat.id_asesor = ?`;
+        }
+        else {
             return res.status(400).json({ error: 'Rol de usuario no válido para chats' });
         }
 
@@ -975,6 +980,37 @@ router.get('/chats/:id_usuario', (req, res) => {
     });
 });
 
+//insertar mensaje
+router.post('/agregar-mensaje', async (req, res) => {
+    const { id_chat, mensaje, id_remitente } = req.body;
+
+    try {
+        await queryAsync(
+            'INSERT INTO Mensaje (id_chat,contenido,id_remitente) VALUES (?,?,?)',
+            [id_chat, mensaje, id_remitente]
+        );
+        res.json({ success: true, message: 'Materia agregada exitosamente' });
+    } catch (error) {
+        console.error('Error al agregar materia:', error);
+        res.status(500).json({ success: false, message: 'Error al agregar materia' });
+    }
+});
+
+//Mostrar todos los mensajes de un chat 
+router.post('/mostrar-mensajes', async (req, res) => {
+    const { id_chat } = req.body;
+
+    try {
+        const result = await queryAsync(
+            'SELECT contenido,fecha,hora,id_remitente FROM Mensaje WHERE id_chat = ?;',
+            [id_chat]
+        );
+        res.json({ success: true, data: result });
+    } catch (error) {
+        console.error('Error al agregar materia:', error);
+        res.status(500).json({ success: false, message: 'Error al agregar materia' });
+    }
+});
 
 /*
 *
