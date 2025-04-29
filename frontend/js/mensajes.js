@@ -44,15 +44,15 @@ async function mostrarMensajes(id_chat, mensajero) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ id_chat }),
-    })
+    });
 
-    chatId = id_chat
+    chatId = id_chat;
 
     const data = await response.json();
-    let mensajes = data.data
+    let mensajes = data.data;
 
-    const messages_container = document.getElementById('messages_container')
-    messages_container.innerHTML = ''
+    const messages_container = document.getElementById('messages_container');
+    messages_container.innerHTML = '';
 
     if (!encabezado) {
         const encabezado_chat = document.getElementById('encabezado_chat');
@@ -63,21 +63,27 @@ async function mostrarMensajes(id_chat, mensajero) {
     for (let i = 0; i < mensajes.length; i++) {
         if (userData.id_usuario != mensajes[i].id_remitente) {
             messages_container.innerHTML += `
-            <div class="my_received_messages" id="my_received_messages">
-            <p>${mensajes[i].contenido}</p>
-            </div>
+                <div class="my_received_messages" id="my_received_messages">
+                    <p>${mensajes[i].contenido}</p>
+                </div>
             `;
         } else {
             messages_container.innerHTML += `
-            <div class="my_messages" id="my_messages">
-            <p>${mensajes[i].contenido}</p>
-            </div>
+                <div class="my_messages" id="my_messages">
+                    <p>${mensajes[i].contenido}</p>
+                </div>
             `;
         }
     }
+
+    messages_container.scrollTop = messages_container.scrollHeight;
+
+    setInterval(() => {
+        mostrarMensajes(chatId);
+    }, 3000);
 }
-//Para que se carguen los mensajes cada cierto tiempo
-//setInterval(() => { mostrarMensajes(chatId) }, 3000);
+
+
 
 window.onload = () => {
     if (chatId && encabezado) {

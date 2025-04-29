@@ -58,7 +58,7 @@ body {
 
 /* Contenedor de los mensajes */
 #messages_container {
-    width: 80vw;
+    width: 50vw;
     /* 100% del ancho de la ventana */
     height: 90vh;
     padding: 10px;
@@ -120,13 +120,13 @@ body {
     border-top: 1px solid #ddd;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 50.4%;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
 
 #form_message input {
-    width: 55%;
-    padding: 10px;
+    width: 85%;
+    padding: 15px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 20px;
@@ -140,7 +140,7 @@ body {
     font-weight: bold;
     border: none;
     border-radius: 20px;
-    padding: 12px;
+    padding: 17px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
