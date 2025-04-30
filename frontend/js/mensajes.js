@@ -52,12 +52,14 @@ async function mostrarMensajes(id_chat, mensajero) {
     let mensajes = data.data;
 
     const messages_container = document.getElementById('messages_container');
-    messages_container.innerHTML = '';
+    messages_container.innerHTML = ''
+    const encabezado_chat = document.getElementById('encabezado_chat');
 
     if (!encabezado) {
-        const encabezado_chat = document.getElementById('encabezado_chat');
         encabezado_chat.innerHTML = `<h5>${mensajero}</h5>`;
         encabezado = mensajero;
+    } else {
+        encabezado_chat.innerHTML = `<h5>${encabezado}</h5>`;
     }
 
     for (let i = 0; i < mensajes.length; i++) {
@@ -78,18 +80,33 @@ async function mostrarMensajes(id_chat, mensajero) {
 
     messages_container.scrollTop = messages_container.scrollHeight;
 
-    setInterval(() => {
-        mostrarMensajes(chatId);
-    }, 3000);
+    mensajesActuales = mensajes;
 }
-
 
 
 window.onload = () => {
     if (chatId && encabezado) {
         mostrarMensajes(chatId, encabezado);
+        setInterval(async () => {
+            const response = await fetch('http://localhost:3000/api/mostrar-mensajes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id_chat: chatId }),
+            });
+
+            const data = await response.json();
+            const nuevosMensajes = data.data;
+
+            if (nuevosMensajes.length !== mensajesActuales.length ||
+                (mensajesActuales.length && nuevosMensajes[nuevosMensajes.length - 1].id_mensaje !== mensajesActuales[mensajesActuales.length - 1].id_mensaje)) {
+                mostrarMensajes(chatId, encabezado);
+            }
+        }, 3000);
     }
 };
+
 
 
 async function mostrarChats() {
