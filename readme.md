@@ -97,14 +97,14 @@ git clone https://github.com/GonzalezNavarroOscar/gestion_asesorias.git
 
 ## Instalación de dependencias
 
-Las dependencias necesarias están instaladas en las carpetas del proyecto, únicamente las dependencias necesarias para poder correr el proyecto, node.js y npm en este caso.
+Las dependencias necesarias se instalarán automaticamente al hacer en la carpeta backend
 
 ```bash
 
-##frontend
-
 ##backend
-    npm install express mysql2 cors body-parser jwt-decode jsonwebtoken cookie-parser --save-dev nodemon crypto multer
+    cd backend
+
+    npm install
 
 ```
 
@@ -120,7 +120,7 @@ El proyecto cuenta con un archivo encargado de lanzar el servidor de forma local
 
 cd backend
 
-node server.js
+npm start
 
 ```
 
