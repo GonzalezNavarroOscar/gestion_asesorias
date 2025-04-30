@@ -36,19 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
             contentDiv.innerHTML = '<p>No tienes chats disponibles.</p>';
             return;
         }
-
+    
         contentDiv.innerHTML = chats.map(chat => `
-            <a href='../pages/chat.html?chat=${encodeURIComponent(chat.id_chat)}&nombre=${encodeURIComponent(chat.nombre)}'>
+            <a href='../pages/chat.html?chat=${encodeURIComponent(chat.id_chat)}&nombre=${encodeURIComponent(chat.asesor.nombre)}'>
                 <div class="chat_preview" data-chat-id="${chat.id_chat}">
-                <p><strong>Asesor:</strong> ${chat.asesor.nombre}</p>
-                <p><strong>Asesoría:</strong> ${chat.id_asesoria.nombre}</p>
-                <p><strong>Último mensaje:</strong> ${chat.ultimo_mensaje?.contenido || 'Sin mensajes'}</p>
-                <p><strong>Fecha:</strong> ${chat.ultimo_mensaje?.fecha || '---'}</p>
-                <p><strong>Hora:</strong> ${chat.ultimo_mensaje?.hora || '---'}</p>
-            </div>
+                    <p><strong>Asesor:</strong> ${chat.asesor.nombre}</p>
+                    <p><strong>Asesoría:</strong> ${chat.id_asesoria.nombre}</p>
+                    <p><strong>Último mensaje:</strong> ${chat.ultimo_mensaje?.contenido || 'Sin mensajes'}</p>
+                    <p><strong>Fecha:</strong> ${chat.ultimo_mensaje?.fecha || '---'}</p>
+                    <p><strong>Hora:</strong> ${chat.ultimo_mensaje?.hora || '---'}</p>
+                </div>
             </a>
         `).join('');
-
+    
         document.querySelectorAll('.chat_preview').forEach(preview => {
             preview.addEventListener('click', () => {
                 const chatId = preview.getAttribute('data-chat-id');
