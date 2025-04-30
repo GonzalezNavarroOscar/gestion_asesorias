@@ -1379,6 +1379,7 @@ router.get('/asesor/:id_usuario', (req, res) => {
 });
 
 
+
 /*
 *
 * [###### Rutas para manejo de estadísticas ######]
