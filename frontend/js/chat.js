@@ -40,10 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
         contentDiv.innerHTML = chats.map(chat => `
             <a href='../pages/chat.html?chat=${encodeURIComponent(chat.id_chat)}&nombre=${encodeURIComponent(chat.nombre)}'>
                 <div class="chat_preview" data-chat-id="${chat.id_chat}">
-                <p><strong>ID Chat:</strong> ${chat.id_chat}</p>
-                <p><strong>ID Alumno:</strong> ${chat.id_alumno}</p>
-                <p><strong>ID Asesor:</strong> ${chat.id_asesor}</p>
-                <p><strong>ID Asesoría:</strong> ${chat.id_asesoria}</p>
+                <p><strong>Asesor:</strong> ${chat.asesor.nombre}</p>
+                <p><strong>Asesoría:</strong> ${chat.id_asesoria.nombre}</p>
                 <p><strong>Último mensaje:</strong> ${chat.ultimo_mensaje?.contenido || 'Sin mensajes'}</p>
                 <p><strong>Fecha:</strong> ${chat.ultimo_mensaje?.fecha || '---'}</p>
                 <p><strong>Hora:</strong> ${chat.ultimo_mensaje?.hora || '---'}</p>
