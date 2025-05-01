@@ -1,4 +1,3 @@
-/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -16,17 +15,32 @@ body {
 
 .container {
     display: flex;
-    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
 }
 
 /* Contenedor principal del chat */
-#chats_container {
+
+.container_menu {
     width: 360px;
     height: 90vh;
     border-right: 1px solid #ddd;
     background-color: #fff;
     padding: 10px;
     overflow-y: auto;
+}
+
+.hidden {
+    width: 50px;
+    height: 90vh;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.hidden_chat {
+    display: none;
 }
 
 .encabezado_chat {
@@ -57,10 +71,17 @@ body {
     color: #333;
 }
 
+.chat_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
+}
+
 /* Contenedor de los mensajes */
 #messages_container {
-    width: 80vw;
-    height: 71vh;
+    flex: 1;
     padding: 10px;
     overflow-y: auto;
     background-color: #fff;
@@ -92,7 +113,7 @@ body {
     max-width: 70%;
     padding: 9px 17px;
     margin: 5px 0;
-    background-color: #082544;
+    background-color: #007bff;
     color: white;
     border-radius: 8px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -104,26 +125,28 @@ body {
     margin: 0;
 }
 
+/* Estilos para el formulario de mensajes */
 .form_container {
-    box-sizing: border-box;
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+    background-color: #fff;
+    height: 25%;
 }
 
-/* Estilos para el formulario de mensajes */
 #form_message {
+    margin-top: 20px;
+    position: relative;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    padding: 10px;
-    gap: 20px;
+    align-items: baseline;
     background-color: #fff;
-    border-top: 1px solid #ddd;
-    bottom: 0;
-    width: 100%;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
 
 #form_message input {
-    width: 85%;
+    flex: 1;
+    /* que crezca para ocupar espacio */
     padding: 15px;
     font-size: 14px;
     border: 1px solid #ddd;
@@ -170,4 +193,56 @@ body {
 #chats_container,
 #messages_container {
     overflow-y: auto;
+}
+
+.hide_button {
+    display: flex;
+    justify-content: center;
+}
+
+.hide_button button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.hide_button img {
+    height: 30px;
+    width: 30px;
+}
+
+@media (max-width: 768px) {
+    #messages_container {
+        height: 76vh;
+    }
+
+    .container_menu {
+        width: 150px;
+        height: 90vh;
+        border-right: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .hidden {
+        width: 50px;
+        height: 90vh;
+        border-right: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .hidden_chat {
+        display: none;
+    }
+
+    .form_container {
+        position: sticky;
+        bottom: 0;
+        z-index: 1000;
+        background-color: #fff;
+        height: 20%;
+    }
 }

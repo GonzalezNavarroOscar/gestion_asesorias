@@ -15,12 +15,18 @@
 <body>
     <main-navbar></main-navbar>
     <div class="container">
-        <div id="chats_container">
-
+        <div id="container_menu" class="container_menu">
+            <div class='hide_button'>
+                <button id='chats_hidden' type='button'><img src='../images/Menu.png'></button>
+            </div>
+            <div id="chats_container">
+            </div>
         </div>
         <div class="chat_container">
             <div class="encabezado_chat" id="encabezado_chat"></div>
-            <div id="messages_container"></div>
+            <div id="messages_container">
+
+            </div>
             <div class="form_container">
                 <form id="form_message">
                     <input type="text" id="message" required>
@@ -30,6 +36,7 @@
         </div>
     </div>
     <script src="../js/mensajes.js"></script>
+    <script src="../controllers/chat_hide.js"></script>
 </body>
 
 </html>

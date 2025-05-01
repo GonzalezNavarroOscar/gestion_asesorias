@@ -14,7 +14,7 @@ class Navbar extends HTMLElement {
                                 <h1>Chats</h1>
                             </div>
                             <div class="messages_content" id="chat_preview_list">Cargando...</div>
-                            <a href='../pages/chat.html'>Ver mensajes</a>
+                            <button onclick="window.location.href='../pages/chat.html'">Ver mensajes</button>
                         </div>
                     </li>
                     <li id="bell">

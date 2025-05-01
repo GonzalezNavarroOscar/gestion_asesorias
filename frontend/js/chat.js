@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             todosLosChats = data.data;
+            console.log(todosLosChats)
 
             if (data.success) {
                 mostrarChats(data.data);
@@ -36,19 +37,27 @@ document.addEventListener("DOMContentLoaded", () => {
             contentDiv.innerHTML = '<p>No tienes chats disponibles.</p>';
             return;
         }
-    
-        contentDiv.innerHTML = chats.map(chat => `
-            <a href='../pages/chat.html?chat=${encodeURIComponent(chat.id_chat)}&nombre=${encodeURIComponent(chat.asesor.nombre)}'>
-                <div class="chat_preview" data-chat-id="${chat.id_chat}">
-                    <p><strong>Asesor:</strong> ${chat.asesor.nombre}</p>
-                    <p><strong>Asesoría:</strong> ${chat.id_asesoria.nombre}</p>
-                    <p><strong>Último mensaje:</strong> ${chat.ultimo_mensaje?.contenido || 'Sin mensajes'}</p>
-                    <p><strong>Fecha:</strong> ${chat.ultimo_mensaje?.fecha || '---'}</p>
-                    <p><strong>Hora:</strong> ${chat.ultimo_mensaje?.hora || '---'}</p>
+
+        contentDiv.innerHTML = chats.map(chat =>
+            `
+            <a class='a_link' href='../pages/chat.html?chat=${encodeURIComponent(chat.id_chat)}&nombre=${encodeURIComponent(chat.nombre)}'>
+                <div class="chat_preview" data-chat-id="${chat.id_chat} style='text-decoration:none;'">
+                    <div class='chat_content'> 
+                        <div class='chat_user'>
+                            <img src='../images/user.png'>
+                            <p><strong>${chat.nombre}</strong></p>
+                        </div>
+                    </div>
+                        <p>${chat.tema}</p>
+                    <p><strong>Último mensaje:</strong> ${chat.ultimo_mensaje || 'Sin mensajes'}</p>
+                    <div class='chat_date'>
+                        <p> ${new Date(chat.fecha_mensaje).toLocaleDateString('es-ES') || '---'}</p>
+                        <p> ${chat.hora_mensaje || '---'}</p>
+                    </div>
                 </div>
             </a>
         `).join('');
-    
+
         document.querySelectorAll('.chat_preview').forEach(preview => {
             preview.addEventListener('click', () => {
                 const chatId = preview.getAttribute('data-chat-id');

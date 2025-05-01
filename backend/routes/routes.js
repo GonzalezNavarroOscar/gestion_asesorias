@@ -934,29 +934,55 @@ router.get('/chats/:id_usuario', (req, res) => {
         if (rol === 'alumno') {
             getIdQuery = `SELECT id_alumno AS id FROM Alumno WHERE id_usuario = ?`;
             chatQuery = `SELECT 
-                    Chat.*, 
-                    Tema.nombre AS tema,
-                    Asesoria.aula AS aula, 
-                    Asesoria.modalidad,
-                    Asesor.nombre
-                  FROM Chat
-                  JOIN Asesoria AS Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
-                  JOIN Asesor ON Asesoria.id_asesor = Asesor.id_asesor
-                  JOIN Tema ON Asesoria.id_tema = Tema.id_tema
-                  WHERE Chat.id_alumno = ?`;
+                        Chat.*, 
+                        Tema.nombre AS tema,
+                        Asesoria.aula AS aula, 
+                        Asesoria.modalidad,
+                        Asesor.nombre,
+                        m.contenido AS ultimo_mensaje,
+                        m.fecha AS fecha_mensaje,
+                        m.hora AS hora_mensaje
+                    FROM Chat
+                    JOIN Asesoria ON Chat.id_asesoria = Asesoria.id_asesoria
+                    JOIN Asesor ON Asesoria.id_asesor = Asesor.id_asesor
+                    JOIN Tema ON Asesoria.id_tema = Tema.id_tema
+                    LEFT JOIN (
+                        SELECT m1.*
+                        FROM Mensaje m1
+                        JOIN (
+                            SELECT id_chat, MAX(CONCAT(fecha, ' ', hora)) AS max_fecha_hora
+                            FROM Mensaje
+                            GROUP BY id_chat
+                        ) m2 ON m1.id_chat = m2.id_chat AND CONCAT(m1.fecha, ' ', m1.hora) = m2.max_fecha_hora
+                    ) m ON Chat.id_chat = m.id_chat
+                    WHERE Chat.id_alumno = ?
+                    `;
         } else if (rol === 'asesor') {
             getIdQuery = `SELECT id_asesor AS id FROM Asesor WHERE id_usuario = ?`;
             chatQuery = `SELECT 
-                    Chat.*, 
-                    Tema.nombre AS tema,
-                    asesoria1.aula AS aula, 
-                    asesoria1.modalidad,
-                    Alumno.nombre 
-                  FROM Chat
-                  JOIN Asesoria AS asesoria1 ON Chat.id_asesoria = asesoria1.id_asesoria
-                  JOIN Alumno ON asesoria1.id_alumno = Alumno.id_alumno
-                  JOIN Tema ON asesoria1.id_tema = Tema.id_tema
-                  WHERE Chat.id_asesor = ?`;
+                        Chat.*, 
+                        Tema.nombre AS tema,
+                        asesoria1.aula AS aula, 
+                        asesoria1.modalidad,
+                        Alumno.nombre,
+                        m.contenido AS ultimo_mensaje,
+                        m.fecha AS fecha_mensaje,
+                        m.hora AS hora_mensaje
+                    FROM Chat
+                    JOIN Asesoria AS asesoria1 ON Chat.id_asesoria = asesoria1.id_asesoria
+                    JOIN Alumno ON asesoria1.id_alumno = Alumno.id_alumno
+                    JOIN Tema ON asesoria1.id_tema = Tema.id_tema
+                    LEFT JOIN (
+                        SELECT m1.*
+                        FROM Mensaje m1
+                        JOIN (
+                            SELECT id_chat, MAX(CONCAT(fecha, ' ', hora)) AS max_fecha_hora
+                            FROM Mensaje
+                            GROUP BY id_chat
+                        ) m2 ON m1.id_chat = m2.id_chat AND CONCAT(m1.fecha, ' ', m1.hora) = m2.max_fecha_hora
+                    ) m ON Chat.id_chat = m.id_chat
+                    WHERE Chat.id_asesor = ?
+                    `;
         }
         else {
             return res.status(400).json({ error: 'Rol de usuario no válido para chats' });
@@ -974,7 +1000,7 @@ router.get('/chats/:id_usuario', (req, res) => {
                     return res.status(500).json({ success: false, message: 'Error al obtener los chats' });
                 }
 
-                res.json({ success: true, data: chats });
+                res.json({ success: true, data: chats, rol: rol });
             });
         });
     });

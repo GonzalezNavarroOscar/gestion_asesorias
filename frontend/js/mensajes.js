@@ -117,7 +117,7 @@ async function mostrarChats() {
 
     for (let i = 0; i < chats.length; i++) {
 
-        chats_container.innerHTML = `
+        chats_container.innerHTML += `
         <div class='chat'>
         <button onclick='mostrarMensajes(${chats[i].id_chat},"${chats[i].nombre}")'>
         <h4>${chats[i].nombre}</h4>
