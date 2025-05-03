@@ -52,14 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="section" id="stats-section">
             <h2>Estadísticas</h2>
             <div class="stats-container">
-                <label for="tipo-estadistica">Seleccionar Tipo de Estadística:</label>
-                <select id="tipo-estadistica">
-                    <option value="todos">Todos</option>
-                    <option value="usuarios">Usuarios</option>
-                    <option value="asesorias">Asesorías</option>
-                    <option value="materias">Materias</option>
-                    <option value="temas">Temas</option>
-                </select>
                 <div class="graphs-container">
                     <canvas id="estadisticasGrafico" width="400" height="200"></canvas>
                 </div>
@@ -114,31 +106,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     filter_temas.classList.remove('hidden')
                     filter_estadisticas.classList.add('hidden')
                     break;
-                    case 'stats':
-                        contentSection.innerHTML = sectionTemplates.stats;
-                    
-                        setTimeout(() => {
-                            const filtroSelect = document.getElementById('tipo-estadistica');
-                            const canvas = document.getElementById('estadisticasGrafico');
-                    
-                            if (filtroSelect && canvas) {
-                                generarGraficoEstadistica(filtroSelect.value);
-                    
-                                filtroSelect.addEventListener('change', function () {
-                                    generarGraficoEstadistica(filtroSelect.value);
-                                });
-                            } else {
-                                console.error("No se encontró el select o el canvas para estadísticas.");
-                            }
-                        }, 0);
-                    
-                        filter_usuarios.classList.add('hidden');
-                        filter_asesorias.classList.add('hidden');
-                        filter_materias.classList.add('hidden');
-                        filter_temas.classList.add('hidden');
-                        filter_estadisticas.classList.remove('hidden');
-                        break;
-                    
+                case 'stats':
+
+                    generarGraficoEstadistica('todos');
+                    const filtroSelect = document.getElementById('filter_estadisticas');
+                    const canvas = document.getElementById('estadisticasGrafico');
+
+                    if (canvas) {
+                        filtroSelect.onchange = function () {
+                            generarGraficoEstadistica(filtroSelect.value);
+                        };
+                    } else {
+                        console.error("No se encontró el select o el canvas para estadísticas.");
+                    }
+
+                    filter_usuarios.classList.add('hidden');
+                    filter_asesorias.classList.add('hidden');
+                    filter_materias.classList.add('hidden');
+                    filter_temas.classList.add('hidden');
+                    filter_estadisticas.classList.remove('hidden');
+                    break;
             }
         }
     }

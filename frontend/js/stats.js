@@ -52,11 +52,10 @@ export async function generarGraficoEstadistica(tipo) {
             // Crear el gráfico si no existe, o actualizarlo si ya existe
             const ctx = document.getElementById('estadisticasGrafico').getContext('2d');
             if (window.chartInstance) {
-                window.chartInstance.data = data;
-                window.chartInstance.update();
-            } else {
-                window.chartInstance = new Chart(ctx, config);
+                window.chartInstance.destroy();
             }
+
+            window.chartInstance = new Chart(ctx, config);
         } else {
             console.error('Error al obtener estadísticas:', result.message);
         }
@@ -65,14 +64,3 @@ export async function generarGraficoEstadistica(tipo) {
     }
 }
 
-// Función para manejar el cambio en el selector de tipo de estadística
-document.addEventListener("DOMContentLoaded", function() {
-    const filtroSelect = document.getElementById('tipo-estadistica');
-
-    generarGraficoEstadistica(filtroSelect.value);
-
-    filtroSelect.addEventListener('change', function() {
-        const selectedFilter = filtroSelect.value;
-        generarGraficoEstadistica(selectedFilter);
-    });
-});

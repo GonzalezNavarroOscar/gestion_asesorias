@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     try {
         const response = await fetch('http://localhost:3000/api/estadisticas-contadores');
         const result = await response.json();
