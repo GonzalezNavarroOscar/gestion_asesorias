@@ -114,14 +114,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     filter_temas.classList.remove('hidden')
                     filter_estadisticas.classList.add('hidden')
                     break;
-                case 'stats':
-                    generarGraficoEstadistica('todos');
-                    filter_usuarios.classList.add('hidden')
-                    filter_asesorias.classList.add('hidden')
-                    filter_materias.classList.add('hidden')
-                    filter_temas.classList.add('hidden')
-                    filter_estadisticas.classList.remove('hidden')
-                    break;
+                    case 'stats':
+                        contentSection.innerHTML = sectionTemplates.stats;
+                    
+                        setTimeout(() => {
+                            const filtroSelect = document.getElementById('tipo-estadistica');
+                            const canvas = document.getElementById('estadisticasGrafico');
+                    
+                            if (filtroSelect && canvas) {
+                                generarGraficoEstadistica(filtroSelect.value);
+                    
+                                filtroSelect.addEventListener('change', function () {
+                                    generarGraficoEstadistica(filtroSelect.value);
+                                });
+                            } else {
+                                console.error("No se encontró el select o el canvas para estadísticas.");
+                            }
+                        }, 0);
+                    
+                        filter_usuarios.classList.add('hidden');
+                        filter_asesorias.classList.add('hidden');
+                        filter_materias.classList.add('hidden');
+                        filter_temas.classList.add('hidden');
+                        filter_estadisticas.classList.remove('hidden');
+                        break;
+                    
             }
         }
     }
