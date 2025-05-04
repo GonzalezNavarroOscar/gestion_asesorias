@@ -12,7 +12,7 @@ class Navbar extends HTMLElement {
                         <button class="icon-btn" id="settings_btn">
                             <img src="../images/Menu.png" class="menu default-icon">
                         </button>
-                        <div class="settings_popup" style="display: none;">
+                        <div class="settings_popup" id="settings_popup">
                             <div class="settings_content">
                                 <h1>Configuracion</h1>
                                 <div class="settings_content_btn">
@@ -28,6 +28,35 @@ class Navbar extends HTMLElement {
             </ul>
         </nav>
         `;
+
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const settingsBtn = this.querySelector('#settings_btn');
+        const settingsPopup = this.querySelector('#settings_popup');
+        const accountBtn = this.querySelector('#account_btn');
+        const logoutBtn = this.querySelector('#logout_btn');
+
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsPopup.style.display = settingsPopup.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!settingsPopup.contains(e.target) && e.target !== settingsBtn) {
+                settingsPopup.style.display = 'none';
+            }
+        });
+
+        accountBtn.addEventListener('click', () => {
+            window.location.href = './profile.html';
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = '../index.html';
+        });
     }
 }
 
