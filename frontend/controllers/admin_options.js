@@ -52,12 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="section" id="stats-section">
             <h2>Estadísticas</h2>
             <div class="stats-container">
+                <div class="stats-controls">
+                    <div class="dropdown">
+                        <button class="dropbtn" id="stats-dropdown">Seleccionar Gráfica ▼</button>
+                        <div class="dropdown-content" id="stats-options">
+                            <a href="#" data-type="todos">Resumen General</a>
+                            <a href="#" data-type="usuarios">Usuarios Activos</a>
+                            <a href="#" data-type="asesorias">Asesorías Recientes</a>
+                            <a href="#" data-type="materias">Por Materias</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="graphs-container">
                     <canvas id="estadisticasGrafico" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
-    `
+        `
     };
 
     function loadSection(section) {
@@ -106,26 +117,38 @@ document.addEventListener("DOMContentLoaded", () => {
                     filter_temas.classList.remove('hidden')
                     filter_estadisticas.classList.add('hidden')
                     break;
-                case 'stats':
+                    case 'stats':
+                        generarGraficoEstadistica('todos');
+                        
+                        const dropdownBtn = document.getElementById('stats-dropdown');
+                        const dropdownContent = document.getElementById('stats-options');
+                        const dropdownOptions = dropdownContent.querySelectorAll('a');
+                        
+                        dropdownBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+                        });
 
-                    generarGraficoEstadistica('todos');
-                    const filtroSelect = document.getElementById('filter_estadisticas');
-                    const canvas = document.getElementById('estadisticasGrafico');
-
-                    if (canvas) {
-                        filtroSelect.onchange = function () {
-                            generarGraficoEstadistica(filtroSelect.value);
-                        };
-                    } else {
-                        console.error("No se encontró el select o el canvas para estadísticas.");
-                    }
-
-                    filter_usuarios.classList.add('hidden');
-                    filter_asesorias.classList.add('hidden');
-                    filter_materias.classList.add('hidden');
-                    filter_temas.classList.add('hidden');
-                    filter_estadisticas.classList.remove('hidden');
-                    break;
+                        document.addEventListener('click', () => {
+                            dropdownContent.style.display = 'none';
+                        });
+                        
+                        dropdownOptions.forEach(option => {
+                            option.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const tipo = e.target.getAttribute('data-type');
+                                dropdownBtn.textContent = e.target.textContent + ' ▼';
+                                generarGraficoEstadistica(tipo);
+                                dropdownContent.style.display = 'none';
+                            });
+                        });
+                        
+                        filter_usuarios.classList.add('hidden');
+                        filter_asesorias.classList.add('hidden');
+                        filter_materias.classList.add('hidden');
+                        filter_temas.classList.add('hidden');
+                        filter_estadisticas.classList.add('hidden');
+                        break;
             }
         }
     }
