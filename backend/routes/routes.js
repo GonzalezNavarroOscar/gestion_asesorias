@@ -1477,21 +1477,34 @@ router.get('/estadisticas-asesorias-ultimo-mes', async (req, res) => {
     }
 });
 
-//Ruta para estadísticas de asesorías por materia
 router.get('/estadisticas-asesorias-por-materia', async (req, res) => {
     try {
-        // Asesorías por cada materia
-        const asesoriasPorMateriaResult = await queryAsync('SELECT M.nombre AS materia, COUNT(A.id_asesoria) AS total_asesorias FROM Asesoria A JOIN Materia M ON A.id_materia = M.id_materia GROUP BY M.id_materia');
+        const popularidadPorMateriaResult = await queryAsync(`
+            SELECT 
+                id_materia,
+                nombre AS materia,
+                popularidad
+            FROM 
+                Materia
+            WHERE
+                popularidad > 0
+            ORDER BY 
+                popularidad DESC
+        `);
+
+        console.log(popularidadPorMateriaResult); 
 
         res.json({
             success: true,
-            data: asesoriasPorMateriaResult
+            data: popularidadPorMateriaResult
         });
     } catch (error) {
-        console.error('Error al obtener estadísticas de asesorías por materia:', error);
-        res.status(500).json({ success: false, message: 'Error al obtener estadísticas de asesorías por materia' });
+        console.error('Error al obtener estadísticas de popularidad por materia:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener estadísticas de popularidad por materia' });
     }
 });
+
+
 
 /*
 *

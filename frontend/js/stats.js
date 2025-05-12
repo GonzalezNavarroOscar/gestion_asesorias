@@ -41,7 +41,8 @@ export async function generarGraficoEstadistica(tipo) {
             
             if (tipo === 'materias') {
                 labels = result.data.map(item => item.materia);
-                dataValues = result.data.map(item => item.cantidad);
+                dataValues = result.data.map(item => item.popularidad);
+
             } else {
                 dataValues = Object.values(result.data);
             }
