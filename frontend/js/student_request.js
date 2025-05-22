@@ -49,7 +49,23 @@ function mostrarSolicitudes(solicitudes) {
                     <h4>Hora: ${solicitud.hora}</h4>
                     <h4>${solicitud.observaciones}</h4>
                 </div>
-                <button onclick="">$${solicitud.estado === 'Aceptada' ? '<button onclick="">Ver detalles</button>' : ''}</button>
+                <div id="contenedor-boton"></div>
+
+                    <script>
+                    const solicitud = { estado: 'Aceptada' };
+
+                    const contenedor = document.getElementById('contenedor-boton');
+                    let botonHTML = '';
+
+                    if (solicitud.estado === 'Aceptada') {
+                        botonHTML = '<span>Aceptada</span>';
+                    } else if (solicitud.estado === 'Pendiente') {
+                        botonHTML = '<span>Pendiente</span>';
+                    }
+
+                    contenedor.innerHTML = botonHTML;
+
+                    </script>
             </div>
         </div>
         `;
