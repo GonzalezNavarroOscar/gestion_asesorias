@@ -44,28 +44,13 @@ function mostrarSolicitudes(solicitudes) {
                 <div class="card-text">${solicitud.materia}</div>
                 <div class="request_content">
                     <h3>${solicitud.tema}</h3>
+                    ${solicitud.asesor != null ? `<h4>Asesor: ${solicitud.asesor}</h4>` : ''}
                     <h4>Modalidad: ${solicitud.modalidad}</h4>
                     <h4>Fecha: ${fechaFormateada}</h4>
                     <h4>Hora: ${solicitud.hora}</h4>
                     <h4>${solicitud.observaciones}</h4>
                 </div>
-                <div id="contenedor-boton"></div>
-
-                    <script>
-                    const solicitud = { estado: 'Aceptada' };
-
-                    const contenedor = document.getElementById('contenedor-boton');
-                    let botonHTML = '';
-
-                    if (solicitud.estado === 'Aceptada') {
-                        botonHTML = '<span>Aceptada</span>';
-                    } else if (solicitud.estado === 'Pendiente') {
-                        botonHTML = '<span>Pendiente</span>';
-                    }
-
-                    contenedor.innerHTML = botonHTML;
-
-                    </script>
+                ${solicitud.estado === 'Aceptada' ? '<button>Ver detalles</button>' : ''}
             </div>
         </div>
         `;

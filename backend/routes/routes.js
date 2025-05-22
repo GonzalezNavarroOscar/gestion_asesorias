@@ -508,19 +508,19 @@ router.get('/solicitudes/:id_solicitud', async (req, res) => {
 });
 
 //Solicitar solicitudes para el home de alumno
-router.get('/solicitudes_alumno/:id_solicitud', async (req, res) => {
+router.get('/solicitudes_alumno/:id_usuario', async (req, res) => {
 
-    const { id_solicitud } = req.params
+    const { id_usuario } = req.params
 
     try {
 
         const solicitud = await queryAsync(`
-            SELECT Solicitud.id_solicitud, Solicitud.fecha_solicitud, Solicitud.estado, Solicitud.hora, Solicitud.modalidad, Solicitud.observaciones, Tema.nombre AS tema, Materia.nombre AS materia
+             SELECT Solicitud.id_solicitud, Solicitud.fecha_solicitud, Solicitud.estado, Solicitud.hora, Solicitud.modalidad, Solicitud.observaciones, Tema.nombre AS tema, Materia.nombre AS materia
                 FROM Solicitud 
                 JOIN Tema ON Tema.id_tema = Solicitud.id_tema
                 JOIN Materia ON Materia.id_materia = Solicitud.id_materia
                 WHERE Solicitud.id_usuario = ?;
-        `, [id_solicitud]);
+        `, [id_usuario]);
 
         res.json({
             success: true,
@@ -1492,7 +1492,7 @@ router.get('/estadisticas-asesorias-por-materia', async (req, res) => {
                 popularidad DESC
         `);
 
-        console.log(popularidadPorMateriaResult); 
+        console.log(popularidadPorMateriaResult);
 
         res.json({
             success: true,
