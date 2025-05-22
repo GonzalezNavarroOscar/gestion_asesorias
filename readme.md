@@ -110,7 +110,7 @@ Las dependencias necesarias se instalarán automaticamente al hacer en la carpet
 
 # =====================================
 
-## Inicialización del proyecto
+## Correr el backend
 
 El proyecto cuenta con un archivo encargado de lanzar el servidor de forma local, que se conecta a la bd en RDS. Para ello, en consola realizar lo siguiente:
 
@@ -135,7 +135,18 @@ npm start
 
 # =====================================
 
-## Logitipo del proyecto
+## Roles de los integrantes
+
+| Integrante  | Rol asignado |
+| ------------- | ------------- |
+| `García Romero Angel`  | Diseñador, Programador, Tester  |
+| `González Navarro Oscar Eduardo`  | Project Manager, Analista, Programador  |
+| `Martínez Monge Saúl Guillermo`  | Analista, Diseñador, Tester  |
+| `Pardo Rubalcaba Andrés`  | Diseñador, Programador, Tester  |
+
+# =====================================
+
+## Logotipo del proyecto
 
 <p align="center">
   <img src="frontend\images\LOGO.png"/>
@@ -145,4 +156,6 @@ npm start
 
 ## Liga de documentación del proyecto
 
-[Click aquí para ir a la documentación](https://drive.google.com/drive/folders/1ip0icRrCbJlVMSa8Us8R77tdqRHDO6SA?hl=es-419)
+**[1]** [Manual de usuario]()
+
+**[2]** [Diseño detallado]()
