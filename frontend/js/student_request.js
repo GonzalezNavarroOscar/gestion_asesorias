@@ -49,7 +49,7 @@ function mostrarSolicitudes(solicitudes) {
                     <h4>Hora: ${solicitud.hora}</h4>
                     <h4>${solicitud.observaciones}</h4>
                 </div>
-                <button onclick="">${solicitud.estado === 'Aceptada' ? 'Ver detalles' : 'Modificar'}</button>
+                <button onclick="">$${solicitud.estado === 'Aceptada' ? '<button onclick="">Ver detalles</button>' : ''}</button>
             </div>
         </div>
         `;
