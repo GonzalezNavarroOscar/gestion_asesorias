@@ -7,13 +7,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switchBox.addEventListener('change', () => {
         if (switchBox.checked) {
-            formStudent.style.display = 'none';
-            formAsesor.style.display = 'block';
+            formStudent.classList.remove('fade-in');
+            formStudent.classList.add('fade-out');
+            setTimeout(() => {
+                formStudent.style.display = 'none';
+                formAsesor.style.display = 'block';
+                formAsesor.classList.remove('fade-out');
+                formAsesor.classList.add('fade-in');
+            }, 400);
         } else {
-            formStudent.style.display = 'block';
-            formAsesor.style.display = 'none';
+            formAsesor.classList.remove('fade-in');
+            formAsesor.classList.add('fade-out');
+            setTimeout(() => {
+                formAsesor.style.display = 'none';
+                formStudent.style.display = 'block';
+                formStudent.classList.remove('fade-out');
+                formStudent.classList.add('fade-in');
+            }, 400);
         }
     });
+
+    // Animación de entrada al cargar el formulario visible
+    if (formStudent.style.display !== 'none') {
+        formStudent.classList.add('slide-fade-in');
+    } else {
+        formAsesor.classList.add('slide-fade-in');
+    }
 
     // Registro de estudiante
     formStudent.addEventListener('submit', async (e) => {
@@ -55,19 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const correo = document.getElementById('email_asesor').value;
         const password = document.getElementById('password_asesor').value;
         const confirmPassword = document.getElementById('confirm-password_asesor').value;
-    
+
         if (password !== confirmPassword) {
             return alert('Las contraseñas no coinciden');
         }
-    
+
         const body = { nombre, correo, contraseña: password, rol: 'asesor' };
-    
+
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         });
-    
+
         const data = await response.json();
         alert(data.message);
         setTimeout(() => {
