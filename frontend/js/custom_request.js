@@ -76,7 +76,7 @@ document.getElementById('form_request').addEventListener('submit', async functio
     }
 
     agregarTema(idMateriaGlobal)
-    const idAlumno = await obtenerIdAlumno(idUsuario);
+    const idAlumno = await obtenerIdAlumno(idUsuario)
 
     const solicitudData = {
         id_usuario: idUsuario,
