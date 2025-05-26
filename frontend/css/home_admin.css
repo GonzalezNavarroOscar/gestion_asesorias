@@ -462,21 +462,51 @@ button {
   flex-grow: 1;
 }
 
+.topic-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.topics-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+}
+
 .card-text {
-  font-size: 1.2rem;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 15px;
   color: #333;
 }
 
 .card-description {
-  display: flex;
-  justify-content: center;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding-bottom: 15px;
-  font-family: 'Times New Roman', Times, serif;
-  text-align: justify;
+  font-size: 14px;
+  color: #666;
+}
+
+.topic-card button {
+  align-self: flex-start;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.topic-card button:hover {
+  background-color: #0056b3;
 }
 
 .card button {
@@ -544,13 +574,6 @@ button {
   gap: 20px;
 }
 
-.topics-card-content {
-  background-color: #a5a5a5;
-  padding-top: 10px;
-  text-align: center;
-  flex-grow: 1;
-}
-
 .search-wrapper {
   display: flex;
   justify-content: center;
@@ -599,7 +622,7 @@ button {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 200px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 5px;
 }

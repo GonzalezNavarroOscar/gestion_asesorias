@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         topics: `
             <div class="section" id="topics-section">
                 <h2>Gestión de Temas</h2>
-                <div class="topics-container"></div>
+                <div id='select_div' class='select_div'></div>
+                <div id="topics" class="topics"></div>
             </div>
         `,
         stats: `
@@ -117,39 +118,39 @@ document.addEventListener("DOMContentLoaded", () => {
                     filter_temas.classList.remove('hidden')
                     filter_estadisticas.classList.add('hidden')
                     break;
-                    case 'stats':
-                        generarGraficoEstadistica('todos');
-                        
-                        const dropdownBtn = document.getElementById('stats-dropdown');
-                        const dropdownContent = document.getElementById('stats-options');
-                        const dropdownOptions = dropdownContent.querySelectorAll('a');
-                        const modalidadSelect = document.getElementById('modalidad-select');
-                        
-                        dropdownBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-                        });
+                case 'stats':
+                    generarGraficoEstadistica('todos');
 
-                        document.addEventListener('click', () => {
+                    const dropdownBtn = document.getElementById('stats-dropdown');
+                    const dropdownContent = document.getElementById('stats-options');
+                    const dropdownOptions = dropdownContent.querySelectorAll('a');
+                    const modalidadSelect = document.getElementById('modalidad-select');
+
+                    dropdownBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    document.addEventListener('click', () => {
+                        dropdownContent.style.display = 'none';
+                    });
+
+                    dropdownOptions.forEach(option => {
+                        option.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const tipo = e.target.getAttribute('data-type');
+                            dropdownBtn.textContent = e.target.textContent + ' ▼';
+                            generarGraficoEstadistica(tipo);
                             dropdownContent.style.display = 'none';
                         });
-                        
-                        dropdownOptions.forEach(option => {
-                            option.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                const tipo = e.target.getAttribute('data-type');
-                                dropdownBtn.textContent = e.target.textContent + ' ▼';
-                                generarGraficoEstadistica(tipo);
-                                dropdownContent.style.display = 'none';
-                            });
-                        });
-                        
-                        filter_usuarios.classList.add('hidden');
-                        filter_asesorias.classList.add('hidden');
-                        filter_materias.classList.add('hidden');
-                        filter_temas.classList.add('hidden');
-                        filter_estadisticas.classList.add('hidden');
-                        break;
+                    });
+
+                    filter_usuarios.classList.add('hidden');
+                    filter_asesorias.classList.add('hidden');
+                    filter_materias.classList.add('hidden');
+                    filter_temas.classList.add('hidden');
+                    filter_estadisticas.classList.add('hidden');
+                    break;
             }
         }
     }

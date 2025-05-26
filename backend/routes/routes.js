@@ -293,6 +293,26 @@ router.get('/materias', async (req, res) => {
     }
 });
 
+//Obtener nombre de materias
+router.get('/materias_nombres', async (req, res) => {
+    try {
+        const materias = await queryAsync(
+            'SELECT id_materia, nombre FROM Materia'
+        );
+
+        res.json({
+            success: true,
+            data: materias
+        });
+    } catch (error) {
+        console.error('Error al obtener materias:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener las materias'
+        });
+    }
+});
+
 // Ruta para agregar una nueva materia
 router.post('/agregar-materias', upload.single('imagen'), async (req, res) => {
     const { nombre, descripcion } = req.body;
@@ -318,7 +338,7 @@ router.post('/agregar-materias', upload.single('imagen'), async (req, res) => {
 *
 */
 
-//Obtener temas de una materia específica
+//Obtener temas de una materia específica para alumno
 router.get('/temas', async (req, res) => {
     try {
         const nombreMateria = req.query.materia;
@@ -344,6 +364,33 @@ router.get('/temas', async (req, res) => {
             success: true,
             data: temas,
             count: temas.length
+        });
+
+    } catch (error) {
+        console.error('Error en GET /temas:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al consultar temas',
+            error: error.message
+        });
+    }
+});
+
+// Obtener los temas por id para admin 
+router.post('/temas_admin', async (req, res) => {
+    try {
+        const { id_materia } = req.body;
+
+        const temas = await queryAsync(
+            `SELECT T.id_tema, T.id_materia, T.nombre, T.descripción, T.popularidad
+             FROM Tema AS T
+             WHERE T.id_materia = ?;`,
+            [id_materia]
+        );
+
+        res.json({
+            success: true,
+            data: temas,
         });
 
     } catch (error) {
@@ -419,7 +466,6 @@ router.post('/solicitud', (req, res) => {
         estado
     ];
 
-    console.log(id_tema);
 
     db.query(query, values, (err, result) => {
         if (err) {
@@ -427,7 +473,6 @@ router.post('/solicitud', (req, res) => {
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
-        console.log('ID del tema recibido:', id_tema);
 
         db.query(
             'UPDATE Tema SET popularidad = popularidad + 1 WHERE id_tema = ?',
@@ -1095,7 +1140,6 @@ router.post('/horario/:id_usuario', async (req, res) => {
         );
 
         if (asesorRows.length === 0) {
-            console.log(`No se encontró un asesor con id_usuario: ${id_usuario}`);
             return res.status(404).json({ success: false, message: 'No se encontró un asesor con ese id_usuario.' });
         }
 
@@ -1242,8 +1286,6 @@ router.post('/generar-reporte', (req, res) => {
             console.error('Error al insertar la reporte:', err);
             return res.status(500).json({ error: 'Error en el servidor' });
         }
-
-        console.log(estado_asesoria, porcentaje);
 
         if (estado_asesoria === "Completada" && parseInt(porcentaje) === 100) {
 
@@ -1527,7 +1569,6 @@ router.get('/estadisticas-asesorias-por-materia', async (req, res) => {
                 popularidad DESC
         `);
 
-        console.log(popularidadPorMateriaResult);
 
         res.json({
             success: true,
