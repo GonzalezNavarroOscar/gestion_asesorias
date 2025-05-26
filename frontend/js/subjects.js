@@ -34,7 +34,7 @@ function mostrarMaterias(materias) {
             <div class="card-content">
                 <div class="card-text">${materia.nombre}</div>
                 <div class="card-description">${materia.descripción}</div>
-                <button onclick="location.href='advice_list.html?materia=${encodeURIComponent(materia.nombre)}'">Ver más</button>
+                <button onclick="location.href='advice_list.html?materia=${encodeURIComponent(materia.nombre)}&num=${encodeURIComponent(materia.id_materia)}'">Ver más</button>
             </div>
         `;
         contenedor.appendChild(materiaCard);

@@ -358,18 +358,44 @@ router.get('/temas', async (req, res) => {
 
 // Ruta para agregar un nuevo tema
 router.post('/agregar-temas', async (req, res) => {
-    const { id_materia, nombre, descripcion } = req.body;
+    const { id_materia, nombre, descripcion, agregado_admin } = req.body;
     const popularidad = 0;
+    const agregado = agregado_admin ? 1 : 0;
 
     try {
         await queryAsync(
-            'INSERT INTO Tema (nombre, descripción, popularidad,id_materia) VALUES (?, ?, ?, ?)',
-            [nombre, descripcion, popularidad, id_materia]
+            'INSERT INTO Tema (nombre, descripción, popularidad,id_materia,agregado_admin) VALUES (?, ?, ?, ?, ?)',
+            [nombre, descripcion, popularidad, id_materia, agregado]
         );
         res.json({ success: true, message: 'Tema agregado exitosamente' });
     } catch (error) {
         console.error('Error al agregar tema:', error);
         res.status(500).json({ success: false, message: 'Error al agregar tema' });
+    }
+});
+
+//Obtener id de tema 
+router.get('/obtener_tema_id', async (req, res) => {
+    try {
+        const nombreTema = req.query;
+
+        const temas = await queryAsync(
+            `SELECT id_tema FROM Tema WHERE nombre = ?;`,
+            [nombreTema]
+        );
+
+        res.json({
+            success: true,
+            data: temas,
+        });
+
+    } catch (error) {
+        console.error('Error en GET /temas:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al consultar temas',
+            error: error.message
+        });
     }
 });
 
@@ -444,6 +470,8 @@ router.post('/solicitud', (req, res) => {
         );
     });
 });
+
+//
 
 //Obtener todas las solicitudes con estado 'Pendiente'
 router.get('/solicitudes-pendientes', async (req, res) => {

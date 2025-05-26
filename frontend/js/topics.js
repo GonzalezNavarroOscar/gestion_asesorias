@@ -3,6 +3,7 @@ let materiaGlobal = null
 document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const nombreMateria = urlParams.get('materia');
+    const id_materia = urlParams.get('num');
 
     if (nombreMateria) {
         const nombreDecodificado = decodeURIComponent(nombreMateria);
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         mostrarError("No se especificó una materia.");
     }
+    document.getElementById('personalized_btn').innerHTML = `<button onclick="window.location='custom_request.html?materia=${encodeURIComponent(nombreMateria)}&num=${encodeURIComponent(id_materia)}'">Crear una solicitud personalizada</button>`
 });
 
 async function cargarTemas(nombreMateria) {

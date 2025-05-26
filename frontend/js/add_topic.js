@@ -9,7 +9,8 @@ document.getElementById('temaForm').addEventListener('submit', async function (e
     const data = {
         id_materia: id_materia,
         nombre: nombre,
-        descripcion: descripcion
+        descripcion: descripcion,
+        agregado_admin: true
     };
 
     try {
@@ -20,17 +21,17 @@ document.getElementById('temaForm').addEventListener('submit', async function (e
             },
             body: JSON.stringify(data)
         });
-    
+
         const result = await response.json();
         console.log(result);
-    
+
         if (result.success) {
             alert("Tema registrado exitosamente.");
             window.location.href = 'home_admin.html';
         } else {
             alert("Error: " + result.message);
         }
-    
+
     } catch (error) {
         console.error(error);
         alert("Error al conectar con el servidor.");
