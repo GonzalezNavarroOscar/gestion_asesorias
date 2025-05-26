@@ -41,9 +41,9 @@ async function obtenerIdAlumno(idUsuario) {
 
 document.getElementById('form_request').addEventListener('submit', async function (e) {
     e.preventDefault()
+    const tema = document.getElementById('topic')
 
     async function agregarTema(id_materia) {
-        const tema = document.getElementById('topic')
         const data = {
             id_materia: id_materia,
             nombre: tema.value,
@@ -61,13 +61,6 @@ document.getElementById('form_request').addEventListener('submit', async functio
             });
 
             const result = await response.json();
-            console.log(result);
-
-            if (result.success) {
-                alert("Tema registrado exitosamente.");
-            } else {
-                alert("Error: " + result.message);
-            }
 
         } catch (error) {
             console.error(error);
@@ -82,12 +75,30 @@ document.getElementById('form_request').addEventListener('submit', async functio
         id_usuario: idUsuario,
         id_alumno: idAlumno,
         id_materia: idMateriaGlobal,
-        id_tema: idTema,
+        nombre_tema: tema.value,
         fecha_solicitud: document.getElementById('date').value,
         estado: 'Pendiente',
         observaciones: document.getElementById('Observations').value,
         hora: document.getElementById('initial_hour').value,
         modalidad: document.getElementById('mode').value
     };
+
+    try {
+        const response = await fetch('http://localhost:3000/api/solicitud_personalizada', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(solicitudData)
+        });
+
+        if (!response.ok) throw new Error('Error al crear solicitud');
+
+        alert('¡Solicitud enviada con éxito!');
+        window.location.href = 'home_student.html';
+    } catch (error) {
+        console.error(error);
+        alert('Error al enviar solicitud');
+    }
 
 })
