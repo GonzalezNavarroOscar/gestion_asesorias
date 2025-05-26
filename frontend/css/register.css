@@ -74,16 +74,45 @@ body {
     position: static;
 }
 
-.register_form {
-    display: grid;
-    gap: 15px;
-    width: 90%;
+.form-container {
+    width: 100%;
     max-width: 350px;
-    margin: 0 auto 30px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 500px; 
+}
+
+.register_form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: grid;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#register_form_student {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #register_form_asesor {
-    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+#register_form_asesor.active {
+    opacity: 1;
+
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+#register_form_student.inactive {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
 }
 
 .right img {
@@ -110,10 +139,9 @@ body {
     width: 95%;
     background-color: #F8F8F8;
     border: none;
-    font-weight: bold;
     border-radius: 20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     padding-left: 15px;
+    margin: 10px 0;
 }
 
 .register_form input::placeholder {
@@ -130,6 +158,7 @@ body {
     padding: 12px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 100%;
 }
 
 .register_form button:hover {
@@ -139,12 +168,14 @@ body {
 .forgot_password {
     display: flex;
     justify-content: end;
-    gap: 5px;
+    margin: 10px;
+    padding: 10px;
 }
 
 .forgot_password a {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-decoration: none;
+    margin-left: 10px;
 }
 
 .error {

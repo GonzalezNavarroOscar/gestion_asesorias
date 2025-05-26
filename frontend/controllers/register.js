@@ -1,14 +1,18 @@
-var checkbox = document.getElementById('switch_box')
-
+const checkbox = document.getElementById('switch_box');
 
 checkbox.addEventListener('change', () => {
-    var form_asesor = document.getElementById('register_form_asesor')
-    var form_student = document.getElementById('register_form_student')
+    const formAsesor = document.getElementById('register_form_asesor');
+    const formStudent = document.getElementById('register_form_student');
+    
     if (checkbox.checked) {
-        form_asesor.style.display = 'grid'
-        form_student.style.display = 'none'
+        formStudent.classList.add('inactive');
+        formAsesor.classList.add('active');
+        formStudent.classList.remove('active');
+        formAsesor.classList.remove('inactive');
     } else {
-        form_asesor.style.display = 'none'
-        form_student.style.display = 'grid'
+        formStudent.classList.remove('inactive');
+        formAsesor.classList.remove('active');
+        formStudent.classList.add('active');
+        formAsesor.classList.add('inactive');
     }
-})
+});
