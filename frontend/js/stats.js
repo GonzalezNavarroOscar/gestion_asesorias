@@ -31,18 +31,27 @@ export async function generarGraficoEstadistica(tipo) {
                 borderColor = backgroundColor.map(color => shadeColor(color, -20));
                 datasetLabel = 'Asesorías por Materia';
                 break;
+            case 'modalidades':
+                url = 'http://localhost:3000/api/estadisticas-modalidades';
+                backgroundColor = generateRandomColors(10);
+                borderColor = backgroundColor.map(color => shadeColor(color, -20));
+                datasetLabel = 'Modalidades más usadas';
+                break;
         }
+        
 
         const response = await fetch(url);
         const result = await response.json();
 
         if (result.success) {
             let dataValues = [];
-            
+
             if (tipo === 'materias') {
                 labels = result.data.map(item => item.materia);
                 dataValues = result.data.map(item => item.popularidad);
-
+            } else if (tipo === 'modalidades') {
+                labels = result.data.map(item => item.modalidad);
+                dataValues = result.data.map(item => item.total);
             } else {
                 dataValues = Object.values(result.data);
             }

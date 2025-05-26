@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const dropdownBtn = document.getElementById('stats-dropdown');
                         const dropdownContent = document.getElementById('stats-options');
                         const dropdownOptions = dropdownContent.querySelectorAll('a');
+                        const modalidadSelect = document.getElementById('modalidad-select');
                         
                         dropdownBtn.addEventListener('click', (e) => {
                             e.stopPropagation();

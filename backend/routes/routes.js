@@ -1538,6 +1538,26 @@ router.get('/estadisticas-asesorias-por-materia', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error al obtener estadísticas de popularidad por materia' });
     }
 });
+// Ruta para estadísticas de modalidades más utilizadas
+router.get('/estadisticas-modalidades', async (req, res) => {
+    try {
+        const modalidadesResult = await queryAsync(`
+            SELECT modalidad, COUNT(*) AS total
+            FROM Asesoria
+            GROUP BY modalidad
+            ORDER BY total DESC
+        `);
+
+        res.json({
+            success: true,
+            data: modalidadesResult
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas de modalidades:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener estadísticas de modalidades' });
+    }
+});
+
 
 
 

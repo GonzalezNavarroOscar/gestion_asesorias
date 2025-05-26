@@ -50,6 +50,17 @@ async function generarGraficoEstadistica(tipo) {
                 config = crearConfigBarra('Asesorías por Materia', labels, data);
                 break;
 
+            case 'modalidades':
+                url = 'http://localhost:3000/api/estadisticas-modalidades';
+                const res5 = await fetch(url);
+                const json5 = await res5.json();
+
+                labels = json5.data.map(item => item.modalidad);
+                data = json5.data.map(item => item.total);
+
+                config = crearConfigPastel('Modalidades más Usadas', labels, data);
+                break;
+
             default:
                 return;
         }
@@ -92,6 +103,7 @@ function crearConfigBarra(label, labels, data) {
 }
 
 function crearConfigPastel(label, labels, data) {
+    const colores = generarColores(labels.length);
     return {
         type: 'pie',
         data: {
@@ -99,7 +111,7 @@ function crearConfigPastel(label, labels, data) {
             datasets: [{
                 label,
                 data,
-                backgroundColor: ['#1cc88a', '#36b9cc', '#f6c23e'],
+                backgroundColor: colores,
                 borderWidth: 1
             }]
         },
@@ -107,6 +119,14 @@ function crearConfigPastel(label, labels, data) {
             responsive: true
         }
     };
+}
+
+function generarColores(cantidad) {
+    const colores = [];
+    for (let i = 0; i < cantidad; i++) {
+        colores.push(`#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`);
+    }
+    return colores;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
