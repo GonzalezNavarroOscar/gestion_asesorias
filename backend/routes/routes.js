@@ -403,6 +403,35 @@ router.post('/temas_admin', async (req, res) => {
     }
 });
 
+//Actualizar tema de las solicitudes y asesorias
+router.post('/temas_actualizar', async (req, res) => {
+    try {
+        const { id_tema_old, id_tema_new } = req.body;
+
+        await queryAsync(
+            `UPDATE Solicitud SET id_tema = ? WHERE id_tema = ?`,
+            [id_tema_new, id_tema_old]
+        );
+
+        await queryAsync(
+            `UPDATE Asesoria SET id_tema = ? WHERE id_tema = ?`,
+            [id_tema_new, id_tema_old]
+        );
+
+        res.json({
+            success: true,
+        });
+
+    } catch (error) {
+        console.error('Error en GET /temas:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al consultar temas',
+            error: error.message
+        });
+    }
+});
+
 // Ruta para agregar un nuevo tema 
 router.post('/agregar-temas', async (req, res) => {
     const { id_materia, nombre, descripcion, agregado_admin } = req.body;
