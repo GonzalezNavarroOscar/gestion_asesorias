@@ -583,6 +583,69 @@ router.get('/solicitudes-pendientes', async (req, res) => {
 
 });
 
+router.get('/solicitudes-pendientes/:idUsuario', async (req, res) => {
+    try {
+        const { idUsuario } = req.params;
+
+        const asesor = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?', 
+            [idUsuario]
+        );
+
+        let idAsesor;
+        if (asesor && asesor.id_asesor) {
+            idAsesor = asesor.id_asesor;
+        } else if (Array.isArray(asesor) && asesor[0] && asesor[0].id_asesor) {
+            idAsesor = asesor[0].id_asesor;
+        } else {
+            console.error("No se encontró el asesor o estructura inesperada:", asesor);
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Asesor no encontrado' 
+            });
+        }
+
+
+        const especialidades = await queryAsync(`
+            SELECT e.nombre 
+            FROM Especialidad e
+            JOIN Asesor_Especialidad ae ON e.id_especialidad = ae.id_especialidad
+            WHERE ae.id_asesor = ?
+        `, [idAsesor]);
+
+        const palabrasComunes = new Set(['de', 'la', 'en', 'y', 'a']);
+        const palabrasClave = especialidades
+            .flatMap(esp => esp.nombre.split(' '))
+            .filter(palabra => palabra.length > 3 && !palabrasComunes.has(palabra.toLowerCase()));
+
+        const condiciones = palabrasClave.map(palabra => 
+            `m.nombre LIKE '%${palabra}%'`
+        ).join(' OR ');
+
+        const query = `
+            SELECT s.id_solicitud, al.id_alumno, al.nombre AS alumno, 
+                m.id_materia, m.nombre AS materia, m.imagen AS imagen,
+                t.id_tema, t.nombre AS tema,
+                s.fecha_solicitud, s.hora, s.modalidad, s.observaciones, s.estado
+            FROM Solicitud s
+            JOIN Alumno al ON s.id_alumno = al.id_alumno
+            JOIN Materia m ON s.id_materia = m.id_materia
+            JOIN Tema t ON s.id_tema = t.id_tema
+            WHERE s.estado = 'Pendiente'
+            AND (${condiciones})
+            ORDER BY s.fecha_solicitud DESC
+            LIMIT 50
+        `;
+
+        const solicitudes = await queryAsync(query);
+
+        res.json({ success: true, data: solicitudes });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
+});
+
 //Obtener detalles de solicitudes específicas
 router.get('/solicitudes/:id_solicitud', async (req, res) => {
 

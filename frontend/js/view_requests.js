@@ -1,19 +1,22 @@
 let todasLasSolicitudes = [];
+const userData = JSON.parse(localStorage.getItem('userData'));
+const idUsuario = userData.id_usuario
 
 async function cargarSolicitudes() {
     try {
-        const response = await fetch('http://localhost:3000/api/solicitudes-pendientes');
+        const response = await fetch(`http://localhost:3000/api/solicitudes-pendientes/${idUsuario}`);
         const data = await response.json();
 
-        todasLasSolicitudes = data.data;
-
         if (data.success) {
+            todasLasSolicitudes = data.data;
             mostrarSolicitudes(data.data);
         } else {
             console.error('Error al cargar solicitudes:', data.message);
+            alert('No se pudieron cargar las solicitudes. ' + (data.message || ''));
         }
     } catch (error) {
         console.error('Error:', error);
+        alert('Error de conexión al cargar solicitudes');
     }
 }
 
