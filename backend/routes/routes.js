@@ -1215,50 +1215,6 @@ router.get('/consultar_horario/:id_usuario', async (req, res) => {
     }
 });
 
-//insertar especialidades de asesor
-router.post('/insertar_especialidades/:id_usuario', async (req, res) => {
-    const { id_usuario } = req.params;
-    const especialidades = req.body.especialidades;
-
-    try {
-
-        await queryAsync(`
-            UPDATE Asesor SET especialidad = ? WHERE id_usuario = ?;
-        `, [especialidades, id_usuario]);
-
-        res.json({
-            success: true,
-            message: 'Completado'
-        });
-
-    } catch (error) {
-        console.error('Error al consultar horarios:', error);
-        res.status(500).json({ success: false, message: 'Error en el servidor' });
-    }
-});
-
-//consultar especialidades del asesor
-router.get('/consultar_especialidades/:id_usuario', async (req, res) => {
-    const { id_usuario } = req.params;
-
-    try {
-
-        const especialidades = await queryAsync(`
-            SELECT especialidad FROM Asesor WHERE id_usuario = ?;
-        `, [id_usuario]);
-
-        res.json({
-            success: true,
-            data: especialidades
-        });
-
-    } catch (error) {
-        console.error('Error al consultar horarios:', error);
-        res.status(500).json({ success: false, message: 'Error en el servidor' });
-    }
-});
-
-
 /*
 *
 * [###### Rutas para manejo de reportes ######]
@@ -1758,6 +1714,207 @@ router.post('/forgot_password', async (req, res) => {
         });
     }
 })
+
+
+/*
+*
+* [###### Rutas para control de especialidades ######]
+*
+*/
+
+
+
+router.post('/insertar_especialidades/:idUsuario', async (req, res) => {
+    try {
+        const { idUsuario } = req.params;
+        const { especialidades } = req.body;
+
+        const asesor = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?',
+            [idUsuario]
+        );
+
+        let idAsesor;
+        if (Array.isArray(asesor) && asesor.length > 0 && asesor[0].id_asesor) {
+            idAsesor = asesor[0].id_asesor;
+        } else {
+            console.error("No se encontró el asesor o estructura inesperada:", asesor);
+            return res.status(404).json({
+                success: false,
+                message: 'Asesor no encontrado'
+            });
+        }
+
+        console.log("ID Asesor obtenido:", idAsesor);
+        console.log("Especialidades recibidas:", especialidades);
+
+        for (const nombreEsp of especialidades) {
+            const trimmedNombreEsp = nombreEsp.trim();
+            if (!trimmedNombreEsp) continue;
+
+            let idEspecialidad;
+            const existingEspecialidad = await queryAsync(
+                'SELECT id_especialidad FROM Especialidad WHERE nombre = ?',
+                [trimmedNombreEsp]
+            );
+
+            if (Array.isArray(existingEspecialidad) && existingEspecialidad.length > 0 && existingEspecialidad[0].id_especialidad) {
+
+                idEspecialidad = existingEspecialidad[0].id_especialidad;
+                console.log(`Especialidad "${trimmedNombreEsp}" ya existe con ID: ${idEspecialidad}`);
+            } else {
+                console.log(`Especialidad "${trimmedNombreEsp}" no existe, insertando...`);
+                const result = await queryAsync(
+                    'INSERT INTO Especialidad (nombre) VALUES (?)',
+                    [trimmedNombreEsp]
+                );
+                idEspecialidad = result.insertId;
+                console.log(`Especialidad "${trimmedNombreEsp}" insertada con ID: ${idEspecialidad}`);
+            }
+
+            const existeRelacion = await queryAsync(
+                'SELECT * FROM Asesor_Especialidad WHERE id_asesor = ? AND id_especialidad = ?',
+                [idAsesor, idEspecialidad]
+            );
+
+            if (Array.isArray(existeRelacion) && existeRelacion.length === 0) {
+                await queryAsync(
+                    'INSERT INTO Asesor_Especialidad (id_asesor, id_especialidad) VALUES (?, ?)',
+                    [idAsesor, idEspecialidad]
+                );
+                console.log(`Relación creada entre asesor ${idAsesor} y especialidad ${idEspecialidad}`);
+            } else {
+                console.log(`Relación ya existe entre asesor ${idAsesor} y especialidad ${idEspecialidad}`);
+            }
+        }
+
+        res.json({
+            success: true,
+            message: 'Especialidades actualizadas correctamente'
+        });
+    } catch (error) {
+        console.error('Error detallado:', {
+            message: error.message,
+            stack: error.stack,
+            fullError: error
+        });
+        res.status(500).json({
+            success: false,
+            message: 'Error interno del servidor',
+            errorDetails: error.message
+        });
+    }
+});
+
+router.get('/consultar_especialidades/:idUsuario', async (req, res) => {
+    try {
+        const { idUsuario } = req.params;
+
+        const asesor = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?', 
+            [idUsuario]
+        );
+
+        let idAsesor;
+        if (asesor && asesor.id_asesor) {
+            idAsesor = asesor.id_asesor;
+        } else if (Array.isArray(asesor) && asesor[0] && asesor[0].id_asesor) {
+            idAsesor = asesor[0].id_asesor;
+        } else {
+            console.error("No se encontró el asesor o estructura inesperada:", asesor);
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Asesor no encontrado' 
+            });
+        }
+
+        const especialidades = await queryAsync(`
+            SELECT e.nombre 
+            FROM Especialidad e
+            JOIN Asesor_Especialidad ae ON e.id_especialidad = ae.id_especialidad
+            WHERE ae.id_asesor = ?
+        `, [idAsesor]);
+
+        res.json({ 
+            success: true, 
+            data: especialidades.map(e => e.nombre) 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
+});
+
+router.delete('/eliminar_especialidad/:idUsuario', async (req, res) => {
+    try {
+        const { idUsuario } = req.params;
+        const { especialidad } = req.body;
+
+        const [asesor] = await queryAsync(
+            'SELECT id_asesor FROM Asesor WHERE id_usuario = ?', 
+            [idUsuario]
+        );
+
+        if (!asesor?.id_asesor) {
+            return res.status(404).json({
+                success: false,
+                message: 'Asesor no encontrado'
+            });
+        }
+
+        const [especialidadData] = await queryAsync(
+            'SELECT id_especialidad FROM Especialidad WHERE nombre = ?',
+            [especialidad]
+        );
+
+        if (!especialidadData?.id_especialidad) {
+            return res.status(404).json({
+                success: false,
+                message: 'Especialidad no encontrada'
+            });
+        }
+
+        await queryAsync(
+            'DELETE FROM Asesor_Especialidad WHERE id_asesor = ? AND id_especialidad = ?',
+            [asesor.id_asesor, especialidadData.id_especialidad]
+        );
+
+        res.json({ 
+            success: true,
+            message: 'Especialidad eliminada del asesor correctamente'
+        });
+    } catch (error) {
+        console.error('Error al eliminar especialidad:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error interno del servidor',
+            error: error.message 
+        });
+    }
+});
+
+router.get('/buscar_asesores', async (req, res) => {
+    try {
+        const { especialidad } = req.query;
+        
+        const [asesores] = await pool.query(`
+            SELECT a.id_asesor, a.nombre, u.email, 
+                   GROUP_CONCAT(e.nombre SEPARATOR ', ') AS especialidades
+            FROM Asesor a
+            JOIN Usuario u ON a.id_usuario = u.id_usuario
+            JOIN Asesor_Especialidad ae ON a.id_asesor = ae.id_asesor
+            JOIN Especialidad e ON ae.id_especialidad = e.id_especialidad
+            WHERE e.nombre LIKE ?
+            GROUP BY a.id_asesor, a.nombre, u.email
+        `, [`%${especialidad}%`]);
+        
+        res.json({ success: true, data: asesores });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
+});
+
 
 /*
 *
