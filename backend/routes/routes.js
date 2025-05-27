@@ -426,6 +426,34 @@ router.post('/agregar-temas', async (req, res) => {
     }
 });
 
+//Ruta para actualizar un tema existente
+router.post('/editar-tema', async (req, res) => {
+    const { id_tema, nombre, descripcion } = req.body;
+
+    try {
+        await queryAsync(`UPDATE Tema SET nombre = ?, descripción = ?, agregado_admin = 1 WHERE id_tema = ?;
+        `, [nombre, descripcion, id_tema])
+        res.json({ success: true, message: 'Tema actualizado exitosamente' });
+    } catch (error) {
+        console.error('Error al agregar tema:', error);
+        res.status(500).json({ success: false, message: 'Error al agregar tema' });
+    }
+});
+
+//Borrar un tema por ID
+router.post('/borrar-tema', async (req, res) => {
+    const { id_tema } = req.body;
+
+    try {
+        await queryAsync(`DELETE FROM Tema WHERE id_tema = ?;
+        `, [id_tema])
+        res.json({ success: true, message: 'Tema borrardo exitosamente' });
+    } catch (error) {
+        console.error('Error al borrar tema:', error);
+        res.status(500).json({ success: false, message: 'Error al borrar tema' });
+    }
+});
+
 /*
 *
 * [###### Rutas para manejo de solicitudes ######]

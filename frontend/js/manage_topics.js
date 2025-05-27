@@ -54,18 +54,31 @@ async function cargarListaMaterias() {
     }
 }
 
+async function eliminarTema(id_tema, id_materia) {
+    const response = await fetch('http://localhost:3000/api/borrar-tema', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id_tema })
+    });
+
+    const result = await response.json();
+    cargarTemasPorMateria(id_materia);
+}
+
 function mostrarTemas(temas, id_materia) {
     const topics = document.getElementById('topics');
     topics.innerHTML = '';
     if (temas.length === 0) {
         topics.innerHTML += `
-        <p>No hay temas disponibles para esta materia.</p>
-        <div class="card agregar-tema">
-                <div class="topics-card-content">
-                    <div class="card-text">¿Quieres agregar un nuevo tema?</div>
-                    <button id="agregar-tema-btn">Agregar tema</button>
-                </div>
-            </div>
+        <div class="topics-card-content">
+                <div class="card-text"><strong>No existen temas para esta materia.</strong></div>
+        </div>
+        <div class="topics-card-content">
+            <div class="card-text">¿Quieres agregar un nuevo tema?</div>
+            <button id="agregar-tema-btn" onclick="window.location.href = 'add_topic.html?id_materia=${id_materia}'">Agregar nuevo tema</button>
+        </div>
         `;
         const agregarBtn = document.getElementById('agregar-tema-btn');
         agregarBtn.addEventListener('click', () => {
@@ -74,12 +87,29 @@ function mostrarTemas(temas, id_materia) {
         return;
     }
 
+    topics.innerHTML += `
+            <div class="topics-card-content">
+                <div class="card-text">¿Quieres agregar un nuevo tema?</div>
+                <button id="agregar-tema-btn" onclick="window.location.href = 'add_topic.html?id_materia=${id_materia}'">Agregar nuevo tema</button>\
+            </div>
+    `;
+
     temas.forEach(tema => {
         topics.innerHTML += `
             <div class="topics-card-content">
                 <div class="card-text"><strong>${tema.nombre}</strong></div>
                 <div class="card-description">${tema.descripción}</div>
-                ${tema.descripción === 'Agregado por un alumno.' ? '<button>Agregar tema</button>' : `<button onclick="location.href='edit_topic.html?id=${tema.id_tema}&tema=${tema.nombre}&des=${tema.descripción}'">Editar</button>`}
+                ${tema.descripción === 'Agregado por un alumno.' ? `<button style="background-color: #28a745;" onclick="location.href='add_topic.html?id_tema=${tema.id_tema}&tema=${encodeURIComponent(tema.nombre)}&des=${encodeURIComponent(tema.descripción)}'">Agregar tema</button>` : `<button onclick="location.href='add_topic.html?id_tema=${tema.id_tema}&tema=${encodeURIComponent(tema.nombre)}&des=${encodeURIComponent(tema.descripción)}'">Editar</button>`}
+                <button class="eliminar-btn" data-id-tema="${tema.id_tema}" data-id-materia="${id_materia}" style="background-color:red">Eliminar</button>
             </div>`
     })
+
+    document.querySelectorAll('.eliminar-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const idTema = btn.getAttribute('data-id-tema');
+            const idMateria = btn.getAttribute('data-id-materia');
+            eliminarTema(idTema, idMateria);
+        });
+    });
+
 }
