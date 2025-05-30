@@ -156,6 +156,6 @@ npm start
 
 ## Liga de documentación del proyecto
 
-**[1]** [Manual de usuario]()
+**[1]** [Manual de usuario](https://docs.google.com/document/d/1hv5yaaly3SxWYDcqAAURdU8l7lee8WUXgDXWq_MiOxk/edit?usp=sharing)
 
-**[2]** [Diseño detallado]()
+**[2]** [Manual Técnico](https://docs.google.com/document/d/1EfkycsP6IyfW01dLjXmH5JJmYf_tinEp3OdXsiZOmV4/edit?usp=sharing)
